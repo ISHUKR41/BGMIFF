@@ -1,3 +1,27 @@
+/**
+ * Home Page Component
+ * 
+ * Main landing page for the BGMI tournament platform.
+ * 
+ * Key Sections:
+ * 1. Hero Section - Eye-catching banner with CTA buttons
+ * 2. Video Introduction - Platform overview and highlights
+ * 3. Platform Stats - Animated counters showing achievements (players, tournaments, prizes)
+ * 4. Feature Cards - Detailed showcase of platform benefits
+ * 5. Live Tournament Tracker - Real-time tournament countdown and slot availability
+ * 6. Tournament Cards - Quick overview of Solo, Duo, and Squad tournaments
+ * 7. How It Works - Step-by-step registration guide
+ * 8. Why Choose GameArena - Key platform differentiators
+ * 9. Image Gallery - Tournament action shots with lightbox
+ * 10. News & Updates - Latest tournament results and announcements
+ * 11. FAQ Section - Common questions with accordion interface
+ * 12. Testimonials - Player reviews and ratings
+ * 13. CTA Band - Final call-to-action before footer
+ * 
+ * This page is designed to convert visitors into registered tournament participants
+ * by building trust, showcasing value, and making registration easy.
+ */
+
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Navigation from "@/components/Navigation";
@@ -76,6 +100,8 @@ import tournamentPrizeCeremonyImage from "@assets/generated_images/BGMI_tourname
 import mobileGamingSetupImage from "@assets/generated_images/BGMI_mobile_gaming_setup_dea0193c.png";
 import teamStrategySessionImage from "@assets/generated_images/BGMI_team_strategy_session_08638493.png";
 
+// Tournament data array - sourced from centralized config
+// Used to render tournament cards on the home page
 const tournaments = [
   {
     title: TOURNAMENTS.solo.title,
@@ -109,6 +135,8 @@ const tournaments = [
   },
 ];
 
+// Player testimonials showcasing real experiences and ratings
+// Builds social proof and credibility for new visitors
 const testimonials = [
   {
     name: "Rahul Sharma",
@@ -242,9 +270,28 @@ const faqs = [
   },
 ];
 
+/**
+ * Live Tournament Card Component
+ * 
+ * Displays real-time tournament information with countdown timer and slot availability.
+ * Features:
+ * - Live countdown to tournament start
+ * - Visual progress bar showing registration fill rate
+ * - Dynamic badge colors (red when slots < 10, default otherwise)
+ * - Auto-updates every second via setInterval
+ * 
+ * @param mode - Tournament mode (Solo/Duo/Squad)
+ * @param startTime - Tournament start date/time
+ * @param slotsLeft - Number of remaining slots
+ * @param totalSlots - Total available slots
+ */
 const LiveTournamentCard = ({ mode, startTime, slotsLeft, totalSlots }: any) => {
   const [timeLeft, setTimeLeft] = useState("");
 
+  /**
+   * Calculate and update remaining time until tournament start
+   * Updates every second to provide real-time countdown
+   */
   useEffect(() => {
     const calculateTimeLeft = () => {
       const difference = +new Date(startTime) - +new Date();
@@ -263,9 +310,11 @@ const LiveTournamentCard = ({ mode, startTime, slotsLeft, totalSlots }: any) => 
     calculateTimeLeft();
     const timer = setInterval(calculateTimeLeft, 1000);
 
+    // Cleanup timer on component unmount
     return () => clearInterval(timer);
   }, [startTime]);
 
+  // Calculate registration fill percentage for progress bar
   const slotsPercentage = ((totalSlots - slotsLeft) / totalSlots) * 100;
 
   return (

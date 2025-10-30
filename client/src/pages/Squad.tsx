@@ -1,3 +1,28 @@
+/**
+ * Squad Tournament Page Component
+ * 
+ * Dedicated page for BGMI Squad Tournament (4-player team) registration and information.
+ * 
+ * Key Sections:
+ * 1. Hero Section - Squad tournament banner emphasizing team coordination
+ * 2. Tournament Stats - Entry fee (per squad), squad slots, and prize distribution
+ * 3. Feature Highlight - Benefits of 4-player squad gameplay and tactics
+ * 4. Video Section - Tournament highlights and strategy guides
+ * 5. Registration Form - Team registration with all 4 player details
+ * 6. Detailed Rules - Squad formation, roles, payment, and gameplay rules
+ * 7. Enhanced FAQs - Squad-specific questions about roles, coordination, substitutions
+ * 8. Past Winners - Showcase of championship squads with all member names
+ * 9. Leaderboard - Current standings showing squad performance
+ * 10. Payment Instructions - Squad payment and verification process
+ * 11. Player Testimonials - Reviews from squad tournament participants
+ * 12. Squad Roles Guide - IGL, Fragger, Support, Sniper role explanations
+ * 13. Image Gallery - Squad coordination and teamwork action shots
+ * 14. CTA Band - Final registration call-to-action
+ * 
+ * Emphasizes advanced team tactics, role distribution, and the complexity
+ * of 4-player coordination while providing comprehensive tournament information.
+ */
+
 import { motion } from "framer-motion";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
@@ -21,7 +46,7 @@ import {
   UserPlus, FileText, CreditCard, Bell, ExternalLink
 } from "lucide-react";
 
-// Import BGMI images
+// Import BGMI images showcasing squad coordination and team formation
 import heroImage from "@assets/generated_images/BGMI_squad_team_formation_6d0f26cc.png";
 import actionImage1 from "@assets/generated_images/BGMI_combat_action_scene_fcabb843.png";
 import actionImage2 from "@assets/generated_images/BGMI_final_zone_battle_5fb27295.png";
@@ -37,6 +62,8 @@ import businessImage1 from "@assets/generated_images/BGMI_tournament_players_com
 // Feature Card Image
 import prizeCeremonyImage from "@assets/generated_images/BGMI_tournament_prize_ceremony_aefa5585.png";
 
+// Squad tournament rules organized by category
+// Covers 4-player formation requirements, captain responsibilities, and team conduct
 const squadRules = [
   {
     title: "Squad Formation & Registration",
@@ -121,6 +148,8 @@ const squadRules = [
   },
 ];
 
+// Comprehensive FAQ covering squad-specific scenarios
+// Addresses roles, captain duties, substitutions, and team dynamics
 const enhancedFAQs = [
   {
     title: "How do I form a squad for the tournament?",
@@ -272,6 +301,8 @@ const enhancedFAQs = [
   },
 ];
 
+// Squad tournament participant testimonials
+// Features team captains and squad members sharing their experiences
 const testimonials = [
   {
     name: "Alpha Squad",
@@ -310,6 +341,8 @@ const testimonials = [
   },
 ];
 
+// Historical squad tournament winners
+// Displays all 4 squad members' names, kills, and total prize won
 const pastWinners = [
   {
     squadName: "Alpha Predators",
@@ -357,6 +390,10 @@ const leaderboardData = [
 ];
 
 export default function Squad() {
+  /**
+   * Smooth scroll to squad registration section
+   * Navigates users to registration form with all 4 player input fields
+   */
   const scrollToRegistration = () => {
     const element = document.getElementById('registration-section');
     element?.scrollIntoView({ behavior: 'smooth' });

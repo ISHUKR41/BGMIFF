@@ -1,3 +1,36 @@
+/**
+ * Contact Page Component
+ * 
+ * Comprehensive contact page for the BGMI tournament platform.
+ * 
+ * Key Features:
+ * 1. Multiple Contact Methods:
+ *    - WhatsApp (24/7 instant support)
+ *    - Phone (direct calling)
+ *    - Email (detailed inquiries)
+ * 
+ * 2. Google Maps Integration:
+ *    - Embedded map showing IIT Patna location
+ *    - Interactive map for directions
+ * 
+ * 3. Contact Form:
+ *    - Comprehensive form with validation
+ *    - Categories: technical, payment, tournament, general, account
+ *    - Real-time validation using Zod schema
+ *    - Success/error toast notifications
+ * 
+ * 4. FAQ Section:
+ *    - Accordion-style expandable questions
+ *    - Covers registration, payments, prizes, rules
+ * 
+ * 5. Social Media Links:
+ *    - Instagram, Facebook, Twitter, LinkedIn
+ *    - External links with proper security attributes
+ * 
+ * 6. Support Hours Display:
+ *    - Clear indication of availability for each contact method
+ */
+
 import { motion } from "framer-motion";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
@@ -54,6 +87,10 @@ import { z } from "zod";
 import { useState } from "react";
 import { CONTACT_INFO, SOCIAL_LINKS } from "@/../../shared/config";
 
+/**
+ * Contact form validation schema using Zod
+ * Ensures all fields meet minimum requirements before submission
+ */
 const contactFormSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters").max(100),
   email: z.string().email("Invalid email address"),
@@ -67,6 +104,8 @@ const contactFormSchema = z.object({
 
 type ContactFormValues = z.infer<typeof contactFormSchema>;
 
+// Frequently Asked Questions data array
+// Provides instant answers to common player queries
 const faqs = [
   {
     question: "How do I register for a tournament?",
@@ -98,6 +137,7 @@ export default function Contact() {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // Initialize contact form with validation schema
   const form = useForm<ContactFormValues>({
     resolver: zodResolver(contactFormSchema),
     defaultValues: {
@@ -110,15 +150,25 @@ export default function Contact() {
     },
   });
 
+  /**
+   * Handle contact form submission
+   * Simulates API call with 2-second delay
+   * Shows success toast and resets form
+   * In production, this would send data to backend API
+   */
   const onSubmit = async (data: ContactFormValues) => {
     setIsSubmitting(true);
+    
+    // Simulate API call
     await new Promise((resolve) => setTimeout(resolve, 2000));
     
+    // Show success notification
     toast({
       title: "Message Sent Successfully!",
       description: "We'll get back to you within 24 hours.",
     });
     
+    // Reset form and loading state
     form.reset();
     setIsSubmitting(false);
   };

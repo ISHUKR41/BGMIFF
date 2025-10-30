@@ -1,3 +1,27 @@
+/**
+ * Duo Tournament Page Component
+ * 
+ * Dedicated page for BGMI Duo Tournament (2-player team) registration and information.
+ * 
+ * Key Sections:
+ * 1. Hero Section - Duo tournament banner with partner-focused messaging
+ * 2. Tournament Stats - Entry fee (per team), team slots, and prize breakdown
+ * 3. Feature Highlight - Benefits of duo teamwork and coordination
+ * 4. Registration Form - Embedded Google Form for team registration
+ * 5. Detailed Rules - Team requirements, payment, gameplay, and conduct
+ * 6. FAQ Section - Duo-specific questions (teammate changes, coordination, prizes)
+ * 7. Past Winners - Showcasing successful duo teams and their achievements
+ * 8. Leaderboard - Current standings with team names and both players
+ * 9. Payment Instructions - Team payment process and verification
+ * 10. Player Testimonials - Reviews from duo tournament participants
+ * 11. Strategy Tips - Duo coordination tactics and communication advice
+ * 12. Team Gallery - Action shots of duo teams in competition
+ * 13. CTA Band - Final registration encouragement
+ * 
+ * Emphasizes the importance of teamwork, communication, and partner coordination
+ * while providing all necessary information for duo team registration.
+ */
+
 import { motion } from "framer-motion";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
@@ -41,7 +65,7 @@ import {
   ExternalLink,
 } from "lucide-react";
 
-// Import BGMI images
+// Import BGMI images showcasing duo team action and coordination
 import heroImage from "@assets/generated_images/BGMI_duo_team_action_d91a2cd0.png";
 import duoImage1 from "@assets/generated_images/BGMI_hero_battle_scene_ad290420.png";
 import duoImage2 from "@assets/generated_images/BGMI_combat_action_scene_fcabb843.png";
@@ -57,6 +81,8 @@ import teamImage4 from "@assets/generated_images/BGMI_tournament_players_competi
 // Feature Card Image
 import teamStrategyImage from "@assets/generated_images/BGMI_team_strategy_session_08638493.png";
 
+// Duo tournament rules organized by category
+// Covers team formation, payment, gameplay, and disqualification policies
 const rules = [
   {
     title: "Team Registration Requirements",
@@ -146,6 +172,8 @@ const rules = [
   },
 ];
 
+// Duo-specific frequently asked questions
+// Addresses team coordination, communication, and partnership concerns
 const faqs = [
   {
     question: "Can I change my teammate after registration?",
@@ -205,6 +233,8 @@ const faqs = [
   },
 ];
 
+// Testimonials from duo tournament participants
+// Highlights successful partnerships and team experiences
 const testimonials = [
   {
     name: "Aarav & Vivaan",
@@ -243,6 +273,8 @@ const testimonials = [
   },
 ];
 
+// Historical duo tournament winners with team details
+// Shows both players' names and combined achievements
 const pastWinners = [
   {
     teamName: "Thunder Strikers",
@@ -282,6 +314,8 @@ const pastWinners = [
   },
 ];
 
+// Current tournament leaderboard showing duo teams
+// Displays both players, kills, and points for transparency
 const leaderboardData = [
   { rank: 1, teamName: "Phoenix Rising", player1: "Dev_OP", player2: "Raj_Pro", kills: 14, points: 145 },
   { rank: 2, teamName: "Elite Warriors", player1: "Sam_GG", player2: "Max_Ace", kills: 12, points: 132 },
@@ -294,6 +328,10 @@ const leaderboardData = [
 ];
 
 export default function Duo() {
+  /**
+   * Smooth scroll to team registration section
+   * Helps users quickly access the registration form from any CTA
+   */
   const scrollToRegistration = () => {
     document.getElementById("registration")?.scrollIntoView({ behavior: "smooth" });
   };

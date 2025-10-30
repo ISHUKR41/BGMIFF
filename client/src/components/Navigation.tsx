@@ -1,3 +1,19 @@
+/**
+ * Navigation Component
+ * 
+ * Main navigation bar for the BGMI tournament website.
+ * Features:
+ * - Responsive design with mobile hamburger menu
+ * - Desktop mega-menu showing all tournaments with details
+ * - Global search functionality (Cmd/Ctrl + K)
+ * - Dark/Light theme toggle
+ * - Sticky header with scroll-based styling
+ * - Smooth navigation between pages
+ * 
+ * The navigation adapts based on screen size and provides quick access to
+ * all tournament pages and important links.
+ */
+
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
@@ -40,6 +56,7 @@ import { useTheme } from "next-themes";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 
+// Tournament menu items with metadata for navigation mega-menu
 const tournaments = [
   {
     name: "Solo",
@@ -73,18 +90,28 @@ const tournaments = [
   },
 ];
 
+// Main navigation pages (shown in both desktop and mobile menus)
 const pages = [
   { name: "Home", path: "/", icon: Home },
   { name: "Contact", path: "/contact", icon: Mail },
 ];
 
 export default function Navigation() {
+  // Track current route for active link highlighting
   const [location, setLocation] = useLocation();
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [searchOpen, setSearchOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+  
+  // UI state management
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);  // Mobile hamburger menu toggle
+  const [searchOpen, setSearchOpen] = useState(false);          // Command palette search dialog
+  const [scrolled, setScrolled] = useState(false);              // Scroll state for header styling
+  
+  // Theme management (dark/light mode)
   const { theme, setTheme } = useTheme();
 
+  /**
+   * Monitor scroll position to add shadow/backdrop blur to header
+   * Triggers visual change when user scrolls past 10px
+   */
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 10);
@@ -94,6 +121,10 @@ export default function Navigation() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  /**
+   * Set up keyboard shortcut for search (Cmd+K on Mac, Ctrl+K on Windows/Linux)
+   * Provides quick access to global search functionality
+   */
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
       if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
@@ -106,12 +137,19 @@ export default function Navigation() {
     return () => document.removeEventListener("keydown", down);
   }, []);
 
+  /**
+   * Centralized navigation handler
+   * Updates route and closes all open menus/dialogs
+   */
   const handleNavigation = (path: string) => {
     setLocation(path);
     setMobileMenuOpen(false);
     setSearchOpen(false);
   };
 
+  /**
+   * Toggle between dark and light themes
+   */
   const toggleTheme = () => {
     setTheme(theme === "dark" ? "light" : "dark");
   };

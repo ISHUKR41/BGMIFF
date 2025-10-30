@@ -1,3 +1,21 @@
+/**
+ * Footer Component
+ * 
+ * Comprehensive footer for the BGMI tournament website.
+ * Features:
+ * - Newsletter subscription form with email validation
+ * - Company information and contact details
+ * - Quick links to all tournament pages
+ * - Support and resource links
+ * - Social media integration (YouTube, Instagram, Twitter, Facebook, Discord, Telegram)
+ * - Trust indicators (player stats, ratings, security badges)
+ * - Payment method logos
+ * - Legal links (Terms, Privacy, Cookies, Disclaimer)
+ * 
+ * This footer provides comprehensive site navigation and builds user trust
+ * by showcasing platform statistics and security credentials.
+ */
+
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -45,6 +63,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
+// Newsletter form validation schema - requires valid email format
 const newsletterSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
 });
@@ -52,8 +71,10 @@ const newsletterSchema = z.object({
 type NewsletterFormData = z.infer<typeof newsletterSchema>;
 
 export default function Footer() {
+  // Track newsletter subscription success state for user feedback
   const [subscribeSuccess, setSubscribeSuccess] = useState(false);
 
+  // Initialize form with validation
   const form = useForm<NewsletterFormData>({
     resolver: zodResolver(newsletterSchema),
     defaultValues: {
@@ -61,10 +82,16 @@ export default function Footer() {
     },
   });
 
+  /**
+   * Handle newsletter subscription form submission
+   * Shows success message for 5 seconds, then resets form
+   * In production, this would send data to a backend API
+   */
   const onSubmit = async (data: NewsletterFormData) => {
     console.log("Newsletter subscription:", data);
     setSubscribeSuccess(true);
     form.reset();
+    // Auto-hide success message after 5 seconds
     setTimeout(() => setSubscribeSuccess(false), 5000);
   };
 

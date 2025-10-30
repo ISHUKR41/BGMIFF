@@ -1,17 +1,31 @@
+/**
+ * Tournament Card Component
+ * 
+ * Reusable card component that displays tournament information in a visually appealing format.
+ * Shows entry fee, available slots, prize distribution (winner, runner-up, per-kill rewards).
+ * Clicking the card navigates users to the tournament registration form.
+ * 
+ * Used on the home page to showcase all available tournament types (Solo, Duo, Squad).
+ */
+
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Users, Trophy, Coins, Ticket } from "lucide-react";
 
+/**
+ * Props interface for TournamentCard component
+ * All monetary values are in INR (Indian Rupees)
+ */
 interface TournamentCardProps {
-  title: string;
-  mode: string;
-  entryFee: number;
-  slots: number;
-  winner: number;
-  runnerUp: number;
-  perKill: number;
-  formUrl: string;
+  title: string;        // Display name of the tournament (e.g., "BGMI Solo Tournament")
+  mode: string;         // Tournament mode identifier (e.g., "Solo", "Duo", "Squad")
+  entryFee: number;     // Registration fee amount
+  slots: number;        // Total available player/team slots
+  winner: number;       // First place prize amount
+  runnerUp: number;     // Second place prize amount
+  perKill: number;      // Reward amount per elimination
+  formUrl: string;      // Google Forms URL for registration
 }
 
 export default function TournamentCard({
@@ -24,6 +38,10 @@ export default function TournamentCard({
   perKill,
   formUrl,
 }: TournamentCardProps) {
+  /**
+   * Handle card click - redirects user to registration form
+   * Uses window.location.href to navigate in the same tab
+   */
   const handleCardClick = () => {
     window.location.href = formUrl;
   };

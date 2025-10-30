@@ -1,3 +1,29 @@
+/**
+ * Solo Tournament Page Component
+ * 
+ * Dedicated page for BGMI Solo Tournament registration and information.
+ * 
+ * Key Sections:
+ * 1. Hero Section - Tournament banner with registration CTA
+ * 2. Tournament Stats - Entry fee, slots, prizes displayed as animated cards
+ * 3. Feature Highlight - Detailed benefits of solo tournament participation
+ * 4. Prize Breakdown Charts - Visual representation of prize distribution
+ * 5. Registration Timeline - Step-by-step registration process
+ * 6. Tournament Schedule - Important dates and times
+ * 7. Detailed Rules - Comprehensive rules organized by category with accordions
+ * 8. Payment Instructions - QR code and payment verification process
+ * 9. Leaderboard - Current/past tournament standings
+ * 10. Past Winners - Showcase of previous tournament champions
+ * 11. FAQ Section - Common questions specific to solo tournaments
+ * 12. Player Testimonials - Reviews from solo tournament participants
+ * 13. Strategy Tips - Gameplay advice for solo mode
+ * 14. Image Gallery - Action shots from past solo tournaments
+ * 15. Registration Form - Google Forms embed for tournament signup
+ * 
+ * This page provides all necessary information for solo players to understand,
+ * register for, and participate in BGMI solo tournaments.
+ */
+
 import { motion } from "framer-motion";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
@@ -42,7 +68,7 @@ import {
 } from "lucide-react";
 import { BarChart, Bar, PieChart, Pie, Cell, ResponsiveContainer, XAxis, YAxis, Legend, Tooltip } from "recharts";
 
-// Import BGMI images
+// Import BGMI action images for gallery and hero section
 import heroImage from "@assets/generated_images/BGMI_solo_winner_scene_a8662376.png";
 import tournamentImage1 from "@assets/generated_images/BGMI_hero_battle_scene_ad290420.png";
 import tournamentImage2 from "@assets/generated_images/BGMI_combat_action_scene_fcabb843.png";
@@ -52,13 +78,16 @@ import esportsImage2 from "@assets/generated_images/BGMI_sniper_gameplay_2d74e59
 import gamingImage1 from "@assets/generated_images/BGMI_airdrop_scene_5a4e2e73.png";
 import gamingImage2 from "@assets/generated_images/BGMI_championship_trophy_883ef9dc.png";
 
-// Prize breakdown data for chart
+// Prize breakdown data for visual pie chart
+// Shows distribution of total prize pool across different categories
 const prizeBreakdownData = [
   { name: "Winner", value: TOURNAMENTS.solo.winner, percentage: 35, fill: "hsl(var(--chart-1))" },
   { name: "Runner-Up", value: TOURNAMENTS.solo.runnerUp, percentage: 25, fill: "hsl(var(--chart-2))" },
   { name: "Per Kill Pool", value: 400, percentage: 40, fill: "hsl(var(--chart-3))" },
 ];
 
+// Kill rewards breakdown table data
+// Shows potential earnings based on elimination count
 const killRewardsData = [
   { kills: "0-5", reward: `₹0-${TOURNAMENTS.solo.perKill * 5}` },
   { kills: "6-10", reward: `₹${TOURNAMENTS.solo.perKill * 6}-${TOURNAMENTS.solo.perKill * 10}` },
@@ -66,7 +95,8 @@ const killRewardsData = [
   { kills: "16+", reward: `₹${TOURNAMENTS.solo.perKill * 16}+` },
 ];
 
-// Past winners data
+// Historical data of past solo tournament winners
+// Showcases top performers and their achievements
 const pastWinners = [
   {
     name: "ShadowKnight_YT",
@@ -102,7 +132,8 @@ const pastWinners = [
   },
 ];
 
-// Mock leaderboard data
+// Current tournament leaderboard for display
+// In production, this would be fetched from backend API
 const mockLeaderboard = [
   { rank: 1, player: "LEGEND_Rahul", kills: 12, points: 85, prize: "₹458" },
   { rank: 2, player: "WarriorX_Pro", kills: 10, points: 78, prize: "₹340" },
@@ -116,7 +147,8 @@ const mockLeaderboard = [
   { rank: 10, player: "KnightRider_YT", kills: 5, points: 55, prize: "₹45" },
 ];
 
-// Player testimonials
+// Player testimonials specific to solo tournament experiences
+// Real feedback builds trust and credibility
 const testimonials = [
   {
     name: "Rohit Sharma",
@@ -155,7 +187,8 @@ const testimonials = [
   },
 ];
 
-// Enhanced FAQs
+// Comprehensive FAQ section for solo tournaments
+// Covers eligibility, registration, gameplay, prizes, and technical requirements
 const faqs = [
   {
     question: "Who is eligible to participate in the Solo Tournament?",
@@ -207,7 +240,8 @@ const faqs = [
   },
 ];
 
-// Detailed rules organized by categories
+// Comprehensive tournament rules organized by category
+// Each category has a type (info/success/warning) for visual distinction
 const detailedRules = [
   {
     title: "Registration Requirements",
@@ -308,7 +342,8 @@ const detailedRules = [
   },
 ];
 
-// Registration timeline steps
+// Step-by-step registration process visualization
+// Helps players understand the complete registration workflow
 const registrationSteps = [
   {
     title: "Make Payment",
@@ -342,7 +377,8 @@ const registrationSteps = [
   },
 ];
 
-// Tournament schedule
+// Tournament schedule timeline with important dates
+// Displays registration period, credential distribution, and tournament timing
 const scheduleData = [
   {
     stage: "Registration Opens",
@@ -382,6 +418,10 @@ const scheduleData = [
 ];
 
 export default function Solo() {
+  /**
+   * Smooth scroll to registration section
+   * Provides quick navigation from CTA buttons to registration form
+   */
   const scrollToRegistration = () => {
     document.getElementById("registration")?.scrollIntoView({ behavior: "smooth" });
   };
