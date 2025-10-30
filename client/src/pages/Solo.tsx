@@ -458,6 +458,36 @@ export default function Solo() {
           </div>
         </SectionWrapper>
 
+        {/* Registration Form - Moved Higher for Easy Access */}
+        <SectionWrapper id="registration" data-testid="section-registration">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="space-y-8"
+          >
+            <div className="text-center space-y-4">
+              <div className="flex items-center justify-center gap-2">
+                <Trophy className="w-8 h-8 text-primary" />
+                <h2 className="text-4xl font-bold" data-testid="heading-registration">Register Now</h2>
+              </div>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Complete the registration form below to secure your spot in the tournament. Make sure all details are accurate.
+              </p>
+            </div>
+
+            <div className="max-w-4xl mx-auto">
+              <FormEmbed
+                formUrl={TOURNAMENTS.solo.formUrl}
+                embedUrl={TOURNAMENTS.solo.embedUrl}
+                title="BGMI Solo Tournament Registration"
+                description="Fill out all fields accurately. Your slot will be confirmed after payment verification within 2-4 hours."
+              />
+            </div>
+          </motion.div>
+        </SectionWrapper>
+
         {/* Tournament Schedule */}
         <SectionWrapper id="schedule" data-testid="section-schedule">
           <motion.div
@@ -1289,36 +1319,6 @@ export default function Solo() {
 
             <div className="max-w-4xl mx-auto">
               <PaymentInstructions amount={20} />
-            </div>
-          </motion.div>
-        </SectionWrapper>
-
-        {/* Registration Form */}
-        <SectionWrapper id="registration" data-testid="section-registration">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="space-y-8"
-          >
-            <div className="text-center space-y-4">
-              <div className="flex items-center justify-center gap-2">
-                <Trophy className="w-8 h-8 text-primary" />
-                <h2 className="text-4xl font-bold" data-testid="heading-registration">Register Now</h2>
-              </div>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Complete the registration form below to secure your spot in the tournament. Make sure all details are accurate.
-              </p>
-            </div>
-
-            <div className="max-w-4xl mx-auto">
-              <FormEmbed
-                formUrl={TOURNAMENTS.solo.formUrl}
-                embedUrl={TOURNAMENTS.solo.embedUrl}
-                title="BGMI Solo Tournament Registration"
-                description="Fill out all fields accurately. Your slot will be confirmed after payment verification within 2-4 hours."
-              />
             </div>
           </motion.div>
         </SectionWrapper>

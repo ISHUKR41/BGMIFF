@@ -417,6 +417,29 @@ export default function Squad() {
           </div>
         </SectionWrapper>
 
+        {/* Registration Form - Moved Higher for Easy Access */}
+        <SectionWrapper id="registration-section" data-testid="registration-form-section">
+          <div className="text-center mb-12">
+            <Badge variant="secondary" className="mb-4">
+              <UserPlus className="w-4 h-4 mr-2" />
+              Register Now
+            </Badge>
+            <h2 className="text-4xl font-bold mb-4">Squad Registration Form</h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Fill out all squad details accurately. Slots are limited to 25 teams!
+            </p>
+          </div>
+
+          <div className="max-w-3xl mx-auto">
+            <FormEmbed
+              formUrl={TOURNAMENTS.squad.formUrl}
+              embedUrl={TOURNAMENTS.squad.embedUrl}
+              title="BGMI Squad Tournament Registration"
+              description="Please provide accurate details for all 4 squad members. Your slot will be confirmed after payment verification within 24 hours."
+            />
+          </div>
+        </SectionWrapper>
+
         {/* Tournament Schedule Section */}
         <SectionWrapper data-testid="schedule-section">
           <div className="text-center mb-12">
@@ -1138,29 +1161,6 @@ export default function Squad() {
 
           <div className="max-w-2xl mx-auto">
             <PaymentInstructions amount={80} />
-          </div>
-        </SectionWrapper>
-
-        {/* Registration Form */}
-        <SectionWrapper id="registration-section" data-testid="registration-form-section">
-          <div className="text-center mb-12">
-            <Badge variant="secondary" className="mb-4">
-              <UserPlus className="w-4 h-4 mr-2" />
-              Register Now
-            </Badge>
-            <h2 className="text-4xl font-bold mb-4">Squad Registration Form</h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Fill out all squad details accurately. Slots are limited to 25 teams!
-            </p>
-          </div>
-
-          <div className="max-w-3xl mx-auto">
-            <FormEmbed
-              formUrl={TOURNAMENTS.squad.formUrl}
-              embedUrl={TOURNAMENTS.squad.embedUrl}
-              title="BGMI Squad Tournament Registration"
-              description="Please provide accurate details for all 4 squad members. Your slot will be confirmed after payment verification within 24 hours."
-            />
           </div>
         </SectionWrapper>
 

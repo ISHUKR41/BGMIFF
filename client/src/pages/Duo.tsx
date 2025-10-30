@@ -352,6 +352,38 @@ export default function Duo() {
           </div>
         </SectionWrapper>
 
+        {/* Registration Form - Moved Higher for Easy Access */}
+        <SectionWrapper id="registration" data-testid="section-registration">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <div className="text-center mb-12">
+              <Badge variant="secondary" className="mb-4">
+                <UserPlus className="w-4 h-4 mr-2" />
+                Join Tournament
+              </Badge>
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                Register Your Duo Team
+              </h2>
+              <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+                Complete the registration form with accurate details for both team members
+              </p>
+            </div>
+
+            <div className="max-w-4xl mx-auto">
+              <FormEmbed
+                formUrl={TOURNAMENTS.duo.formUrl}
+                embedUrl={TOURNAMENTS.duo.embedUrl}
+                title="BGMI Duo Tournament Registration"
+                description="Please fill out all team details accurately. Your slot will be confirmed after payment verification within 2-6 hours."
+              />
+            </div>
+          </motion.div>
+        </SectionWrapper>
+
         {/* Tournament Schedule Section */}
         <SectionWrapper data-testid="section-schedule">
           <motion.div
@@ -1300,38 +1332,6 @@ export default function Duo() {
               ]}
               columns={{ sm: 1, md: 2, lg: 3 }}
             />
-          </motion.div>
-        </SectionWrapper>
-
-        {/* Registration Form */}
-        <SectionWrapper id="registration" data-testid="section-registration">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <div className="text-center mb-12">
-              <Badge variant="secondary" className="mb-4">
-                <UserPlus className="w-4 h-4 mr-2" />
-                Join Tournament
-              </Badge>
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                Register Your Duo Team
-              </h2>
-              <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-                Complete the registration form with accurate details for both team members
-              </p>
-            </div>
-
-            <div className="max-w-4xl mx-auto">
-              <FormEmbed
-                formUrl={TOURNAMENTS.duo.formUrl}
-                embedUrl={TOURNAMENTS.duo.embedUrl}
-                title="BGMI Duo Tournament Registration"
-                description="Please fill out all team details accurately. Your slot will be confirmed after payment verification within 2-6 hours."
-              />
-            </div>
           </motion.div>
         </SectionWrapper>
 
