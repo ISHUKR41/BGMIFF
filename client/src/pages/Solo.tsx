@@ -5,8 +5,14 @@ import StatsDisplay from "@/components/StatsDisplay";
 import RulesAccordion from "@/components/RulesAccordion";
 import PaymentInstructions from "@/components/PaymentInstructions";
 import FormEmbed from "@/components/FormEmbed";
+import VideoSection from "@/components/VideoSection";
+import ImageGallery from "@/components/ImageGallery";
 import { Trophy, Users, Coins, Ticket } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
+import soloImage from "@assets/stock_images/mobile_gaming_esport_08f2afcc.jpg";
+import actionImage1 from "@assets/stock_images/mobile_gaming_esport_37b20b88.jpg";
+import actionImage2 from "@assets/stock_images/gaming_tournament_tr_cb77e853.jpg";
 
 const stats = [
   { label: "Entry Fee", value: "₹20", icon: <Ticket className="w-6 h-6" /> },
@@ -153,6 +159,65 @@ export default function Solo() {
                 description="Please fill out all fields accurately. Your slot will be confirmed after payment verification."
               />
             </motion.div>
+          </div>
+        </section>
+
+        <section className="py-16 bg-card/50">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="mb-12"
+            >
+              <Card className="overflow-hidden">
+                <div className="aspect-video">
+                  <img
+                    src={soloImage}
+                    alt="BGMI Solo Tournament"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              </Card>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
+              <VideoSection
+                title="Solo Tournament Highlights"
+                description="Watch intense solo battles from previous tournaments"
+                videoId="dQw4w9WgXcQ"
+              />
+            </motion.div>
+          </div>
+        </section>
+
+        <section className="py-16 bg-background">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="text-center mb-8"
+            >
+              <h2 className="text-3xl font-bold mb-4">Tournament Action</h2>
+              <p className="text-muted-foreground">
+                Experience the thrill of competitive solo gameplay
+              </p>
+            </motion.div>
+            <ImageGallery
+              images={[
+                { src: actionImage1, alt: "Solo Tournament Action 1" },
+                { src: actionImage2, alt: "Solo Tournament Action 2" },
+                { src: soloImage, alt: "Solo Tournament Action 3" },
+              ]}
+            />
           </div>
         </section>
       </main>

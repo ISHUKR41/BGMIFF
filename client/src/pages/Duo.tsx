@@ -5,8 +5,14 @@ import StatsDisplay from "@/components/StatsDisplay";
 import RulesAccordion from "@/components/RulesAccordion";
 import PaymentInstructions from "@/components/PaymentInstructions";
 import FormEmbed from "@/components/FormEmbed";
+import VideoSection from "@/components/VideoSection";
+import ImageGallery from "@/components/ImageGallery";
 import { Trophy, Users, Coins, Ticket } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
+import duoImage from "@assets/stock_images/professional_esports_51ad66a4.jpg";
+import teamImage1 from "@assets/stock_images/mobile_gaming_esport_37b20b88.jpg";
+import teamImage2 from "@assets/stock_images/gaming_tournament_tr_cb77e853.jpg";
 
 const stats = [
   { label: "Entry Fee", value: "₹40", icon: <Ticket className="w-6 h-6" /> },
@@ -157,6 +163,65 @@ export default function Duo() {
                 description="Please fill out all team details accurately. Your slot will be confirmed after payment verification."
               />
             </motion.div>
+          </div>
+        </section>
+
+        <section className="py-16 bg-card/50">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="mb-12"
+            >
+              <Card className="overflow-hidden">
+                <div className="aspect-video">
+                  <img
+                    src={duoImage}
+                    alt="BGMI Duo Tournament"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              </Card>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
+              <VideoSection
+                title="Duo Tournament Highlights"
+                description="Watch epic duo teamwork from previous tournaments"
+                videoId="dQw4w9WgXcQ"
+              />
+            </motion.div>
+          </div>
+        </section>
+
+        <section className="py-16 bg-background">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="text-center mb-8"
+            >
+              <h2 className="text-3xl font-bold mb-4">Tournament Action</h2>
+              <p className="text-muted-foreground">
+                Experience the synergy of duo partnerships
+              </p>
+            </motion.div>
+            <ImageGallery
+              images={[
+                { src: teamImage1, alt: "Duo Tournament Action 1" },
+                { src: teamImage2, alt: "Duo Tournament Action 2" },
+                { src: duoImage, alt: "Duo Tournament Action 3" },
+              ]}
+            />
           </div>
         </section>
       </main>
