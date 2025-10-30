@@ -7,6 +7,7 @@ import Home from "@/pages/Home";
 import Solo from "@/pages/Solo";
 import Duo from "@/pages/Duo";
 import Squad from "@/pages/Squad";
+import Contact from "@/pages/Contact";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -16,6 +17,7 @@ function Router() {
       <Route path="/solo" component={Solo} />
       <Route path="/duo" component={Duo} />
       <Route path="/squad" component={Squad} />
+      <Route path="/contact" component={Contact} />
       <Route component={NotFound} />
     </Switch>
   );

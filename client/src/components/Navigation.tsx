@@ -12,6 +12,7 @@ export default function Navigation() {
     { path: "/solo", label: "Solo" },
     { path: "/duo", label: "Duo" },
     { path: "/squad", label: "Squad" },
+    { path: "/contact", label: "Contact" },
   ];
 
   const handleNavigation = (path: string) => {
