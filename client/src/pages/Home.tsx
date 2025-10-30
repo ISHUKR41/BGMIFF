@@ -54,23 +54,23 @@ import {
 import { Link } from "wouter";
 import { TOURNAMENTS } from "@shared/config";
 
-// Images
-import heroImage from "@assets/stock_images/professional_esports_b950c25b.jpg";
-import tournamentImage1 from "@assets/stock_images/mobile_gaming_esport_08f2afcc.jpg";
-import tournamentImage2 from "@assets/stock_images/mobile_gaming_esport_37b20b88.jpg";
-import tournamentImage3 from "@assets/stock_images/mobile_gaming_esport_a1adcd83.jpg";
-import winnerImage1 from "@assets/stock_images/gaming_tournament_tr_cb77e853.jpg";
-import winnerImage2 from "@assets/stock_images/gaming_tournament_tr_93007a14.jpg";
-import esportsImage1 from "@assets/stock_images/professional_esports_00682946.jpg";
-import esportsImage2 from "@assets/stock_images/professional_esports_51ad66a4.jpg";
-import techImage1 from "@assets/stock_images/modern_technology_wo_b01b89b4.jpg";
-import techImage2 from "@assets/stock_images/modern_technology_wo_c4ba99d0.jpg";
-import techImage3 from "@assets/stock_images/modern_technology_wo_ff5b0a11.jpg";
-import businessImage1 from "@assets/stock_images/professional_busines_5fe6ffd5.jpg";
-import businessImage2 from "@assets/stock_images/professional_busines_7c20325f.jpg";
-import supportImage1 from "@assets/stock_images/professional_custome_38a1fc0a.jpg";
-import supportImage2 from "@assets/stock_images/professional_custome_554f60f4.jpg";
-import officeImage from "@assets/stock_images/modern_corporate_off_4ba0d6ec.jpg";
+// BGMI Images
+import heroImage from "@assets/generated_images/BGMI_hero_battle_scene_ad290420.png";
+import tournamentImage1 from "@assets/generated_images/BGMI_solo_winner_scene_a8662376.png";
+import tournamentImage2 from "@assets/generated_images/BGMI_duo_team_action_d91a2cd0.png";
+import tournamentImage3 from "@assets/generated_images/BGMI_squad_team_formation_6d0f26cc.png";
+import winnerImage1 from "@assets/generated_images/BGMI_championship_trophy_883ef9dc.png";
+import winnerImage2 from "@assets/generated_images/BGMI_tournament_players_competing_4f0d52bc.png";
+import esportsImage1 from "@assets/generated_images/BGMI_combat_action_scene_fcabb843.png";
+import esportsImage2 from "@assets/generated_images/BGMI_final_zone_battle_5fb27295.png";
+import techImage1 from "@assets/generated_images/BGMI_sniper_gameplay_2d74e59c.png";
+import techImage2 from "@assets/generated_images/BGMI_airdrop_scene_5a4e2e73.png";
+import techImage3 from "@assets/generated_images/BGMI_combat_action_scene_fcabb843.png";
+import businessImage1 from "@assets/generated_images/BGMI_tournament_players_competing_4f0d52bc.png";
+import businessImage2 from "@assets/generated_images/BGMI_championship_trophy_883ef9dc.png";
+import supportImage1 from "@assets/generated_images/BGMI_hero_battle_scene_ad290420.png";
+import supportImage2 from "@assets/generated_images/BGMI_final_zone_battle_5fb27295.png";
+import officeImage from "@assets/generated_images/BGMI_squad_team_formation_6d0f26cc.png";
 
 const tournaments = [
   {
