@@ -1,7 +1,6 @@
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Link } from "wouter";
 import { Users, Trophy, Coins, Ticket } from "lucide-react";
 
 interface TournamentCardProps {
@@ -12,7 +11,7 @@ interface TournamentCardProps {
   winner: number;
   runnerUp: number;
   perKill: number;
-  path: string;
+  formUrl: string;
 }
 
 export default function TournamentCard({
@@ -23,10 +22,18 @@ export default function TournamentCard({
   winner,
   runnerUp,
   perKill,
-  path,
+  formUrl,
 }: TournamentCardProps) {
+  const handleCardClick = () => {
+    window.location.href = formUrl;
+  };
+
   return (
-    <Card className="hover-elevate transition-all duration-300 h-full flex flex-col">
+    <Card 
+      className="hover-elevate transition-all duration-300 h-full flex flex-col cursor-pointer" 
+      onClick={handleCardClick}
+      data-testid={`card-tournament-${mode.toLowerCase()}`}
+    >
       <CardHeader>
         <div className="flex items-start justify-between gap-4 mb-2">
           <CardTitle className="text-2xl">{title}</CardTitle>
@@ -86,11 +93,9 @@ export default function TournamentCard({
       </CardContent>
 
       <CardFooter>
-        <Link href={path} className="w-full">
-          <Button className="w-full" size="lg" data-testid={`button-register-${mode.toLowerCase()}`}>
-            Register Now
-          </Button>
-        </Link>
+        <Button className="w-full" size="lg" data-testid={`button-register-${mode.toLowerCase()}`}>
+          Register Now
+        </Button>
       </CardFooter>
     </Card>
   );

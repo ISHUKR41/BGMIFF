@@ -1,4 +1,4 @@
-import { Switch, Route } from "wouter";
+import { Switch, Route, useLocation } from "wouter";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
@@ -10,8 +10,15 @@ import Duo from "@/pages/Duo";
 import Squad from "@/pages/Squad";
 import Contact from "@/pages/Contact";
 import NotFound from "@/pages/not-found";
+import { useEffect } from "react";
 
 function Router() {
+  const [location] = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location]);
+
   return (
     <Switch>
       <Route path="/" component={Home} />
@@ -27,7 +34,7 @@ function Router() {
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
+      <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false} storageKey="gamearena-theme">
         <TooltipProvider>
           <Toaster />
           <Router />

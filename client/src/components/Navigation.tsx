@@ -141,18 +141,17 @@ export default function Navigation() {
               <NavigationMenu>
                 <NavigationMenuList>
                   <NavigationMenuItem>
-                    <Link href="/">
-                      <NavigationMenuLink
-                        className={cn(
-                          "group inline-flex h-9 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors hover-elevate active-elevate-2",
-                          location === "/" && "bg-secondary"
-                        )}
-                        data-testid="link-nav-home"
-                      >
-                        <Home className="w-4 h-4 mr-2" />
-                        Home
-                      </NavigationMenuLink>
-                    </Link>
+                    <button
+                      onClick={() => handleNavigation("/")}
+                      className={cn(
+                        "group inline-flex h-9 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors hover-elevate active-elevate-2 bg-transparent border-0",
+                        location === "/" && "bg-secondary"
+                      )}
+                      data-testid="link-nav-home"
+                    >
+                      <Home className="w-4 h-4 mr-2" />
+                      Home
+                    </button>
                   </NavigationMenuItem>
 
                   <NavigationMenuItem>
@@ -166,47 +165,44 @@ export default function Navigation() {
                           {tournaments.map((tournament) => {
                             const Icon = tournament.icon;
                             return (
-                              <Link
+                              <Card
                                 key={tournament.path}
-                                href={tournament.path}
+                                onClick={() => handleNavigation(tournament.path)}
+                                className="hover-elevate active-elevate-2 cursor-pointer transition-all group"
+                                data-testid={`tournament-card-${tournament.name.toLowerCase()}`}
                               >
-                                <Card
-                                  className="hover-elevate active-elevate-2 cursor-pointer transition-all group"
-                                  data-testid={`tournament-card-${tournament.name.toLowerCase()}`}
-                                >
-                                  <CardHeader className="flex flex-row items-center gap-4 space-y-0 pb-2">
-                                    <div className={cn("w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center", tournament.color)}>
-                                      <Icon className="w-5 h-5" />
+                                <CardHeader className="flex flex-row items-center gap-4 space-y-0 pb-2">
+                                  <div className={cn("w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center", tournament.color)}>
+                                    <Icon className="w-5 h-5" />
+                                  </div>
+                                  <div className="flex-1">
+                                    <CardTitle className="text-base group-hover:text-primary transition-colors">
+                                      {tournament.name} Tournament
+                                    </CardTitle>
+                                    <CardDescription className="text-sm">
+                                      {tournament.description}
+                                    </CardDescription>
+                                  </div>
+                                </CardHeader>
+                                <CardContent>
+                                  <div className="flex items-center gap-4 text-sm">
+                                    <div className="flex items-center gap-1">
+                                      <Ticket className="w-4 h-4 text-muted-foreground" />
+                                      <span className="font-medium">{tournament.entryFee}</span>
                                     </div>
-                                    <div className="flex-1">
-                                      <CardTitle className="text-base group-hover:text-primary transition-colors">
-                                        {tournament.name} Tournament
-                                      </CardTitle>
-                                      <CardDescription className="text-sm">
-                                        {tournament.description}
-                                      </CardDescription>
+                                    <Separator orientation="vertical" className="h-4" />
+                                    <div className="flex items-center gap-1">
+                                      <Users className="w-4 h-4 text-muted-foreground" />
+                                      <span>{tournament.slots}</span>
                                     </div>
-                                  </CardHeader>
-                                  <CardContent>
-                                    <div className="flex items-center gap-4 text-sm">
-                                      <div className="flex items-center gap-1">
-                                        <Ticket className="w-4 h-4 text-muted-foreground" />
-                                        <span className="font-medium">{tournament.entryFee}</span>
-                                      </div>
-                                      <Separator orientation="vertical" className="h-4" />
-                                      <div className="flex items-center gap-1">
-                                        <Users className="w-4 h-4 text-muted-foreground" />
-                                        <span>{tournament.slots}</span>
-                                      </div>
-                                      <Separator orientation="vertical" className="h-4" />
-                                      <div className="flex items-center gap-1">
-                                        <Trophy className="w-4 h-4 text-muted-foreground" />
-                                        <span className="text-primary font-semibold">{tournament.prize}</span>
-                                      </div>
+                                    <Separator orientation="vertical" className="h-4" />
+                                    <div className="flex items-center gap-1">
+                                      <Trophy className="w-4 h-4 text-muted-foreground" />
+                                      <span className="text-primary font-semibold">{tournament.prize}</span>
                                     </div>
-                                  </CardContent>
-                                </Card>
-                              </Link>
+                                  </div>
+                                </CardContent>
+                              </Card>
                             );
                           })}
                         </div>
@@ -215,18 +211,17 @@ export default function Navigation() {
                   </NavigationMenuItem>
 
                   <NavigationMenuItem>
-                    <Link href="/contact">
-                      <NavigationMenuLink
-                        className={cn(
-                          "group inline-flex h-9 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors hover-elevate active-elevate-2",
-                          location === "/contact" && "bg-secondary"
-                        )}
-                        data-testid="link-nav-contact"
-                      >
-                        <Mail className="w-4 h-4 mr-2" />
-                        Contact
-                      </NavigationMenuLink>
-                    </Link>
+                    <button
+                      onClick={() => handleNavigation("/contact")}
+                      className={cn(
+                        "group inline-flex h-9 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors hover-elevate active-elevate-2 bg-transparent border-0",
+                        location === "/contact" && "bg-secondary"
+                      )}
+                      data-testid="link-nav-contact"
+                    >
+                      <Mail className="w-4 h-4 mr-2" />
+                      Contact
+                    </button>
                   </NavigationMenuItem>
                 </NavigationMenuList>
               </NavigationMenu>

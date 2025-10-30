@@ -52,6 +52,7 @@ import {
   MessageCircle,
 } from "lucide-react";
 import { Link } from "wouter";
+import { TOURNAMENTS } from "@shared/config";
 
 // Images
 import heroImage from "@assets/stock_images/professional_esports_b950c25b.jpg";
@@ -73,34 +74,34 @@ import officeImage from "@assets/stock_images/modern_corporate_off_4ba0d6ec.jpg"
 
 const tournaments = [
   {
-    title: "BGMI Solo",
-    mode: "Solo",
-    entryFee: 20,
-    slots: 100,
-    winner: 350,
-    runnerUp: 250,
-    perKill: 9,
-    path: "/solo",
+    title: TOURNAMENTS.solo.title,
+    mode: TOURNAMENTS.solo.mode,
+    entryFee: TOURNAMENTS.solo.entryFee,
+    slots: TOURNAMENTS.solo.slots,
+    winner: TOURNAMENTS.solo.winner,
+    runnerUp: TOURNAMENTS.solo.runnerUp,
+    perKill: TOURNAMENTS.solo.perKill,
+    formUrl: TOURNAMENTS.solo.formUrl,
   },
   {
-    title: "BGMI Duo",
-    mode: "Duo",
-    entryFee: 40,
-    slots: 50,
-    winner: 350,
-    runnerUp: 250,
-    perKill: 9,
-    path: "/duo",
+    title: TOURNAMENTS.duo.title,
+    mode: TOURNAMENTS.duo.mode,
+    entryFee: TOURNAMENTS.duo.entryFee,
+    slots: TOURNAMENTS.duo.slots,
+    winner: TOURNAMENTS.duo.winner,
+    runnerUp: TOURNAMENTS.duo.runnerUp,
+    perKill: TOURNAMENTS.duo.perKill,
+    formUrl: TOURNAMENTS.duo.formUrl,
   },
   {
-    title: "BGMI Squad",
-    mode: "Squad",
-    entryFee: 80,
-    slots: 25,
-    winner: 350,
-    runnerUp: 250,
-    perKill: 9,
-    path: "/squad",
+    title: TOURNAMENTS.squad.title,
+    mode: TOURNAMENTS.squad.mode,
+    entryFee: TOURNAMENTS.squad.entryFee,
+    slots: TOURNAMENTS.squad.slots,
+    winner: TOURNAMENTS.squad.winner,
+    runnerUp: TOURNAMENTS.squad.runnerUp,
+    perKill: TOURNAMENTS.squad.perKill,
+    formUrl: TOURNAMENTS.squad.formUrl,
   },
 ];
 
