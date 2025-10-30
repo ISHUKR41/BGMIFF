@@ -9,9 +9,8 @@ import ModernTestimonials from "@/components/ModernTestimonials";
 import CTABand from "@/components/CTABand";
 import RulesAccordion from "@/components/RulesAccordion";
 import PaymentInstructions from "@/components/PaymentInstructions";
-import FormEmbed from "@/components/FormEmbed";
 import { TOURNAMENTS } from "@/../../shared/config";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -39,20 +38,22 @@ import {
   FileText,
   CreditCard,
   PlayCircle,
+  ExternalLink,
 } from "lucide-react";
 
-import heroImage from "@assets/stock_images/professional_esports_51ad66a4.jpg";
-import duoImage1 from "@assets/stock_images/mobile_gaming_esport_37b20b88.jpg";
-import duoImage2 from "@assets/stock_images/gaming_tournament_tr_cb77e853.jpg";
-import duoImage3 from "@assets/stock_images/professional_esports_00682946.jpg";
-import duoImage4 from "@assets/stock_images/professional_esports_b950c25b.jpg";
-import duoImage5 from "@assets/stock_images/mobile_gaming_esport_08f2afcc.jpg";
-import duoImage6 from "@assets/stock_images/mobile_gaming_esport_a1adcd83.jpg";
-import duoImage7 from "@assets/stock_images/gaming_tournament_tr_93007a14.jpg";
-import teamImage1 from "@assets/stock_images/modern_technology_wo_b01b89b4.jpg";
-import teamImage2 from "@assets/stock_images/modern_technology_wo_c4ba99d0.jpg";
-import teamImage3 from "@assets/stock_images/modern_technology_wo_ff5b0a11.jpg";
-import teamImage4 from "@assets/stock_images/professional_busines_5fe6ffd5.jpg";
+// Import BGMI images
+import heroImage from "@assets/generated_images/BGMI_duo_team_action_d91a2cd0.png";
+import duoImage1 from "@assets/generated_images/BGMI_hero_battle_scene_ad290420.png";
+import duoImage2 from "@assets/generated_images/BGMI_combat_action_scene_fcabb843.png";
+import duoImage3 from "@assets/generated_images/BGMI_final_zone_battle_5fb27295.png";
+import duoImage4 from "@assets/generated_images/BGMI_solo_winner_scene_a8662376.png";
+import duoImage5 from "@assets/generated_images/BGMI_tournament_players_competing_4f0d52bc.png";
+import duoImage6 from "@assets/generated_images/BGMI_sniper_gameplay_2d74e59c.png";
+import duoImage7 from "@assets/generated_images/BGMI_airdrop_scene_5a4e2e73.png";
+import teamImage1 from "@assets/generated_images/BGMI_championship_trophy_883ef9dc.png";
+import teamImage2 from "@assets/generated_images/BGMI_duo_team_action_d91a2cd0.png";
+import teamImage3 from "@assets/generated_images/BGMI_squad_team_formation_6d0f26cc.png";
+import teamImage4 from "@assets/generated_images/BGMI_tournament_players_competing_4f0d52bc.png";
 
 const rules = [
   {
@@ -374,12 +375,99 @@ export default function Duo() {
             </div>
 
             <div className="max-w-4xl mx-auto">
-              <FormEmbed
-                formUrl={TOURNAMENTS.duo.formUrl}
-                embedUrl={TOURNAMENTS.duo.embedUrl}
-                title="BGMI Duo Tournament Registration"
-                description="Please fill out all team details accurately. Your slot will be confirmed after payment verification within 2-6 hours."
-              />
+              <Card className="hover-elevate transition-all duration-300">
+                <CardHeader>
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <CardTitle className="text-2xl">BGMI Duo Tournament Registration</CardTitle>
+                      <CardDescription className="mt-2">
+                        Please fill out all team details accurately. Your slot will be confirmed after payment verification within 2-6 hours.
+                      </CardDescription>
+                    </div>
+                    <Badge variant="default" className="shrink-0">Duo</Badge>
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                        <Ticket className="w-4 h-4" />
+                        <span>Entry Fee</span>
+                      </div>
+                      <p className="text-3xl font-mono font-bold">₹{TOURNAMENTS.duo.entryFee}</p>
+                    </div>
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                        <Users className="w-4 h-4" />
+                        <span>Total Teams</span>
+                      </div>
+                      <p className="text-3xl font-mono font-bold">{TOURNAMENTS.duo.slots}</p>
+                    </div>
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                        <Trophy className="w-4 h-4 text-yellow-500" />
+                        <span>Winner Prize</span>
+                      </div>
+                      <p className="text-3xl font-mono font-bold">₹{TOURNAMENTS.duo.winner}</p>
+                    </div>
+                  </div>
+
+                  <Separator />
+
+                  <div className="space-y-3">
+                    <h4 className="font-semibold flex items-center gap-2">
+                      <CheckCircle2 className="w-5 h-5 text-green-500" />
+                      Registration Process
+                    </h4>
+                    <ul className="space-y-2 text-sm text-muted-foreground">
+                      <li className="flex items-start gap-2">
+                        <span className="font-mono text-primary">1.</span>
+                        <span>Form your duo team with a partner you trust</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="font-mono text-primary">2.</span>
+                        <span>Make payment of ₹{TOURNAMENTS.duo.entryFee} via official UPI QR code</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="font-mono text-primary">3.</span>
+                        <span>Fill the form with both players' BGMI IDs, names, and payment details</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="font-mono text-primary">4.</span>
+                        <span>Wait for admin verification (2-6 hours)</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="font-mono text-primary">5.</span>
+                        <span>Receive room credentials 30 minutes before match</span>
+                      </li>
+                    </ul>
+                  </div>
+
+                  <div className="bg-muted/50 rounded-lg p-4">
+                    <div className="flex items-start gap-3">
+                      <Shield className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+                      <div className="space-y-1 text-sm">
+                        <p className="font-semibold">Secure & Verified Registration</p>
+                        <p className="text-muted-foreground">All registrations are verified by our admin team. Both team members must be confirmed before registration is complete.</p>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+                <CardFooter className="flex flex-col gap-3">
+                  <Button 
+                    className="w-full" 
+                    size="lg"
+                    onClick={() => window.open(TOURNAMENTS.duo.formUrl, '_blank')}
+                    data-testid="button-register-duo"
+                  >
+                    <ExternalLink className="w-5 h-5 mr-2" />
+                    Open Registration Form
+                  </Button>
+                  <p className="text-xs text-center text-muted-foreground">
+                    By registering, you agree to our tournament rules and policies
+                  </p>
+                </CardFooter>
+              </Card>
             </div>
           </motion.div>
         </SectionWrapper>

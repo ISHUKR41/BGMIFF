@@ -6,13 +6,13 @@ import SectionWrapper from "@/components/SectionWrapper";
 import ProfessionalStatCard from "@/components/ProfessionalStatCard";
 import RulesAccordion from "@/components/RulesAccordion";
 import PaymentInstructions from "@/components/PaymentInstructions";
-import FormEmbed from "@/components/FormEmbed";
 import MediaLightbox from "@/components/MediaLightbox";
 import ModernTestimonials from "@/components/ModernTestimonials";
 import CTABand from "@/components/CTABand";
 import { TOURNAMENTS } from "@/../../shared/config";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
@@ -37,19 +37,20 @@ import {
   TrendingUp,
   Medal,
   Crown,
-  Play
+  Play,
+  ExternalLink
 } from "lucide-react";
 import { BarChart, Bar, PieChart, Pie, Cell, ResponsiveContainer, XAxis, YAxis, Legend, Tooltip } from "recharts";
 
-// Import images
-import heroImage from "@assets/stock_images/professional_esports_00682946.jpg";
-import tournamentImage1 from "@assets/stock_images/mobile_gaming_esport_08f2afcc.jpg";
-import tournamentImage2 from "@assets/stock_images/mobile_gaming_esport_37b20b88.jpg";
-import tournamentImage3 from "@assets/stock_images/mobile_gaming_esport_a1adcd83.jpg";
-import esportsImage1 from "@assets/stock_images/professional_esports_51ad66a4.jpg";
-import esportsImage2 from "@assets/stock_images/professional_esports_b950c25b.jpg";
-import gamingImage1 from "@assets/stock_images/gaming_tournament_tr_93007a14.jpg";
-import gamingImage2 from "@assets/stock_images/gaming_tournament_tr_cb77e853.jpg";
+// Import BGMI images
+import heroImage from "@assets/generated_images/BGMI_solo_winner_scene_a8662376.png";
+import tournamentImage1 from "@assets/generated_images/BGMI_hero_battle_scene_ad290420.png";
+import tournamentImage2 from "@assets/generated_images/BGMI_combat_action_scene_fcabb843.png";
+import tournamentImage3 from "@assets/generated_images/BGMI_final_zone_battle_5fb27295.png";
+import esportsImage1 from "@assets/generated_images/BGMI_tournament_players_competing_4f0d52bc.png";
+import esportsImage2 from "@assets/generated_images/BGMI_sniper_gameplay_2d74e59c.png";
+import gamingImage1 from "@assets/generated_images/BGMI_airdrop_scene_5a4e2e73.png";
+import gamingImage2 from "@assets/generated_images/BGMI_championship_trophy_883ef9dc.png";
 
 // Prize breakdown data for chart
 const prizeBreakdownData = [
@@ -478,12 +479,95 @@ export default function Solo() {
             </div>
 
             <div className="max-w-4xl mx-auto">
-              <FormEmbed
-                formUrl={TOURNAMENTS.solo.formUrl}
-                embedUrl={TOURNAMENTS.solo.embedUrl}
-                title="BGMI Solo Tournament Registration"
-                description="Fill out all fields accurately. Your slot will be confirmed after payment verification within 2-4 hours."
-              />
+              <Card className="hover-elevate transition-all duration-300">
+                <CardHeader>
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <CardTitle className="text-2xl">BGMI Solo Tournament Registration</CardTitle>
+                      <CardDescription className="mt-2">
+                        Fill out all fields accurately. Your slot will be confirmed after payment verification within 2-4 hours.
+                      </CardDescription>
+                    </div>
+                    <Badge variant="default" className="shrink-0">Solo</Badge>
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                        <Ticket className="w-4 h-4" />
+                        <span>Entry Fee</span>
+                      </div>
+                      <p className="text-3xl font-mono font-bold">₹{TOURNAMENTS.solo.entryFee}</p>
+                    </div>
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                        <Users className="w-4 h-4" />
+                        <span>Total Slots</span>
+                      </div>
+                      <p className="text-3xl font-mono font-bold">{TOURNAMENTS.solo.slots}</p>
+                    </div>
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                        <Trophy className="w-4 h-4 text-yellow-500" />
+                        <span>Winner Prize</span>
+                      </div>
+                      <p className="text-3xl font-mono font-bold">₹{TOURNAMENTS.solo.winner}</p>
+                    </div>
+                  </div>
+
+                  <Separator />
+
+                  <div className="space-y-3">
+                    <h4 className="font-semibold flex items-center gap-2">
+                      <CheckCircle2 className="w-5 h-5 text-green-500" />
+                      Registration Process
+                    </h4>
+                    <ul className="space-y-2 text-sm text-muted-foreground">
+                      <li className="flex items-start gap-2">
+                        <span className="font-mono text-primary">1.</span>
+                        <span>Make payment of ₹{TOURNAMENTS.solo.entryFee} via official UPI QR code</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="font-mono text-primary">2.</span>
+                        <span>Fill the registration form with your BGMI ID, name, and payment details</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="font-mono text-primary">3.</span>
+                        <span>Wait for admin verification (2-4 hours)</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="font-mono text-primary">4.</span>
+                        <span>Receive room credentials 30 minutes before match</span>
+                      </li>
+                    </ul>
+                  </div>
+
+                  <div className="bg-muted/50 rounded-lg p-4">
+                    <div className="flex items-start gap-3">
+                      <Shield className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+                      <div className="space-y-1 text-sm">
+                        <p className="font-semibold">Secure & Verified Registration</p>
+                        <p className="text-muted-foreground">All registrations are verified by our admin team. Your payment is secure and slot confirmation is guaranteed after verification.</p>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+                <CardFooter className="flex flex-col gap-3">
+                  <Button 
+                    className="w-full" 
+                    size="lg"
+                    onClick={() => window.open(TOURNAMENTS.solo.formUrl, '_blank')}
+                    data-testid="button-register-solo"
+                  >
+                    <ExternalLink className="w-5 h-5 mr-2" />
+                    Open Registration Form
+                  </Button>
+                  <p className="text-xs text-center text-muted-foreground">
+                    By registering, you agree to our tournament rules and policies
+                  </p>
+                </CardFooter>
+              </Card>
             </div>
           </motion.div>
         </SectionWrapper>
