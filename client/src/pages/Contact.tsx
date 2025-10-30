@@ -215,6 +215,37 @@ export default function Contact() {
             </Card>
           </div>
 
+          <Card className="mb-16" data-testid="card-map">
+            <CardHeader>
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
+                  <MapPin className="w-6 h-6 text-primary" />
+                </div>
+                <div>
+                  <CardTitle className="text-2xl">Our Location</CardTitle>
+                  <CardDescription className="text-base">
+                    IIT Patna Campus, Patna, Bihar, 801106
+                  </CardDescription>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="w-full h-[400px] md:h-[500px] rounded-lg overflow-hidden">
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3598.4856668658706!2d84.84891261501744!3d25.536167583755677!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39ed577f6954a4ab%3A0x6ce8f1b9fc2e321c!2sIndian%20Institute%20of%20Technology%20Patna!5e0!3m2!1sen!2sin!4v1635421234567!5m2!1sen!2sin"
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  title="GameArena Location - IIT Patna Campus"
+                  data-testid="iframe-map"
+                />
+              </div>
+            </CardContent>
+          </Card>
+
           <div className="grid lg:grid-cols-2 gap-12 mb-16">
             <div>
               <h2 className="text-3xl font-bold mb-6" data-testid="heading-send-message">
