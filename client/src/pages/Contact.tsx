@@ -42,6 +42,9 @@ import {
   MessageCircle,
   ArrowRight,
   ExternalLink,
+  Loader2,
+  Info,
+  HelpCircle,
 } from "lucide-react";
 import { SiInstagram, SiFacebook, SiX, SiLinkedin, SiWhatsapp } from "react-icons/si";
 import { useToast } from "@/hooks/use-toast";
@@ -377,49 +380,71 @@ export default function Contact() {
                         )}
                       />
 
-                      <Button
-                        type="submit"
-                        className="w-full"
-                        disabled={isSubmitting}
-                        data-testid="button-submit"
+                      <motion.div
+                        whileHover={{ scale: isSubmitting ? 1 : 1.02 }}
+                        whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
                       >
-                        {isSubmitting ? (
-                          "Sending..."
-                        ) : (
-                          <>
-                            <Send className="w-4 h-4 mr-2" />
-                            Send Message
-                          </>
-                        )}
-                      </Button>
+                        <Button
+                          type="submit"
+                          className="w-full"
+                          disabled={isSubmitting}
+                          data-testid="button-submit"
+                        >
+                          {isSubmitting ? (
+                            <>
+                              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                              Sending Message...
+                            </>
+                          ) : (
+                            <>
+                              <Send className="w-4 h-4 mr-2" />
+                              Send Message
+                            </>
+                          )}
+                        </Button>
+                      </motion.div>
                     </form>
                   </Form>
                 </CardContent>
               </Card>
             </div>
 
-            <div>
-              <h2 className="text-3xl font-bold mb-6" data-testid="heading-faq">
-                Frequently Asked Questions
-              </h2>
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
+                  <HelpCircle className="w-6 h-6 text-primary" />
+                </div>
+                <h2 className="text-3xl font-bold" data-testid="heading-faq">
+                  Frequently Asked Questions
+                </h2>
+              </div>
               <Accordion type="single" collapsible className="space-y-4">
                 {faqs.map((faq, index) => (
                   <AccordionItem
                     key={index}
                     value={`item-${index}`}
-                    className="border rounded-lg px-4"
+                    className="border rounded-lg px-4 hover-elevate transition-all duration-300"
                     data-testid={`faq-item-${index}`}
                   >
                     <AccordionTrigger className="hover:no-underline">
-                      {faq.question}
+                      <div className="flex items-center gap-2">
+                        <Info className="w-4 h-4 text-primary flex-shrink-0" />
+                        <span className="text-left">{faq.question}</span>
+                      </div>
                     </AccordionTrigger>
-                    <AccordionContent className="text-muted-foreground">
-                      {faq.answer}
+                    <AccordionContent className="text-muted-foreground pt-2">
+                      <div className="pl-6">
+                        {faq.answer}
+                      </div>
                     </AccordionContent>
                   </AccordionItem>
                 ))}
               </Accordion>
-            </div>
+            </motion.div>
           </div>
 
           <Card className="mb-16" data-testid="card-social">

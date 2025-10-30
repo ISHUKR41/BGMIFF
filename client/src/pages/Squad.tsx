@@ -34,6 +34,8 @@ import techImage1 from "@assets/generated_images/BGMI_duo_team_action_d91a2cd0.p
 import techImage2 from "@assets/generated_images/BGMI_solo_winner_scene_a8662376.png";
 import techImage3 from "@assets/generated_images/BGMI_combat_action_scene_fcabb843.png";
 import businessImage1 from "@assets/generated_images/BGMI_tournament_players_competing_4f0d52bc.png";
+// Feature Card Image
+import prizeCeremonyImage from "@assets/generated_images/BGMI_tournament_prize_ceremony_aefa5585.png";
 
 const squadRules = [
   {
@@ -418,8 +420,101 @@ export default function Squad() {
           </div>
         </SectionWrapper>
 
+        {/* Comprehensive Feature Highlight Card - Squad Tournament Benefits */}
+        <SectionWrapper variant="default" data-testid="section-feature-highlight">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <Card className="hover-elevate transition-all duration-300 overflow-hidden" data-testid="feature-squad-tournament">
+              <div className="grid md:grid-cols-2 gap-0">
+                {/* Image Section */}
+                <div className="aspect-video md:aspect-auto overflow-hidden">
+                  <img
+                    src={prizeCeremonyImage}
+                    alt="BGMI Squad Tournament Prize Ceremony"
+                    className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
+                  />
+                </div>
+                
+                {/* Content Section */}
+                <div className="p-6 md:p-8 flex flex-col justify-center">
+                  <div className="mb-4">
+                    <div className="flex items-center gap-2 mb-3">
+                      <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                        <Users className="w-6 h-6 text-primary" />
+                      </div>
+                      <h3 className="text-2xl md:text-3xl font-bold">Squad Tournament Excellence</h3>
+                    </div>
+                    <p className="text-muted-foreground">
+                      Assemble your 4-player squad for the ultimate BGMI team competition with guaranteed prizes and professional tournament experience
+                    </p>
+                  </div>
+
+                  <div className="space-y-4 mb-6">
+                    <div className="flex items-start gap-3">
+                      <div className="w-10 h-10 rounded-full bg-green-500/10 flex items-center justify-center flex-shrink-0">
+                        <Trophy className="w-5 h-5 text-green-500" />
+                      </div>
+                      <div>
+                        <h4 className="font-semibold mb-1">Squad Prize Distribution</h4>
+                        <p className="text-sm text-muted-foreground">Winner: ₹350 | Runner-Up: ₹250 | Per Kill: ₹9 - Team prizes distributed within 24-48 hours to squad leader</p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start gap-3">
+                      <div className="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center flex-shrink-0">
+                        <Shield className="w-5 h-5 text-blue-500" />
+                      </div>
+                      <div>
+                        <h4 className="font-semibold mb-1">Full Squad Registration</h4>
+                        <p className="text-sm text-muted-foreground">Register all 4 squad members with secure verification - Complete confirmation within 24 hours via WhatsApp</p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start gap-3">
+                      <div className="w-10 h-10 rounded-full bg-purple-500/10 flex items-center justify-center flex-shrink-0">
+                        <Crosshair className="w-5 h-5 text-purple-500" />
+                      </div>
+                      <div>
+                        <h4 className="font-semibold mb-1">Advanced Squad Tactics</h4>
+                        <p className="text-sm text-muted-foreground">Coordinate with 4 players, execute strategic plays, and dominate as a united squad force</p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start gap-3">
+                      <div className="w-10 h-10 rounded-full bg-orange-500/10 flex items-center justify-center flex-shrink-0">
+                        <Star className="w-5 h-5 text-orange-500" />
+                      </div>
+                      <div>
+                        <h4 className="font-semibold mb-1">Professional Tournament Experience</h4>
+                        <p className="text-sm text-muted-foreground">Fair play enforcement, dedicated support, real-time updates, and transparent prize distribution</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-wrap gap-3">
+                    <Button onClick={scrollToRegistration} data-testid="button-register-squad-feature">
+                      Register Your Squad - ₹{TOURNAMENTS.squad.entryFee}
+                      <ArrowRight className="w-4 h-4 ml-2" />
+                    </Button>
+                    <Button variant="outline" data-testid="button-rules-squad-feature">
+                      <a href="#rules" className="flex items-center">
+                        View Squad Rules
+                        <ExternalLink className="w-4 h-4 ml-2" />
+                      </a>
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </Card>
+          </motion.div>
+        </SectionWrapper>
+
         {/* Registration Form - Moved Higher for Easy Access */}
-        <SectionWrapper id="registration-section" data-testid="registration-form-section">
+        <SectionWrapper id="registration-section" variant="muted" data-testid="registration-form-section">
           <div className="text-center mb-12">
             <Badge variant="secondary" className="mb-4">
               <UserPlus className="w-4 h-4 mr-2" />
@@ -514,11 +609,11 @@ export default function Squad() {
                 <Button 
                   className="w-full" 
                   size="lg"
-                  onClick={() => window.open(TOURNAMENTS.squad.formUrl, '_blank')}
+                  onClick={() => window.location.href = TOURNAMENTS.squad.formUrl}
                   data-testid="button-register-squad"
                 >
-                  <ExternalLink className="w-5 h-5 mr-2" />
-                  Open Registration Form
+                  <Trophy className="w-5 h-5 mr-2" />
+                  Register Now
                 </Button>
                 <p className="text-xs text-center text-muted-foreground">
                   By registering, you agree to our tournament rules and policies

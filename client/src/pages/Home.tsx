@@ -71,6 +71,10 @@ import businessImage2 from "@assets/generated_images/BGMI_championship_trophy_88
 import supportImage1 from "@assets/generated_images/BGMI_hero_battle_scene_ad290420.png";
 import supportImage2 from "@assets/generated_images/BGMI_final_zone_battle_5fb27295.png";
 import officeImage from "@assets/generated_images/BGMI_squad_team_formation_6d0f26cc.png";
+// Feature Cards Images - Newly added for detailed feature showcases
+import tournamentPrizeCeremonyImage from "@assets/generated_images/BGMI_tournament_prize_ceremony_aefa5585.png";
+import mobileGamingSetupImage from "@assets/generated_images/BGMI_mobile_gaming_setup_dea0193c.png";
+import teamStrategySessionImage from "@assets/generated_images/BGMI_team_strategy_session_08638493.png";
 
 const tournaments = [
   {
@@ -415,8 +419,206 @@ export default function Home() {
           </div>
         </SectionWrapper>
 
+        {/* Detailed Feature Cards Section - Showcasing key platform benefits */}
+        <SectionWrapper variant="muted" data-testid="section-detailed-features">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4">Why GameArena Stands Out</h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Experience the difference with our professional tournament management, active community, and secure payment systems
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* Tournament Excellence Card */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+            >
+              <Card className="hover-elevate transition-all duration-300 h-full flex flex-col" data-testid="feature-tournament-excellence">
+                <div className="aspect-video overflow-hidden rounded-t-lg">
+                  <img
+                    src={tournamentPrizeCeremonyImage}
+                    alt="Tournament Prize Ceremony"
+                    className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
+                  />
+                </div>
+                <CardHeader>
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                      <Trophy className="w-5 h-5 text-primary" />
+                    </div>
+                    <CardTitle className="text-xl">Tournament Excellence</CardTitle>
+                  </div>
+                  <CardDescription>Professional organization with guaranteed prizes</CardDescription>
+                </CardHeader>
+                <CardContent className="flex-1">
+                  <ul className="space-y-3 text-sm">
+                    <li className="flex items-start gap-3">
+                      <CheckCircle2 className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
+                      <div>
+                        <p className="font-semibold">Verified Prize Distribution</p>
+                        <p className="text-muted-foreground">100% guaranteed prizes transferred within 24-48 hours via UPI</p>
+                      </div>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <CheckCircle2 className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
+                      <div>
+                        <p className="font-semibold">Transparent Operations</p>
+                        <p className="text-muted-foreground">Complete transparency from registration to final results</p>
+                      </div>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <CheckCircle2 className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
+                      <div>
+                        <p className="font-semibold">Professional Management</p>
+                        <p className="text-muted-foreground">Experienced organizers ensuring smooth tournament execution</p>
+                      </div>
+                    </li>
+                  </ul>
+                </CardContent>
+                <CardFooter>
+                  <Link href="#tournaments" className="w-full">
+                    <Button className="w-full" data-testid="button-view-tournaments-excellence">
+                      View Tournaments
+                      <ArrowRight className="w-4 h-4 ml-2" />
+                    </Button>
+                  </Link>
+                </CardFooter>
+              </Card>
+            </motion.div>
+
+            {/* Player Community Card */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+            >
+              <Card className="hover-elevate transition-all duration-300 h-full flex flex-col" data-testid="feature-player-community">
+                <div className="aspect-video overflow-hidden rounded-t-lg">
+                  <img
+                    src={mobileGamingSetupImage}
+                    alt="Active BGMI Gaming Community"
+                    className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
+                  />
+                </div>
+                <CardHeader>
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                      <Users className="w-5 h-5 text-primary" />
+                    </div>
+                    <CardTitle className="text-xl">Thriving Player Community</CardTitle>
+                  </div>
+                  <CardDescription>Join 10,000+ active BGMI players nationwide</CardDescription>
+                </CardHeader>
+                <CardContent className="flex-1">
+                  <ul className="space-y-3 text-sm">
+                    <li className="flex items-start gap-3">
+                      <CheckCircle2 className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
+                      <div>
+                        <p className="font-semibold">10,000+ Active Players</p>
+                        <p className="text-muted-foreground">Growing community of competitive BGMI enthusiasts</p>
+                      </div>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <CheckCircle2 className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
+                      <div>
+                        <p className="font-semibold">150+ Tournaments Hosted</p>
+                        <p className="text-muted-foreground">Regular competitions for Solo, Duo, and Squad modes</p>
+                      </div>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <CheckCircle2 className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
+                      <div>
+                        <p className="font-semibold">4.9/5 Player Rating</p>
+                        <p className="text-muted-foreground">Highly rated by participants for fairness and professionalism</p>
+                      </div>
+                    </li>
+                  </ul>
+                </CardContent>
+                <CardFooter>
+                  <Link href="/contact" className="w-full">
+                    <Button variant="outline" className="w-full" data-testid="button-join-community">
+                      Join Community
+                      <ArrowRight className="w-4 h-4 ml-2" />
+                    </Button>
+                  </Link>
+                </CardFooter>
+              </Card>
+            </motion.div>
+
+            {/* Secure Registration Card */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+            >
+              <Card className="hover-elevate transition-all duration-300 h-full flex flex-col" data-testid="feature-secure-registration">
+                <div className="aspect-video overflow-hidden rounded-t-lg">
+                  <img
+                    src={teamStrategySessionImage}
+                    alt="Secure Tournament Registration"
+                    className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
+                  />
+                </div>
+                <CardHeader>
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                      <ShieldCheck className="w-5 h-5 text-primary" />
+                    </div>
+                    <CardTitle className="text-xl">Secure Registration</CardTitle>
+                  </div>
+                  <CardDescription>Fast verification with guaranteed slot confirmation</CardDescription>
+                </CardHeader>
+                <CardContent className="flex-1">
+                  <ul className="space-y-3 text-sm">
+                    <li className="flex items-start gap-3">
+                      <CheckCircle2 className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
+                      <div>
+                        <p className="font-semibold">Payment Security</p>
+                        <p className="text-muted-foreground">SSL encrypted payments with screenshot & transaction ID verification</p>
+                      </div>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <CheckCircle2 className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
+                      <div>
+                        <p className="font-semibold">Quick Verification</p>
+                        <p className="text-muted-foreground">Registration confirmed within 2-4 hours via WhatsApp</p>
+                      </div>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <CheckCircle2 className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
+                      <div>
+                        <p className="font-semibold">Guaranteed Slots</p>
+                        <p className="text-muted-foreground">First-come basis with instant slot reservation after verification</p>
+                      </div>
+                    </li>
+                  </ul>
+                </CardContent>
+                <CardFooter>
+                  <Link href="#tournaments" className="w-full">
+                    <Button variant="secondary" className="w-full" data-testid="button-register-now-secure">
+                      Register Now
+                      <ArrowRight className="w-4 h-4 ml-2" />
+                    </Button>
+                  </Link>
+                </CardFooter>
+              </Card>
+            </motion.div>
+          </div>
+        </SectionWrapper>
+
         {/* Trust & Security Section */}
-        <SectionWrapper variant="muted" data-testid="section-trust-security">
+        <SectionWrapper variant="default" data-testid="section-trust-security">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}

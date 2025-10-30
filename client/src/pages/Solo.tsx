@@ -459,8 +459,101 @@ export default function Solo() {
           </div>
         </SectionWrapper>
 
+        {/* Comprehensive Feature Highlight Card - Solo Tournament Benefits */}
+        <SectionWrapper variant="default" data-testid="section-feature-highlight">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <Card className="hover-elevate transition-all duration-300 overflow-hidden" data-testid="feature-solo-tournament">
+              <div className="grid md:grid-cols-2 gap-0">
+                {/* Image Section */}
+                <div className="aspect-video md:aspect-auto overflow-hidden">
+                  <img
+                    src={heroImage}
+                    alt="BGMI Solo Tournament Championship"
+                    className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
+                  />
+                </div>
+                
+                {/* Content Section */}
+                <div className="p-6 md:p-8 flex flex-col justify-center">
+                  <div className="mb-4">
+                    <div className="flex items-center gap-2 mb-3">
+                      <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                        <Trophy className="w-6 h-6 text-primary" />
+                      </div>
+                      <h3 className="text-2xl md:text-3xl font-bold">Solo Tournament Excellence</h3>
+                    </div>
+                    <p className="text-muted-foreground">
+                      Experience competitive solo BGMI gameplay with guaranteed prizes and professional tournament management
+                    </p>
+                  </div>
+
+                  <div className="space-y-4 mb-6">
+                    <div className="flex items-start gap-3">
+                      <div className="w-10 h-10 rounded-full bg-green-500/10 flex items-center justify-center flex-shrink-0">
+                        <Trophy className="w-5 h-5 text-green-500" />
+                      </div>
+                      <div>
+                        <h4 className="font-semibold mb-1">Guaranteed Prize Pool</h4>
+                        <p className="text-sm text-muted-foreground">Winner: ₹350 | Runner-Up: ₹250 | Per Kill: ₹9 - Prizes distributed within 24-48 hours via UPI</p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start gap-3">
+                      <div className="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center flex-shrink-0">
+                        <Shield className="w-5 h-5 text-blue-500" />
+                      </div>
+                      <div>
+                        <h4 className="font-semibold mb-1">Secure Registration Process</h4>
+                        <p className="text-sm text-muted-foreground">SSL encrypted payments with screenshot verification - Slot confirmation within 2-4 hours via WhatsApp</p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start gap-3">
+                      <div className="w-10 h-10 rounded-full bg-purple-500/10 flex items-center justify-center flex-shrink-0">
+                        <Target className="w-5 h-5 text-purple-500" />
+                      </div>
+                      <div>
+                        <h4 className="font-semibold mb-1">Fair Play Guaranteed</h4>
+                        <p className="text-sm text-muted-foreground">Advanced anti-cheat monitoring with zero tolerance for hacks - Your skill determines your success</p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start gap-3">
+                      <div className="w-10 h-10 rounded-full bg-orange-500/10 flex items-center justify-center flex-shrink-0">
+                        <Zap className="w-5 h-5 text-orange-500" />
+                      </div>
+                      <div>
+                        <h4 className="font-semibold mb-1">Professional Management</h4>
+                        <p className="text-sm text-muted-foreground">Experienced organizers, 24/7 WhatsApp support, and transparent operations from start to finish</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-wrap gap-3">
+                    <Button onClick={scrollToRegistration} data-testid="button-register-feature">
+                      Register Now - ₹{TOURNAMENTS.solo.entryFee}
+                      <ArrowRight className="w-4 h-4 ml-2" />
+                    </Button>
+                    <Button variant="outline" data-testid="button-rules-feature">
+                      <a href="#rules" className="flex items-center">
+                        View Tournament Rules
+                        <ExternalLink className="w-4 h-4 ml-2" />
+                      </a>
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </Card>
+          </motion.div>
+        </SectionWrapper>
+
         {/* Registration Form - Moved Higher for Easy Access */}
-        <SectionWrapper id="registration" data-testid="section-registration">
+        <SectionWrapper id="registration" variant="muted" data-testid="section-registration">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -557,11 +650,11 @@ export default function Solo() {
                   <Button 
                     className="w-full" 
                     size="lg"
-                    onClick={() => window.open(TOURNAMENTS.solo.formUrl, '_blank')}
+                    onClick={() => window.location.href = TOURNAMENTS.solo.formUrl}
                     data-testid="button-register-solo"
                   >
-                    <ExternalLink className="w-5 h-5 mr-2" />
-                    Open Registration Form
+                    <Trophy className="w-5 h-5 mr-2" />
+                    Register Now
                   </Button>
                   <p className="text-xs text-center text-muted-foreground">
                     By registering, you agree to our tournament rules and policies
