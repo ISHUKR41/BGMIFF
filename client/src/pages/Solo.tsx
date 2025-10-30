@@ -10,6 +10,7 @@ import FormEmbed from "@/components/FormEmbed";
 import MediaLightbox from "@/components/MediaLightbox";
 import ModernTestimonials from "@/components/ModernTestimonials";
 import CTABand from "@/components/CTABand";
+import { TOURNAMENTS } from "@/../../shared/config";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -52,16 +53,16 @@ import gamingImage2 from "@assets/stock_images/gaming_tournament_tr_cb77e853.jpg
 
 // Prize breakdown data for chart
 const prizeBreakdownData = [
-  { name: "Winner", value: 350, percentage: 35, fill: "hsl(var(--chart-1))" },
-  { name: "Runner-Up", value: 250, percentage: 25, fill: "hsl(var(--chart-2))" },
+  { name: "Winner", value: TOURNAMENTS.solo.winner, percentage: 35, fill: "hsl(var(--chart-1))" },
+  { name: "Runner-Up", value: TOURNAMENTS.solo.runnerUp, percentage: 25, fill: "hsl(var(--chart-2))" },
   { name: "Per Kill Pool", value: 400, percentage: 40, fill: "hsl(var(--chart-3))" },
 ];
 
 const killRewardsData = [
-  { kills: "0-5", reward: "₹0-45" },
-  { kills: "6-10", reward: "₹54-90" },
-  { kills: "11-15", reward: "₹99-135" },
-  { kills: "16+", reward: "₹144+" },
+  { kills: "0-5", reward: `₹0-${TOURNAMENTS.solo.perKill * 5}` },
+  { kills: "6-10", reward: `₹${TOURNAMENTS.solo.perKill * 6}-${TOURNAMENTS.solo.perKill * 10}` },
+  { kills: "11-15", reward: `₹${TOURNAMENTS.solo.perKill * 11}-${TOURNAMENTS.solo.perKill * 15}` },
+  { kills: "16+", reward: `₹${TOURNAMENTS.solo.perKill * 16}+` },
 ];
 
 // Past winners data
@@ -422,7 +423,7 @@ export default function Solo() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <ProfessionalStatCard
               icon={Ticket}
-              value={20}
+              value={TOURNAMENTS.solo.entryFee}
               label="Entry Fee"
               prefix="₹"
               glassmorphism
@@ -430,7 +431,7 @@ export default function Solo() {
             />
             <ProfessionalStatCard
               icon={Users}
-              value={100}
+              value={TOURNAMENTS.solo.slots}
               label="Total Slots"
               glassmorphism
               delay={0.1}
@@ -438,7 +439,7 @@ export default function Solo() {
             />
             <ProfessionalStatCard
               icon={Trophy}
-              value={350}
+              value={TOURNAMENTS.solo.winner}
               label="Winner Prize"
               prefix="₹"
               glassmorphism
@@ -447,7 +448,7 @@ export default function Solo() {
             />
             <ProfessionalStatCard
               icon={Coins}
-              value={9}
+              value={TOURNAMENTS.solo.perKill}
               label="Per Kill Reward"
               prefix="₹"
               glassmorphism
@@ -1313,7 +1314,8 @@ export default function Solo() {
 
             <div className="max-w-4xl mx-auto">
               <FormEmbed
-                formUrl="https://forms.gle/BE1TENZbKCapdEw28"
+                formUrl={TOURNAMENTS.solo.formUrl}
+                embedUrl={TOURNAMENTS.solo.embedUrl}
                 title="BGMI Solo Tournament Registration"
                 description="Fill out all fields accurately. Your slot will be confirmed after payment verification within 2-4 hours."
               />

@@ -11,6 +11,7 @@ import RulesAccordion from "@/components/RulesAccordion";
 import PaymentInstructions from "@/components/PaymentInstructions";
 import FormEmbed from "@/components/FormEmbed";
 import VideoSection from "@/components/VideoSection";
+import { TOURNAMENTS } from "@/../../shared/config";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -387,20 +388,20 @@ export default function Squad() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <ProfessionalStatCard
               icon={Ticket}
-              value={80}
+              value={TOURNAMENTS.squad.entryFee}
               label="Entry Fee per Squad"
               prefix="₹"
               data-testid="stat-entry-fee"
             />
             <ProfessionalStatCard
               icon={Users}
-              value={25}
+              value={TOURNAMENTS.squad.slots}
               label="Total Squad Slots"
               data-testid="stat-total-slots"
             />
             <ProfessionalStatCard
               icon={Trophy}
-              value={350}
+              value={TOURNAMENTS.squad.winner}
               label="Winner Prize"
               prefix="₹"
               glassmorphism
@@ -408,7 +409,7 @@ export default function Squad() {
             />
             <ProfessionalStatCard
               icon={Coins}
-              value={9}
+              value={TOURNAMENTS.squad.perKill}
               label="Per Kill Bonus"
               prefix="₹"
               data-testid="stat-per-kill"
@@ -1155,7 +1156,8 @@ export default function Squad() {
 
           <div className="max-w-3xl mx-auto">
             <FormEmbed
-              formUrl="https://forms.gle/Hq3yPHZyESBv47P29"
+              formUrl={TOURNAMENTS.squad.formUrl}
+              embedUrl={TOURNAMENTS.squad.embedUrl}
               title="BGMI Squad Tournament Registration"
               description="Please provide accurate details for all 4 squad members. Your slot will be confirmed after payment verification within 24 hours."
             />

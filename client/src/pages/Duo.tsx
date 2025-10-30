@@ -10,6 +10,7 @@ import CTABand from "@/components/CTABand";
 import RulesAccordion from "@/components/RulesAccordion";
 import PaymentInstructions from "@/components/PaymentInstructions";
 import FormEmbed from "@/components/FormEmbed";
+import { TOURNAMENTS } from "@/../../shared/config";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -322,20 +323,20 @@ export default function Duo() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             <ProfessionalStatCard
               icon={Ticket}
-              value={40}
+              value={TOURNAMENTS.duo.entryFee}
               label="Entry Fee per Team"
               prefix="₹"
               data-testid="stat-entry-fee"
             />
             <ProfessionalStatCard
               icon={Users}
-              value={50}
+              value={TOURNAMENTS.duo.slots}
               label="Total Team Slots"
               data-testid="stat-total-teams"
             />
             <ProfessionalStatCard
               icon={Trophy}
-              value={350}
+              value={TOURNAMENTS.duo.winner}
               label="Winner Prize"
               prefix="₹"
               glassmorphism
@@ -343,7 +344,7 @@ export default function Duo() {
             />
             <ProfessionalStatCard
               icon={Coins}
-              value={9}
+              value={TOURNAMENTS.duo.perKill}
               label="Per Kill Reward"
               prefix="₹"
               data-testid="stat-per-kill"
@@ -1325,7 +1326,8 @@ export default function Duo() {
 
             <div className="max-w-4xl mx-auto">
               <FormEmbed
-                formUrl="https://forms.gle/dRg6VVQfg7EerJRq6"
+                formUrl={TOURNAMENTS.duo.formUrl}
+                embedUrl={TOURNAMENTS.duo.embedUrl}
                 title="BGMI Duo Tournament Registration"
                 description="Please fill out all team details accurately. Your slot will be confirmed after payment verification within 2-6 hours."
               />

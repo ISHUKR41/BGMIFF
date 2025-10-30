@@ -81,6 +81,7 @@ import { useState } from "react";
 import supportImage1 from "@assets/stock_images/professional_custome_38a1fc0a.jpg";
 import supportImage2 from "@assets/stock_images/professional_custome_554f60f4.jpg";
 import supportImage3 from "@assets/stock_images/professional_custome_e957b2ee.jpg";
+import { CONTACT_INFO, SOCIAL_LINKS, SUPPORT_CHANNELS } from "@/../../shared/config";
 
 const contactFormSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters").max(100),
@@ -1380,7 +1381,7 @@ export default function Contact() {
                     <Mail className="w-6 h-6 text-primary" />
                   </div>
                   <h3 className="font-semibold mb-1">Email</h3>
-                  <p className="text-sm text-muted-foreground">support@gamearena.com</p>
+                  <p className="text-sm text-muted-foreground">{CONTACT_INFO.email}</p>
                 </CardContent>
               </Card>
 
@@ -1390,7 +1391,7 @@ export default function Contact() {
                     <Phone className="w-6 h-6 text-green-500" />
                   </div>
                   <h3 className="font-semibold mb-1">WhatsApp</h3>
-                  <p className="text-sm text-muted-foreground">+91 98765 43210</p>
+                  <p className="text-sm text-muted-foreground">{CONTACT_INFO.whatsapp}</p>
                 </CardContent>
               </Card>
 
@@ -1400,7 +1401,7 @@ export default function Contact() {
                     <MapPin className="w-6 h-6 text-chart-2" />
                   </div>
                   <h3 className="font-semibold mb-1">Location</h3>
-                  <p className="text-sm text-muted-foreground">Mumbai, Maharashtra</p>
+                  <p className="text-sm text-muted-foreground">{CONTACT_INFO.address.city}, {CONTACT_INFO.address.state}</p>
                 </CardContent>
               </Card>
 
@@ -1421,21 +1422,29 @@ export default function Contact() {
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  <Button variant="outline" className="justify-start gap-2" data-testid="button-social-youtube">
-                    <Youtube className="w-5 h-5 text-red-500" />
-                    <span>YouTube</span>
+                  <Button variant="outline" className="justify-start gap-2" data-testid="button-social-youtube" asChild>
+                    <a href={SOCIAL_LINKS.youtube} target="_blank" rel="noopener noreferrer">
+                      <Youtube className="w-5 h-5 text-red-500" />
+                      <span>YouTube</span>
+                    </a>
                   </Button>
-                  <Button variant="outline" className="justify-start gap-2" data-testid="button-social-instagram">
-                    <Instagram className="w-5 h-5 text-pink-500" />
-                    <span>Instagram</span>
+                  <Button variant="outline" className="justify-start gap-2" data-testid="button-social-instagram" asChild>
+                    <a href={SOCIAL_LINKS.instagram} target="_blank" rel="noopener noreferrer">
+                      <Instagram className="w-5 h-5 text-pink-500" />
+                      <span>Instagram</span>
+                    </a>
                   </Button>
-                  <Button variant="outline" className="justify-start gap-2" data-testid="button-social-twitter">
-                    <Twitter className="w-5 h-5 text-blue-400" />
-                    <span>Twitter</span>
+                  <Button variant="outline" className="justify-start gap-2" data-testid="button-social-twitter" asChild>
+                    <a href={SOCIAL_LINKS.twitter} target="_blank" rel="noopener noreferrer">
+                      <Twitter className="w-5 h-5 text-blue-400" />
+                      <span>Twitter</span>
+                    </a>
                   </Button>
-                  <Button variant="outline" className="justify-start gap-2" data-testid="button-social-facebook">
-                    <Facebook className="w-5 h-5 text-blue-600" />
-                    <span>Facebook</span>
+                  <Button variant="outline" className="justify-start gap-2" data-testid="button-social-facebook" asChild>
+                    <a href={SOCIAL_LINKS.facebook} target="_blank" rel="noopener noreferrer">
+                      <Facebook className="w-5 h-5 text-blue-600" />
+                      <span>Facebook</span>
+                    </a>
                   </Button>
                 </div>
               </CardContent>
@@ -1525,7 +1534,7 @@ export default function Contact() {
             icon={Headphones}
             variant="primary"
             buttons={[
-              { label: "WhatsApp Support", icon: MessageSquare, href: "https://wa.me/919876543210" },
+              { label: "WhatsApp Support", icon: MessageSquare, href: `https://wa.me/${CONTACT_INFO.whatsapp.replace(/[^0-9]/g, '')}` },
               { label: "Submit Ticket", icon: Ticket, href: "#contact-form", variant: "outline" },
             ]}
             data-testid="cta-urgent-support"

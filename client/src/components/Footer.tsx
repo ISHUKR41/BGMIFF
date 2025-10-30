@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { CONTACT_INFO, SOCIAL_LINKS, COMPANY_INFO } from "@/../../shared/config";
 import {
   Trophy,
   User,
@@ -22,7 +23,7 @@ import {
 import {
   SiYoutube,
   SiInstagram,
-  SiTwitter,
+  SiX,
   SiFacebook,
   SiDiscord,
   SiTelegram,
@@ -129,10 +130,10 @@ export default function Footer() {
           <div className="lg:col-span-1">
             <div className="flex items-center gap-2 mb-4">
               <Trophy className="w-6 h-6 text-primary" data-testid="icon-footer-logo" />
-              <span className="text-xl font-bold" data-testid="text-company-name">GameArena</span>
+              <span className="text-xl font-bold" data-testid="text-company-name">{COMPANY_INFO.name}</span>
             </div>
             <p className="text-sm text-muted-foreground mb-4" data-testid="text-company-description">
-              Professional BGMI tournament platform with transparent payment verification and exciting prizes.
+              {COMPANY_INFO.description}
             </p>
             
             {/* Company Details */}
@@ -140,26 +141,26 @@ export default function Footer() {
               <div className="flex items-start gap-2 text-muted-foreground">
                 <MapPin className="w-4 h-4 mt-0.5 flex-shrink-0" />
                 <span data-testid="text-company-address">
-                  123 Gaming Street,<br />
-                  Mumbai, Maharashtra 400001
+                  {CONTACT_INFO.address.street},<br />
+                  {CONTACT_INFO.address.city}, {CONTACT_INFO.address.state} {CONTACT_INFO.address.zip}
                 </span>
               </div>
               <div className="flex items-center gap-2 text-muted-foreground">
                 <Mail className="w-4 h-4 flex-shrink-0" />
-                <a href="mailto:support@gamearena.com" className="hover:text-foreground transition-colors" data-testid="link-company-email">
-                  support@gamearena.com
+                <a href={`mailto:${CONTACT_INFO.email}`} className="hover:text-foreground transition-colors" data-testid="link-company-email">
+                  {CONTACT_INFO.email}
                 </a>
               </div>
               <div className="flex items-center gap-2 text-muted-foreground">
                 <Phone className="w-4 h-4 flex-shrink-0" />
-                <a href="tel:+919876543210" className="hover:text-foreground transition-colors" data-testid="link-company-phone">
-                  +91 98765 43210
+                <a href={`tel:${CONTACT_INFO.phone}`} className="hover:text-foreground transition-colors" data-testid="link-company-phone">
+                  {CONTACT_INFO.phone}
                 </a>
               </div>
               <div className="flex items-start gap-2 text-muted-foreground">
                 <Clock className="w-4 h-4 mt-0.5 flex-shrink-0" />
                 <span data-testid="text-business-hours">
-                  Mon-Sat: 10AM-8PM IST
+                  {CONTACT_INFO.businessHours}
                 </span>
               </div>
             </div>
@@ -354,7 +355,7 @@ export default function Footer() {
           </h4>
           <div className="flex justify-center gap-4">
             <a
-              href="https://youtube.com/@gamearena"
+              href={SOCIAL_LINKS.youtube}
               target="_blank"
               rel="noopener noreferrer"
               className="text-muted-foreground hover:text-primary transition-colors"
@@ -364,7 +365,7 @@ export default function Footer() {
               <SiYoutube className="w-6 h-6" />
             </a>
             <a
-              href="https://instagram.com/gamearena"
+              href={SOCIAL_LINKS.instagram}
               target="_blank"
               rel="noopener noreferrer"
               className="text-muted-foreground hover:text-primary transition-colors"
@@ -374,17 +375,17 @@ export default function Footer() {
               <SiInstagram className="w-6 h-6" />
             </a>
             <a
-              href="https://twitter.com/gamearena"
+              href={SOCIAL_LINKS.twitter}
               target="_blank"
               rel="noopener noreferrer"
               className="text-muted-foreground hover:text-primary transition-colors"
               data-testid="link-social-twitter"
               aria-label="Twitter"
             >
-              <SiTwitter className="w-6 h-6" />
+              <SiX className="w-6 h-6" />
             </a>
             <a
-              href="https://facebook.com/gamearena"
+              href={SOCIAL_LINKS.facebook}
               target="_blank"
               rel="noopener noreferrer"
               className="text-muted-foreground hover:text-primary transition-colors"
@@ -394,7 +395,7 @@ export default function Footer() {
               <SiFacebook className="w-6 h-6" />
             </a>
             <a
-              href="https://discord.gg/gamearena"
+              href={SOCIAL_LINKS.discord}
               target="_blank"
               rel="noopener noreferrer"
               className="text-muted-foreground hover:text-primary transition-colors"
@@ -404,7 +405,7 @@ export default function Footer() {
               <SiDiscord className="w-6 h-6" />
             </a>
             <a
-              href="https://t.me/gamearena"
+              href={SOCIAL_LINKS.telegram}
               target="_blank"
               rel="noopener noreferrer"
               className="text-muted-foreground hover:text-primary transition-colors"
@@ -434,7 +435,7 @@ export default function Footer() {
               </a>
             </div>
             <p className="text-center" data-testid="text-copyright">
-              &copy; {new Date().getFullYear()} GameArena. All rights reserved.
+              &copy; {new Date().getFullYear()} {COMPANY_INFO.name}. All rights reserved.
             </p>
           </div>
         </div>

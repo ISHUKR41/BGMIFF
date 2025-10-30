@@ -5,16 +5,18 @@ import { useState } from "react";
 
 interface FormEmbedProps {
   formUrl: string;
+  embedUrl?: string;
   title: string;
   description: string;
 }
 
-export default function FormEmbed({ formUrl, title, description }: FormEmbedProps) {
+export default function FormEmbed({ formUrl, embedUrl, title, description }: FormEmbedProps) {
   const [embedFailed, setEmbedFailed] = useState(false);
-  const embedUrl = formUrl.replace('forms.gle', 'docs.google.com/forms/d/e') + '/viewform?embedded=true';
-
-  const handleOpenInNewTab = () => {
-    window.open(formUrl, '_blank', 'noopener,noreferrer');
+  
+  const iframeUrl = embedUrl && embedUrl !== formUrl ? embedUrl : formUrl;
+  
+  const handleOpenForm = () => {
+    window.location.href = formUrl;
   };
 
   return (
@@ -27,34 +29,39 @@ export default function FormEmbed({ formUrl, title, description }: FormEmbedProp
         {!embedFailed ? (
           <div className="relative">
             <iframe
-              src={embedUrl}
-              className="w-full h-[600px] md:h-[800px] border border-border rounded-lg"
+              src={iframeUrl}
+              className="w-full h-[600px] md:h-[800px] lg:h-[1000px] border border-border rounded-lg"
               frameBorder="0"
               marginHeight={0}
               marginWidth={0}
               onError={() => setEmbedFailed(true)}
               title={title}
               data-testid="iframe-registration-form"
+              allow="payment"
             >
               Loading…
             </iframe>
             <div className="mt-4 text-center">
+              <p className="text-sm text-muted-foreground mb-3">
+                Having trouble with the form above? Use the button below to open it directly.
+              </p>
               <Button
                 variant="outline"
-                onClick={handleOpenInNewTab}
-                data-testid="button-open-form-tab"
+                onClick={handleOpenForm}
+                data-testid="button-open-form-direct"
               >
                 <ExternalLink className="w-4 h-4 mr-2" />
-                Open in New Tab
+                Open Registration Form
               </Button>
             </div>
           </div>
         ) : (
           <div className="text-center py-12 space-y-4">
-            <p className="text-muted-foreground">
-              The form cannot be embedded. Please click the button below to open it in a new tab.
+            <p className="text-lg font-semibold mb-2">Ready to register?</p>
+            <p className="text-muted-foreground mb-6">
+              Click the button below to fill out the registration form. Your slot will be confirmed after payment verification.
             </p>
-            <Button onClick={handleOpenInNewTab} size="lg" data-testid="button-open-form-fallback">
+            <Button onClick={handleOpenForm} size="lg" data-testid="button-open-form-fallback">
               <ExternalLink className="w-4 h-4 mr-2" />
               Open Registration Form
             </Button>
