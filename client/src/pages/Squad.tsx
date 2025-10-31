@@ -43,7 +43,7 @@ import { Separator } from "@/components/ui/separator";
 import { 
   Trophy, Users, Coins, Ticket, Calendar, Clock, Target, Shield, 
   Crosshair, Radio, Heart, Eye, TrendingUp, Award, Star, CheckCircle2,
-  UserPlus, FileText, CreditCard, Bell, ExternalLink
+  UserPlus, FileText, CreditCard, Bell, ExternalLink, ArrowRight
 } from "lucide-react";
 
 // Import BGMI images showcasing squad coordination and team formation

@@ -63,6 +63,7 @@ import {
   CreditCard,
   PlayCircle,
   ExternalLink,
+  ArrowRight,
 } from "lucide-react";
 
 // Import BGMI images showcasing duo team action and coordination
