@@ -1,3 +1,20 @@
+/**
+ * ModernHero Component
+ * 
+ * Reusable hero section component for tournament pages.
+ * 
+ * Features:
+ * - Background image or video support with gradient overlay
+ * - Breadcrumb navigation for page hierarchy
+ * - Animated title and description with Framer Motion
+ * - Multiple CTA buttons with icons and variants
+ * - Customizable height and overlay opacity
+ * - Responsive design for all screen sizes
+ * 
+ * Used on Solo, Duo, and Squad tournament pages to create
+ * consistent, professional hero sections with page-specific content.
+ */
+
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,29 +27,32 @@ import {
 } from "@/components/ui/breadcrumb";
 import { LucideIcon } from "lucide-react";
 
+// CTA Button configuration for hero actions
 interface CTAButton {
-  label: string;
-  href?: string;
-  onClick?: () => void;
-  variant?: "default" | "outline" | "secondary" | "ghost";
-  icon?: LucideIcon;
+  label: string;                                                // Button text displayed to user
+  href?: string;                                                 // Navigation link (optional)
+  onClick?: () => void;                                          // Click handler function (optional)
+  variant?: "default" | "outline" | "secondary" | "ghost";      // Button style variant
+  icon?: LucideIcon;                                             // Icon component from lucide-react
 }
 
+// Breadcrumb navigation item structure
 interface BreadcrumbItem {
-  label: string;
-  href?: string;
+  label: string;                                                 // Text shown in breadcrumb
+  href?: string;                                                 // Link for non-final breadcrumbs
 }
 
+// Main component props interface
 interface ModernHeroProps {
-  title: string;
-  description?: string;
-  backgroundImage?: string;
-  backgroundVideo?: string;
-  ctaButtons?: CTAButton[];
-  breadcrumbs?: BreadcrumbItem[];
-  overlayOpacity?: number;
-  minHeight?: string;
-  className?: string;
+  title: string;                                                 // Main hero heading
+  description?: string;                                          // Optional subtitle/description
+  backgroundImage?: string;                                      // Background image URL
+  backgroundVideo?: string;                                      // Background video URL (takes priority over image)
+  ctaButtons?: CTAButton[];                                      // Array of action buttons
+  breadcrumbs?: BreadcrumbItem[];                                // Navigation breadcrumb trail
+  overlayOpacity?: number;                                       // Overlay darkness (0-1, default: 0.7)
+  minHeight?: string;                                            // Minimum height in CSS units (default: "500px")
+  className?: string;                                            // Additional Tailwind classes
 }
 
 export default function ModernHero({

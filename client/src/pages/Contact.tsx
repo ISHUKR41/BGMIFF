@@ -131,6 +131,22 @@ const faqs = [
     question: "Will the tournament be streamed on YouTube?",
     answer: "We plan to stream tournaments on our official YouTube channel based on majority voting. You can vote for streaming preference in the registration form.",
   },
+  {
+    question: "How quickly will I get a response to my query?",
+    answer: "WhatsApp support is available 24/7 with response times typically under 30 minutes. Email inquiries are answered within 24 hours during business days. For urgent issues, WhatsApp is the fastest contact method.",
+  },
+  {
+    question: "What should I do if I have a technical issue during the tournament?",
+    answer: "Contact our support team immediately via WhatsApp at +917541024846. Have your tournament ID and registered BGMI ID ready. For game crashes or connection issues, try to rejoin quickly as matches won't be paused for individual technical problems.",
+  },
+  {
+    question: "Can I get a refund if I can't participate?",
+    answer: "No refunds are provided after registration is complete and payment is verified. Make sure you're fully available before registering. In case of tournament cancellation by GameArena, full refunds will be issued to all participants.",
+  },
+  {
+    question: "How do I know if my slot is confirmed?",
+    answer: "You'll receive a WhatsApp confirmation message within 2-6 hours after payment verification. The message will include your slot number, tournament details, and joining instructions. Save this message as you'll need it on tournament day.",
+  },
 ];
 
 export default function Contact() {

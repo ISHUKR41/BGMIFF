@@ -1,3 +1,20 @@
+/**
+ * ProfessionalStatCard Component
+ * 
+ * Displays animated statistical information in an attractive card format.
+ * 
+ * Features:
+ * - Animated number counter that triggers when card enters viewport
+ * - Lucide icon with hover scale animation
+ * - Support for number prefixes (₹), suffixes (+), and decimals
+ * - Optional glassmorphism effect for elevated appearance
+ * - Smooth fade-in animation with customizable delay
+ * - Responsive text sizing for mobile, tablet, desktop
+ * 
+ * Used on tournament pages to showcase entry fees, prizes, slots,
+ * and other key tournament statistics in an engaging way.
+ */
+
 import { Card, CardContent } from "@/components/ui/card";
 import { motion } from "framer-motion";
 import CountUp from "react-countup";
@@ -6,16 +23,16 @@ import { LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface ProfessionalStatCardProps {
-  icon: LucideIcon;
-  value: number;
-  label: string;
-  suffix?: string;
-  prefix?: string;
-  decimals?: number;
-  glassmorphism?: boolean;
-  delay?: number;
-  className?: string;
-  "data-testid"?: string;
+  icon: LucideIcon;                 // Icon component to display above the stat
+  value: number;                    // Numeric value to animate and display
+  label: string;                    // Descriptive label below the number
+  suffix?: string;                  // Text to append after number (e.g., "+", "%")
+  prefix?: string;                  // Text to prepend before number (e.g., "₹", "$")
+  decimals?: number;                // Number of decimal places (default: 0)
+  glassmorphism?: boolean;          // Enable glass effect styling (default: false)
+  delay?: number;                   // Animation delay in seconds (default: 0)
+  className?: string;               // Additional Tailwind classes
+  "data-testid"?: string;           // Testing identifier
 }
 
 export default function ProfessionalStatCard({
