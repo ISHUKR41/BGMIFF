@@ -619,7 +619,23 @@ export default function FreeFireSolo() {
                   <CardDescription>Total prize money allocation across categories</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <div className="h-64">
+                  <ChartContainer
+                    config={{
+                      winner: {
+                        label: "Winner",
+                        color: "hsl(var(--chart-1))",
+                      },
+                      runnerUp: {
+                        label: "Runner-Up",
+                        color: "hsl(var(--chart-2))",
+                      },
+                      perKillPool: {
+                        label: "Per Kill Pool",
+                        color: "hsl(var(--chart-3))",
+                      },
+                    }}
+                    className="h-64"
+                  >
                     <ResponsiveContainer width="100%" height="100%">
                       <PieChart>
                         <Pie
@@ -636,11 +652,11 @@ export default function FreeFireSolo() {
                             <Cell key={`cell-${index}`} fill={entry.fill} />
                           ))}
                         </Pie>
-                        <Tooltip content={<ChartTooltipContent />} />
+                        <ChartTooltip content={<ChartTooltipContent />} />
                         <Legend />
                       </PieChart>
                     </ResponsiveContainer>
-                  </div>
+                  </ChartContainer>
                 </CardContent>
               </Card>
 
