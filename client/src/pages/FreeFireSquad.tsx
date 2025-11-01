@@ -43,7 +43,7 @@ import { Separator } from "@/components/ui/separator";
 import { 
   Trophy, Users, Coins, Ticket, Calendar, Clock, Target, Shield, 
   Crosshair, Radio, Heart, Eye, TrendingUp, Award, Star, CheckCircle2,
-  UserPlus, FileText, CreditCard, Bell, ExternalLink, ArrowRight
+  UserPlus, FileText, CreditCard, Bell, ExternalLink, ArrowRight, AlertCircle, Zap
 } from "lucide-react";
 
 // Import Free Fire Max images showcasing squad coordination and team formation
@@ -549,62 +549,168 @@ export default function FreeFireSquad() {
           </motion.div>
         </SectionWrapper>
 
-        {/* Registration Form Section - Google Forms embed for Free Fire Max squad registration */}
+        {/* Registration Form - User-friendly registration with prominent button */}
         <SectionWrapper variant="muted" id="registration-section" data-testid="registration-section">
-          <div className="text-center mb-12">
-            <Badge variant="secondary" className="mb-4">
-              <FileText className="w-4 h-4 mr-2" />
-              Squad Registration
-            </Badge>
-            <h2 className="text-4xl font-bold mb-4">Register Your Free Fire Max Squad</h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              {FREEFIRE_TOURNAMENTS.squad.description}
-            </p>
-          </div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="space-y-8"
+          >
+            <div className="text-center space-y-4">
+              <div className="flex items-center justify-center gap-2">
+                <Trophy className="w-8 h-8 text-primary" />
+                <h2 className="text-4xl font-bold" data-testid="heading-registration">Register Now</h2>
+              </div>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Complete the registration form to secure your squad spot in the tournament. Make sure all details are accurate.
+              </p>
+            </div>
 
-          <Card className="max-w-5xl mx-auto" data-testid="registration-form-card">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Users className="w-6 h-6" />
-                Free Fire Max Squad Tournament Registration
-              </CardTitle>
-              <CardDescription>
-                Fill in all squad member details accurately. Payment verification required for slot confirmation.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="aspect-[4/3] w-full">
-                <iframe
-                  src={FREEFIRE_TOURNAMENTS.squad.embedUrl}
-                  width="100%"
-                  height="100%"
-                  frameBorder="0"
-                  marginHeight={0}
-                  marginWidth={0}
-                  className="rounded-lg"
-                  title="Free Fire Max Squad Tournament Registration Form"
-                  data-testid="registration-iframe"
-                >
-                  Loading registration form...
-                </iframe>
-              </div>
-            </CardContent>
-            <CardFooter className="flex-col gap-4">
-              <Separator />
-              <div className="flex items-start gap-3 w-full">
-                <CheckCircle2 className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
-                <p className="text-sm text-muted-foreground">
-                  After submission, you'll receive a confirmation message within 2-4 hours. Room credentials will be shared 30 minutes before tournament start time.
-                </p>
-              </div>
-              <Button asChild variant="outline" className="w-full" data-testid="button-external-form">
-                <a href={FREEFIRE_TOURNAMENTS.squad.formUrl} target="_blank" rel="noopener noreferrer">
-                  <ExternalLink className="w-4 h-4 mr-2" />
-                  Open Form in New Tab
-                </a>
-              </Button>
-            </CardFooter>
-          </Card>
+            <div className="max-w-4xl mx-auto">
+              <Card className="hover-elevate transition-all duration-300">
+                <CardHeader>
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <CardTitle className="text-2xl">Free Fire Max Squad Tournament Registration</CardTitle>
+                      <CardDescription className="mt-2">
+                        {FREEFIRE_TOURNAMENTS.squad.description}
+                      </CardDescription>
+                    </div>
+                    <Badge variant="default" className="flex-shrink-0">
+                      <Users className="w-3 h-3 mr-1" />
+                      Squad
+                    </Badge>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-6">
+                    {/* Tournament Summary Stats */}
+                    <div className="grid sm:grid-cols-3 gap-4">
+                      <div className="flex items-center gap-2 p-4 bg-primary/5 rounded-lg border border-primary/10">
+                        <Ticket className="w-6 h-6 text-primary flex-shrink-0" />
+                        <div>
+                          <p className="text-xs text-muted-foreground font-medium">Entry Fee</p>
+                          <p className="font-bold text-lg">₹{FREEFIRE_TOURNAMENTS.squad.entryFee}</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2 p-4 bg-primary/5 rounded-lg border border-primary/10">
+                        <Users className="w-6 h-6 text-primary flex-shrink-0" />
+                        <div>
+                          <p className="text-xs text-muted-foreground font-medium">Total Slots</p>
+                          <p className="font-bold text-lg">{FREEFIRE_TOURNAMENTS.squad.slots} Squads</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2 p-4 bg-primary/5 rounded-lg border border-primary/10">
+                        <Trophy className="w-6 h-6 text-primary flex-shrink-0" />
+                        <div>
+                          <p className="text-xs text-muted-foreground font-medium">Winner Prize</p>
+                          <p className="font-bold text-lg">₹{FREEFIRE_TOURNAMENTS.squad.winner}</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Prize Breakdown */}
+                    <div className="p-4 bg-gradient-to-r from-primary/10 to-chart-2/10 rounded-lg border border-primary/20">
+                      <div className="flex items-center gap-2 mb-3">
+                        <Award className="w-5 h-5 text-primary" />
+                        <h4 className="font-semibold text-base">Prize Distribution</h4>
+                      </div>
+                      <div className="grid sm:grid-cols-3 gap-3 text-sm">
+                        <div className="flex items-center justify-between">
+                          <span className="text-muted-foreground">Winner:</span>
+                          <span className="font-bold text-primary">₹{FREEFIRE_TOURNAMENTS.squad.winner}</span>
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <span className="text-muted-foreground">Runner-Up:</span>
+                          <span className="font-bold text-chart-2">₹{FREEFIRE_TOURNAMENTS.squad.runnerUp}</span>
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <span className="text-muted-foreground">Per Kill:</span>
+                          <span className="font-bold text-chart-3">₹{FREEFIRE_TOURNAMENTS.squad.perKill}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Important Notice */}
+                    {FREEFIRE_TOURNAMENTS.squad.note && (
+                      <div className="p-4 bg-yellow-500/10 border-l-4 border-yellow-500 rounded-r-md">
+                        <div className="flex items-start gap-3">
+                          <AlertCircle className="w-5 h-5 text-yellow-500 flex-shrink-0 mt-0.5" />
+                          <p className="text-sm font-medium">{FREEFIRE_TOURNAMENTS.squad.note}</p>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Registration Steps */}
+                    <div className="space-y-3">
+                      <h4 className="font-semibold flex items-center gap-2">
+                        <CheckCircle2 className="w-5 h-5 text-primary" />
+                        How to Register (3 Simple Steps)
+                      </h4>
+                      <div className="grid gap-2 text-sm">
+                        <div className="flex items-start gap-3 p-3 bg-muted/50 rounded-md">
+                          <div className="w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-xs flex-shrink-0">1</div>
+                          <div>
+                            <p className="font-medium">Pay Entry Fee (₹{FREEFIRE_TOURNAMENTS.squad.entryFee})</p>
+                            <p className="text-muted-foreground text-xs">Use the QR code shown in the form</p>
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-3 p-3 bg-muted/50 rounded-md">
+                          <div className="w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-xs flex-shrink-0">2</div>
+                          <div>
+                            <p className="font-medium">Fill Registration Form</p>
+                            <p className="text-muted-foreground text-xs">Enter all 4 players' Free Fire UIDs, names, WhatsApp number, and upload payment screenshot</p>
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-3 p-3 bg-muted/50 rounded-md">
+                          <div className="w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-xs flex-shrink-0">3</div>
+                          <div>
+                            <p className="font-medium">Get Confirmation</p>
+                            <p className="text-muted-foreground text-xs">Receive room details on WhatsApp before tournament</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Main Registration Button */}
+                    <div className="pt-4">
+                      <Button 
+                        size="lg" 
+                        className="w-full h-16 text-lg font-bold" 
+                        asChild 
+                        data-testid="button-register-now"
+                      >
+                        <a href={FREEFIRE_TOURNAMENTS.squad.formUrl} target="_blank" rel="noopener noreferrer">
+                          <Trophy className="w-6 h-6 mr-3" />
+                          Click Here to Register Now - Open Registration Form
+                          <ExternalLink className="w-5 h-5 ml-3" />
+                        </a>
+                      </Button>
+                      <p className="text-center text-xs text-muted-foreground mt-2">
+                        Form will open in a new tab. Complete all fields to secure your squad slot.
+                      </p>
+                    </div>
+                  </div>
+                </CardContent>
+                <CardFooter className="flex flex-col items-start gap-3 bg-muted/30">
+                  <div className="flex items-start gap-2">
+                    <Shield className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
+                    <p className="text-sm text-muted-foreground">
+                      Your information is secure and will only be used for tournament administration. We never share your data with third parties.
+                    </p>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <Zap className="w-5 h-5 text-chart-2 mt-0.5 flex-shrink-0" />
+                    <p className="text-sm text-muted-foreground">
+                      <strong>Quick Support:</strong> Contact admin on WhatsApp at +917541024846 for any registration issues.
+                    </p>
+                  </div>
+                </CardFooter>
+              </Card>
+            </div>
+          </motion.div>
         </SectionWrapper>
 
         {/* Past Winners Showcase - Free Fire Max squad champions */}

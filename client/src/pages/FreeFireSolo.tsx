@@ -64,7 +64,8 @@ import {
   Medal,
   Crown,
   Play,
-  ExternalLink
+  ExternalLink,
+  AlertCircle
 } from "lucide-react";
 import { BarChart, Bar, PieChart, Pie, Cell, ResponsiveContainer, XAxis, YAxis, Legend, Tooltip } from "recharts";
 
@@ -1421,64 +1422,128 @@ export default function FreeFireSolo() {
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <div className="space-y-4 mb-6">
+                  <div className="space-y-6">
+                    {/* Tournament Summary Stats */}
                     <div className="grid sm:grid-cols-3 gap-4">
-                      <div className="flex items-center gap-2 p-3 bg-primary/5 rounded-md">
-                        <Ticket className="w-5 h-5 text-primary flex-shrink-0" />
+                      <div className="flex items-center gap-2 p-4 bg-primary/5 rounded-lg border border-primary/10">
+                        <Ticket className="w-6 h-6 text-primary flex-shrink-0" />
                         <div>
-                          <p className="text-xs text-muted-foreground">Entry Fee</p>
-                          <p className="font-bold">₹{FREEFIRE_TOURNAMENTS.solo.entryFee}</p>
+                          <p className="text-xs text-muted-foreground font-medium">Entry Fee</p>
+                          <p className="font-bold text-lg">₹{FREEFIRE_TOURNAMENTS.solo.entryFee}</p>
                         </div>
                       </div>
-                      <div className="flex items-center gap-2 p-3 bg-primary/5 rounded-md">
-                        <Users className="w-5 h-5 text-primary flex-shrink-0" />
+                      <div className="flex items-center gap-2 p-4 bg-primary/5 rounded-lg border border-primary/10">
+                        <Users className="w-6 h-6 text-primary flex-shrink-0" />
                         <div>
-                          <p className="text-xs text-muted-foreground">Total Slots</p>
-                          <p className="font-bold">{FREEFIRE_TOURNAMENTS.solo.slots} Players</p>
+                          <p className="text-xs text-muted-foreground font-medium">Total Slots</p>
+                          <p className="font-bold text-lg">{FREEFIRE_TOURNAMENTS.solo.slots} Players</p>
                         </div>
                       </div>
-                      <div className="flex items-center gap-2 p-3 bg-primary/5 rounded-md">
-                        <Trophy className="w-5 h-5 text-primary flex-shrink-0" />
+                      <div className="flex items-center gap-2 p-4 bg-primary/5 rounded-lg border border-primary/10">
+                        <Trophy className="w-6 h-6 text-primary flex-shrink-0" />
                         <div>
-                          <p className="text-xs text-muted-foreground">Winner Prize</p>
-                          <p className="font-bold">₹{FREEFIRE_TOURNAMENTS.solo.winner}</p>
+                          <p className="text-xs text-muted-foreground font-medium">Winner Prize</p>
+                          <p className="font-bold text-lg">₹{FREEFIRE_TOURNAMENTS.solo.winner}</p>
                         </div>
                       </div>
                     </div>
 
+                    {/* Prize Breakdown */}
+                    <div className="p-4 bg-gradient-to-r from-primary/10 to-chart-2/10 rounded-lg border border-primary/20">
+                      <div className="flex items-center gap-2 mb-3">
+                        <Award className="w-5 h-5 text-primary" />
+                        <h4 className="font-semibold text-base">Prize Distribution</h4>
+                      </div>
+                      <div className="grid sm:grid-cols-3 gap-3 text-sm">
+                        <div className="flex items-center justify-between">
+                          <span className="text-muted-foreground">Winner:</span>
+                          <span className="font-bold text-primary">₹{FREEFIRE_TOURNAMENTS.solo.winner}</span>
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <span className="text-muted-foreground">Runner-Up:</span>
+                          <span className="font-bold text-chart-2">₹{FREEFIRE_TOURNAMENTS.solo.runnerUp}</span>
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <span className="text-muted-foreground">Per Kill:</span>
+                          <span className="font-bold text-chart-3">₹{FREEFIRE_TOURNAMENTS.solo.perKill}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Important Notice */}
                     {FREEFIRE_TOURNAMENTS.solo.note && (
-                      <div className="p-4 bg-yellow-500/10 border border-yellow-500/20 rounded-md">
-                        <p className="text-sm">{FREEFIRE_TOURNAMENTS.solo.note}</p>
+                      <div className="p-4 bg-yellow-500/10 border-l-4 border-yellow-500 rounded-r-md">
+                        <div className="flex items-start gap-3">
+                          <AlertCircle className="w-5 h-5 text-yellow-500 flex-shrink-0 mt-0.5" />
+                          <p className="text-sm font-medium">{FREEFIRE_TOURNAMENTS.solo.note}</p>
+                        </div>
                       </div>
                     )}
-                  </div>
 
-                  <iframe
-                    src={FREEFIRE_TOURNAMENTS.solo.embedUrl}
-                    width="100%"
-                    height="1200"
-                    frameBorder="0"
-                    marginHeight={0}
-                    marginWidth={0}
-                    title="Free Fire Max Solo Tournament Registration Form"
-                    data-testid="registration-form"
-                  >
-                    Loading form...
-                  </iframe>
+                    {/* Registration Steps */}
+                    <div className="space-y-3">
+                      <h4 className="font-semibold flex items-center gap-2">
+                        <CheckCircle2 className="w-5 h-5 text-primary" />
+                        How to Register (3 Simple Steps)
+                      </h4>
+                      <div className="grid gap-2 text-sm">
+                        <div className="flex items-start gap-3 p-3 bg-muted/50 rounded-md">
+                          <div className="w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-xs flex-shrink-0">1</div>
+                          <div>
+                            <p className="font-medium">Pay Entry Fee (₹{FREEFIRE_TOURNAMENTS.solo.entryFee})</p>
+                            <p className="text-muted-foreground text-xs">Use the QR code shown in the form</p>
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-3 p-3 bg-muted/50 rounded-md">
+                          <div className="w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-xs flex-shrink-0">2</div>
+                          <div>
+                            <p className="font-medium">Fill Registration Form</p>
+                            <p className="text-muted-foreground text-xs">Enter your Free Fire UID, name, WhatsApp number, and upload payment screenshot</p>
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-3 p-3 bg-muted/50 rounded-md">
+                          <div className="w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-xs flex-shrink-0">3</div>
+                          <div>
+                            <p className="font-medium">Get Confirmation</p>
+                            <p className="text-muted-foreground text-xs">Receive room details on WhatsApp before tournament</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Main Registration Button */}
+                    <div className="pt-4">
+                      <Button 
+                        size="lg" 
+                        className="w-full h-16 text-lg font-bold" 
+                        asChild 
+                        data-testid="button-register-now"
+                      >
+                        <a href={FREEFIRE_TOURNAMENTS.solo.formUrl} target="_blank" rel="noopener noreferrer">
+                          <Trophy className="w-6 h-6 mr-3" />
+                          Click Here to Register Now - Open Registration Form
+                          <ExternalLink className="w-5 h-5 ml-3" />
+                        </a>
+                      </Button>
+                      <p className="text-center text-xs text-muted-foreground mt-2">
+                        Form will open in a new tab. Complete all fields to secure your slot.
+                      </p>
+                    </div>
+                  </div>
                 </CardContent>
-                <CardFooter className="flex flex-col items-start gap-4">
+                <CardFooter className="flex flex-col items-start gap-3 bg-muted/30">
                   <div className="flex items-start gap-2">
                     <Shield className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
                     <p className="text-sm text-muted-foreground">
                       Your information is secure and will only be used for tournament administration. We never share your data with third parties.
                     </p>
                   </div>
-                  <Button variant="outline" asChild data-testid="button-open-form-new-tab">
-                    <a href={FREEFIRE_TOURNAMENTS.solo.formUrl} target="_blank" rel="noopener noreferrer">
-                      Open Form in New Tab
-                      <ExternalLink className="w-4 h-4 ml-2" />
-                    </a>
-                  </Button>
+                  <div className="flex items-start gap-2">
+                    <Zap className="w-5 h-5 text-chart-2 mt-0.5 flex-shrink-0" />
+                    <p className="text-sm text-muted-foreground">
+                      <strong>Quick Support:</strong> Contact admin on WhatsApp at {FREEFIRE_TOURNAMENTS.solo.entryFee === 20 ? "+917541024846" : "+91XXXXXXXXXX"} for any registration issues.
+                    </p>
+                  </div>
                 </CardFooter>
               </Card>
             </div>
