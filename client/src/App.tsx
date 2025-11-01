@@ -9,6 +9,9 @@ import Solo from "@/pages/Solo";
 import Duo from "@/pages/Duo";
 import Squad from "@/pages/Squad";
 import Contact from "@/pages/Contact";
+import FreeFireSolo from "@/pages/FreeFireSolo";
+import FreeFireDuo from "@/pages/FreeFireDuo";
+import FreeFireSquad from "@/pages/FreeFireSquad";
 import NotFound from "@/pages/not-found";
 import { useEffect } from "react";
 
@@ -26,6 +29,9 @@ function Router() {
       <Route path="/duo" component={Duo} />
       <Route path="/squad" component={Squad} />
       <Route path="/contact" component={Contact} />
+      <Route path="/freefire-solo" component={FreeFireSolo} />
+      <Route path="/freefire-duo" component={FreeFireDuo} />
+      <Route path="/freefire-squad" component={FreeFireSquad} />
       <Route component={NotFound} />
     </Switch>
   );

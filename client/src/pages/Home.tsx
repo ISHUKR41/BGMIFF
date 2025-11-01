@@ -76,7 +76,7 @@ import {
   MessageCircle,
 } from "lucide-react";
 import { Link } from "wouter";
-import { TOURNAMENTS } from "@shared/config";
+import { TOURNAMENTS, FREEFIRE_TOURNAMENTS } from "@shared/config";
 
 // BGMI Images
 import heroImage from "@assets/generated_images/BGMI_hero_battle_scene_ad290420.png";
@@ -101,8 +101,10 @@ import mobileGamingSetupImage from "@assets/generated_images/BGMI_mobile_gaming_
 import teamStrategySessionImage from "@assets/generated_images/BGMI_team_strategy_session_08638493.png";
 
 // Tournament data array - sourced from centralized config
+// Includes both BGMI and Free Fire Max tournaments
 // Used to render tournament cards on the home page
 const tournaments = [
+  // BGMI Tournaments
   {
     title: TOURNAMENTS.solo.title,
     mode: TOURNAMENTS.solo.mode,
@@ -132,6 +134,37 @@ const tournaments = [
     runnerUp: TOURNAMENTS.squad.runnerUp,
     perKill: TOURNAMENTS.squad.perKill,
     formUrl: TOURNAMENTS.squad.formUrl,
+  },
+  // Free Fire Max Tournaments
+  {
+    title: FREEFIRE_TOURNAMENTS.solo.title,
+    mode: FREEFIRE_TOURNAMENTS.solo.mode,
+    entryFee: FREEFIRE_TOURNAMENTS.solo.entryFee,
+    slots: FREEFIRE_TOURNAMENTS.solo.slots,
+    winner: FREEFIRE_TOURNAMENTS.solo.winner,
+    runnerUp: FREEFIRE_TOURNAMENTS.solo.runnerUp,
+    perKill: FREEFIRE_TOURNAMENTS.solo.perKill,
+    formUrl: FREEFIRE_TOURNAMENTS.solo.formUrl,
+  },
+  {
+    title: FREEFIRE_TOURNAMENTS.duo.title,
+    mode: FREEFIRE_TOURNAMENTS.duo.mode,
+    entryFee: FREEFIRE_TOURNAMENTS.duo.entryFee,
+    slots: FREEFIRE_TOURNAMENTS.duo.slots,
+    winner: FREEFIRE_TOURNAMENTS.duo.winner,
+    runnerUp: FREEFIRE_TOURNAMENTS.duo.runnerUp,
+    perKill: FREEFIRE_TOURNAMENTS.duo.perKill,
+    formUrl: FREEFIRE_TOURNAMENTS.duo.formUrl,
+  },
+  {
+    title: FREEFIRE_TOURNAMENTS.squad.title,
+    mode: FREEFIRE_TOURNAMENTS.squad.mode,
+    entryFee: FREEFIRE_TOURNAMENTS.squad.entryFee,
+    slots: FREEFIRE_TOURNAMENTS.squad.slots,
+    winner: FREEFIRE_TOURNAMENTS.squad.winner,
+    runnerUp: FREEFIRE_TOURNAMENTS.squad.runnerUp,
+    perKill: FREEFIRE_TOURNAMENTS.squad.perKill,
+    formUrl: FREEFIRE_TOURNAMENTS.squad.formUrl,
   },
 ];
 

@@ -1,7 +1,7 @@
 /**
  * Navigation Component
  * 
- * Main navigation bar for the BGMI tournament website.
+ * Main navigation bar for the BGMI and Free Fire Max tournament website.
  * Features:
  * - Responsive design with mobile hamburger menu
  * - Desktop mega-menu showing all tournaments with details
@@ -11,7 +11,7 @@
  * - Smooth navigation between pages
  * 
  * The navigation adapts based on screen size and provides quick access to
- * all tournament pages and important links.
+ * all tournament pages and important links for both BGMI and Free Fire Max.
  */
 
 import { Link, useLocation } from "wouter";
@@ -57,9 +57,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 // Tournament menu items with metadata for navigation mega-menu
+// Includes both BGMI and Free Fire Max tournaments
 const tournaments = [
+  // BGMI Tournaments
   {
-    name: "Solo",
+    name: "BGMI Solo",
     path: "/solo",
     icon: Trophy,
     description: "Individual battle royale competition",
@@ -67,9 +69,10 @@ const tournaments = [
     slots: "100 Players",
     prize: "₹350",
     color: "text-chart-1",
+    game: "BGMI",
   },
   {
-    name: "Duo",
+    name: "BGMI Duo",
     path: "/duo",
     icon: UserPlus,
     description: "Partner up for duo domination",
@@ -77,9 +80,10 @@ const tournaments = [
     slots: "50 Teams",
     prize: "₹350",
     color: "text-chart-2",
+    game: "BGMI",
   },
   {
-    name: "Squad",
+    name: "BGMI Squad",
     path: "/squad",
     icon: Users,
     description: "4-player team championship",
@@ -87,6 +91,41 @@ const tournaments = [
     slots: "25 Squads",
     prize: "₹350",
     color: "text-chart-3",
+    game: "BGMI",
+  },
+  // Free Fire Max Tournaments
+  {
+    name: "Free Fire Solo",
+    path: "/freefire-solo",
+    icon: Trophy,
+    description: "Individual Free Fire battle royale",
+    entryFee: "₹20",
+    slots: "50 Players",
+    prize: "₹350",
+    color: "text-chart-1",
+    game: "Free Fire",
+  },
+  {
+    name: "Free Fire Duo",
+    path: "/freefire-duo",
+    icon: UserPlus,
+    description: "Partner up for duo domination",
+    entryFee: "₹40",
+    slots: "50 Teams",
+    prize: "₹350",
+    color: "text-chart-2",
+    game: "Free Fire",
+  },
+  {
+    name: "Free Fire Squad",
+    path: "/freefire-squad",
+    icon: Users,
+    description: "4-player team championship",
+    entryFee: "₹80",
+    slots: "12 Squads",
+    prize: "₹200",
+    color: "text-chart-3",
+    game: "Free Fire",
   },
 ];
 

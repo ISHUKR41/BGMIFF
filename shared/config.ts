@@ -24,6 +24,7 @@ export const SOCIAL_LINKS = {
   telegram: "https://t.me/gamearena",
 };
 
+// BGMI Tournament Google Forms Configuration
 export const GOOGLE_FORMS = {
   solo: {
     url: "https://forms.gle/BE1TENZbKCapdEw28",
@@ -39,6 +40,28 @@ export const GOOGLE_FORMS = {
   },
 };
 
+// Free Fire Max Tournament Google Forms Configuration
+// NOTE: embedUrl values are currently set to short forms.gle URLs
+// For optimal iframe embedding, these should be updated to full Google Forms embed URLs
+// Format: https://docs.google.com/forms/d/e/[FORM_ID]/viewform?embedded=true
+// To get the full URL: Open the form in browser, copy the full URL, and add ?embedded=true
+// The FormEmbed component will fall back to showing "Open Form" button if embedding fails
+export const FREEFIRE_FORMS = {
+  solo: {
+    url: "https://forms.gle/JJCZGc4XUT4RqAde7",
+    embedUrl: "https://forms.gle/JJCZGc4XUT4RqAde7", // TODO: Replace with full embed URL for better UX
+  },
+  duo: {
+    url: "https://forms.gle/1medSE28F9m46fd19",
+    embedUrl: "https://forms.gle/1medSE28F9m46fd19", // TODO: Replace with full embed URL for better UX
+  },
+  squad: {
+    url: "https://forms.gle/dYGFZggmnqFP2hcC7",
+    embedUrl: "https://forms.gle/dYGFZggmnqFP2hcC7", // TODO: Replace with full embed URL for better UX
+  },
+};
+
+// BGMI Tournament Configuration
 export const TOURNAMENTS = {
   solo: {
     title: "BGMI Solo Tournament",
@@ -88,10 +111,60 @@ export const TOURNAMENTS = {
   },
 };
 
+// Free Fire Max Tournament Configuration
+export const FREEFIRE_TOURNAMENTS = {
+  solo: {
+    title: "Free Fire Max Solo Tournament",
+    mode: "Solo",
+    entryFee: 20,
+    slots: 50,
+    slotsText: "50 Players",
+    winner: 350,
+    runnerUp: 150,
+    perKill: 5,
+    path: "/freefire-solo",
+    formUrl: FREEFIRE_FORMS.solo.url,
+    embedUrl: FREEFIRE_FORMS.solo.embedUrl,
+    description: "Welcome to the official Free Fire Max Solo Tournament hosted by GameArena 🎮. Please fill out the registration form carefully. Your slot will be confirmed only after successful payment and verification.",
+    shortDescription: "Individual Free Fire battle royale",
+    note: "⚠️ Note: Incorrect or incomplete details may lead to disqualification.",
+  },
+  duo: {
+    title: "Free Fire Max Duo Tournament",
+    mode: "Duo",
+    entryFee: 40,
+    slots: 50,
+    slotsText: "50 Teams",
+    winner: 350,
+    runnerUp: 250,
+    perKill: 9,
+    path: "/freefire-duo",
+    formUrl: FREEFIRE_FORMS.duo.url,
+    embedUrl: FREEFIRE_FORMS.duo.embedUrl,
+    description: "Welcome to the Free Fire Duo Tournament by GameArena! 👬 Register your 2-player team to participate in the competition. Fill all the details carefully, upload the payment proof, and wait for admin approval.",
+    shortDescription: "Partner up for duo domination",
+  },
+  squad: {
+    title: "Free Fire Max Squad Tournament",
+    mode: "Squad",
+    entryFee: 80,
+    slots: 12,
+    slotsText: "12 Squads",
+    winner: 200,
+    runnerUp: 150,
+    perKill: 8,
+    path: "/freefire-squad",
+    formUrl: FREEFIRE_FORMS.squad.url,
+    embedUrl: FREEFIRE_FORMS.squad.embedUrl,
+    description: "Welcome to the Free Fire Max Squad Tournament by GameArena! 👬 Register your 4-player team to participate in the competition. Fill all the details carefully, upload the payment proof, and wait for admin approval.",
+    shortDescription: "4-player team championship",
+  },
+};
+
 export const COMPANY_INFO = {
   name: "GameArena",
-  tagline: "India's Most Trusted BGMI Tournament Platform",
-  description: "Professional BGMI tournament platform with transparent payment verification and guaranteed prize pools.",
+  tagline: "India's Most Trusted BGMI & Free Fire Tournament Platform",
+  description: "Professional BGMI and Free Fire tournament platform with transparent payment verification and guaranteed prize pools.",
   foundedYear: 2024,
   website: "https://gamearena.replit.app",
 };
