@@ -288,10 +288,10 @@ const detailedRules = [
     title: "Prize Distribution & Rewards",
     type: "success" as const,
     content: [
-      "Winner (1st Place): ₹350 guaranteed",
+      "Winner (1st Place): ₹200 guaranteed",
       "Runner-Up (2nd Place): ₹150 guaranteed",
-      "Per Kill Reward: ₹5 per elimination (verified from match stats)",
-      "Total Prize Pool: ₹750+ (varies based on total kills)",
+      "Per Kill Reward: ₹8 per elimination (verified from match stats)",
+      "Total Prize Pool: ₹550+ (varies based on total kills)",
       "Prizes distributed within 24-48 hours after tournament",
       "Valid UPI ID required for prize transfer - must match registered name",
       "All kills verified from official Free Fire Max match statistics",
