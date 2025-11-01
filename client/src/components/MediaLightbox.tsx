@@ -1,52 +1,98 @@
+/**
+ * MediaLightbox Component
+ * 
+ * Image gallery with lightbox functionality for viewing images.
+ * 
+ * Features:
+ * - Responsive grid layout with configurable columns
+ * - Click to open full-screen lightbox overlay
+ * - Navigation controls (previous/next, close)
+ * - Keyboard navigation (arrow keys, escape)
+ * - Smooth animations with Framer Motion
+ * - Image captions in lightbox view
+ * - Hover effects on thumbnails
+ * - Fully responsive for all devices
+ * 
+ * Used on tournament pages to showcase action shots,
+ * winners, and tournament moments in an engaging gallery format.
+ */
+
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
 
+/**
+ * Media item data structure
+ */
 interface MediaItem {
-  src: string;
-  alt: string;
-  caption?: string;
+  src: string;                     // Image URL
+  alt: string;                     // Alt text for accessibility
+  caption?: string;                // Optional caption for lightbox
 }
 
+/**
+ * Props interface for MediaLightbox component
+ */
 interface MediaLightboxProps {
-  items: MediaItem[];
-  columns?: {
-    sm?: number;
-    md?: number;
-    lg?: number;
+  items: MediaItem[];              // Array of images to display
+  columns?: {                      // Responsive column configuration
+    sm?: number;                   // Columns on small screens (default: 1)
+    md?: number;                   // Columns on medium screens (default: 2)
+    lg?: number;                   // Columns on large screens (default: 3)
   };
-  className?: string;
+  className?: string;              // Additional Tailwind classes
 }
 
+/**
+ * MediaLightbox Component
+ * Displays images in a grid with full-screen lightbox functionality
+ */
 export default function MediaLightbox({
   items,
   columns = { sm: 1, md: 2, lg: 3 },
   className = "",
 }: MediaLightboxProps) {
+  // Track currently selected image for lightbox view
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
+  /**
+   * Open lightbox at specific image index
+   */
   const openLightbox = (index: number) => {
     setSelectedIndex(index);
   };
 
+  /**
+   * Close lightbox overlay
+   */
   const closeLightbox = () => {
     setSelectedIndex(null);
   };
 
+  /**
+   * Navigate to previous image in lightbox
+   */
   const goToPrevious = () => {
     if (selectedIndex !== null) {
       setSelectedIndex(selectedIndex === 0 ? items.length - 1 : selectedIndex - 1);
     }
   };
 
+  /**
+   * Navigate to next image in lightbox
+   */
   const goToNext = () => {
     if (selectedIndex !== null) {
       setSelectedIndex((selectedIndex + 1) % items.length);
     }
   };
 
+  /**
+   * Handle keyboard navigation
+   * Left/Right arrows: navigate, Escape: close
+   */
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "ArrowLeft") goToPrevious();
     if (e.key === "ArrowRight") goToNext();

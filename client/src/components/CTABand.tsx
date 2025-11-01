@@ -1,26 +1,53 @@
+/**
+ * CTABand Component
+ * 
+ * Call-to-Action band component for prominent action prompts.
+ * 
+ * Features:
+ * - Three visual variants (primary, secondary, gradient)
+ * - Support for multiple action buttons
+ * - Optional icon display with styled container
+ * - Animated entrance with Framer Motion
+ * - Fully responsive layout (stacks on mobile, row on desktop)
+ * - Customizable button variants and click handlers
+ * 
+ * Used throughout the application for registration prompts,
+ * tournament sign-ups, and other important calls-to-action.
+ */
+
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 
+/**
+ * Button configuration for CTA actions
+ */
 interface CTAButton {
-  label: string;
-  href?: string;
-  onClick?: () => void;
-  variant?: "default" | "outline" | "secondary" | "ghost";
-  icon?: LucideIcon;
+  label: string;                                                 // Button text
+  href?: string;                                                 // Navigation link (optional)
+  onClick?: () => void;                                          // Click handler (optional)
+  variant?: "default" | "outline" | "secondary" | "ghost";      // Button style variant
+  icon?: LucideIcon;                                             // Icon component (optional)
 }
 
+/**
+ * Props interface for CTABand component
+ */
 interface CTABandProps {
-  title: string;
-  description?: string;
-  buttons: CTAButton[];
-  variant?: "primary" | "secondary" | "gradient";
-  icon?: LucideIcon;
-  className?: string;
-  "data-testid"?: string;
+  title: string;                                                 // Main heading text
+  description?: string;                                          // Optional description/subtitle
+  buttons: CTAButton[];                                          // Array of action buttons
+  variant?: "primary" | "secondary" | "gradient";               // Band color scheme
+  icon?: LucideIcon;                                             // Optional icon next to title
+  className?: string;                                            // Additional Tailwind classes
+  "data-testid"?: string;                                        // Testing identifier
 }
 
+/**
+ * CTABand Component
+ * Displays a prominent call-to-action section with title, description, and action buttons
+ */
 export default function CTABand({
   title,
   description,
@@ -30,6 +57,7 @@ export default function CTABand({
   className = "",
   "data-testid": dataTestId,
 }: CTABandProps) {
+  // Define background and text colors for each variant
   const variantClasses = {
     primary: "bg-primary text-primary-foreground",
     secondary: "bg-muted",
@@ -50,6 +78,7 @@ export default function CTABand({
       data-testid={dataTestId}
     >
       <div className="max-w-4xl mx-auto">
+        {/* Flex container: stacks on mobile, row layout on desktop */}
         <div className="flex flex-col md:flex-row items-center justify-between gap-8">
           {/* Content */}
           <div className="flex-1 text-center md:text-left space-y-4">
@@ -95,7 +124,8 @@ export default function CTABand({
                 </>
               );
 
-              // Adjust button variants based on CTA band variant
+              // Adjust button variants based on CTA band variant for better contrast
+              // Primary/gradient bands get secondary buttons for visibility
               let buttonVariant = button.variant || "default";
               if (variant === "primary" || variant === "gradient") {
                 if (buttonVariant === "default") {

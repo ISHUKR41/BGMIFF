@@ -1,3 +1,22 @@
+/**
+ * ModernTestimonials Component
+ * 
+ * Carousel-based testimonials component for showcasing player reviews.
+ * 
+ * Features:
+ * - Embla Carousel for smooth transitions
+ * - Auto-play functionality with customizable interval
+ * - Navigation buttons (previous/next)
+ * - Dot indicators for current slide
+ * - Star rating display
+ * - Avatar with fallback initials
+ * - Fully responsive grid layout
+ * - Animated entrance with Framer Motion
+ * 
+ * Used on home page and tournament pages to build social proof
+ * by displaying real player testimonials and ratings.
+ */
+
 import { useCallback, useEffect, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -6,36 +25,53 @@ import { ChevronLeft, ChevronRight, Star } from "lucide-react";
 import useEmblaCarousel from "embla-carousel-react";
 import { motion } from "framer-motion";
 
+/**
+ * Testimonial data structure
+ */
 interface Testimonial {
-  name: string;
-  role: string;
-  content: string;
-  avatarUrl?: string;
-  initials: string;
-  rating?: number;
+  name: string;                    // Player name
+  role: string;                    // Player role or achievement
+  content: string;                 // Testimonial text/review
+  avatarUrl?: string;              // Optional avatar image URL
+  initials: string;                // Initials for avatar fallback
+  rating?: number;                 // Star rating (1-5, default: 5)
 }
 
+/**
+ * Props interface for ModernTestimonials component
+ */
 interface ModernTestimonialsProps {
-  testimonials: Testimonial[];
-  autoPlay?: boolean;
-  autoPlayInterval?: number;
-  className?: string;
+  testimonials: Testimonial[];     // Array of testimonials to display
+  autoPlay?: boolean;              // Enable auto-play carousel (default: true)
+  autoPlayInterval?: number;       // Auto-play interval in ms (default: 5000)
+  className?: string;              // Additional Tailwind classes
 }
 
+/**
+ * ModernTestimonials Component
+ * Displays player testimonials in an auto-playing carousel
+ */
 export default function ModernTestimonials({
   testimonials,
   autoPlay = true,
   autoPlayInterval = 5000,
   className = "",
 }: ModernTestimonialsProps) {
+  // Initialize Embla Carousel with infinite loop
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, align: "start" });
+  
+  // Track carousel navigation state
   const [canScrollPrev, setCanScrollPrev] = useState(false);
   const [canScrollNext, setCanScrollNext] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);
 
+  // Navigation functions
   const scrollPrev = useCallback(() => emblaApi && emblaApi.scrollPrev(), [emblaApi]);
   const scrollNext = useCallback(() => emblaApi && emblaApi.scrollNext(), [emblaApi]);
 
+  /**
+   * Update navigation state when carousel selection changes
+   */
   const onSelect = useCallback(() => {
     if (!emblaApi) return;
     setCanScrollPrev(emblaApi.canScrollPrev());
@@ -50,7 +86,10 @@ export default function ModernTestimonials({
     emblaApi.on("reInit", onSelect);
   }, [emblaApi, onSelect]);
 
-  // Auto-play functionality
+  /**
+   * Auto-play functionality - advances carousel automatically
+   * Clears interval on unmount to prevent memory leaks
+   */
   useEffect(() => {
     if (!emblaApi || !autoPlay) return;
 
@@ -61,6 +100,11 @@ export default function ModernTestimonials({
     return () => clearInterval(autoPlayId);
   }, [emblaApi, autoPlay, autoPlayInterval]);
 
+  /**
+   * Render star rating display
+   * @param rating - Number of stars (1-5, default: 5)
+   * @returns Star icons with filled/unfilled states
+   */
   const renderStars = (rating: number = 5) => {
     return (
       <div className="flex gap-1" data-testid="testimonial-rating">
