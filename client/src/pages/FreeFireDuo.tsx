@@ -122,9 +122,9 @@ const rules = [
     title: "Prize Distribution",
     type: "success" as const,
     content: [
-      "Winner Team: ₹350 (First place)",
-      "Runner-Up Team: ₹250 (Second place)",
-      "Per Kill Reward: ₹9 (for each elimination)",
+      "Winner Team: ₹200 (First place)",
+      "Runner-Up Team: ₹150 (Second place)",
+      "Per Kill Reward: ₹8 (for each elimination)",
       "Prizes will be distributed within 24-48 hours after tournament completion",
       "Team leader's valid UPI ID required for prize transfer",
       "Prize will be transferred to team leader who distributes to partner",
@@ -193,12 +193,12 @@ const faqs = [
     answer: "Successful Free Fire duo teams maintain close proximity, communicate constantly, share resources fairly, use character abilities in sync, cover different angles during fights, revive quickly when downed, and rotate together. Master gloo wall placements and coordinate ability usage. Practice together before the tournament to build chemistry.",
   },
   {
-    question: "How are kills counted for the per-kill reward of ₹9?",
-    answer: "Each elimination counts as one kill for your team. The kill is credited to the player who gets the finishing blow. Both team members' kills are combined for the total team kill count. Final kill count is verified from match results, and ₹9 per kill is added to your prize.",
+    question: "How are kills counted for the per-kill reward of ₹8?",
+    answer: "Each elimination counts as one kill for your team. The kill is credited to the player who gets the finishing blow. Both team members' kills are combined for the total team kill count. Final kill count is verified from match results, and ₹8 per kill is added to your prize.",
   },
   {
     question: "What if both teammates have the same number of kills?",
-    answer: "The per-kill reward (₹9 per kill) is calculated for the team's total kills combined. It doesn't matter who gets more kills - the total prize goes to the team leader's UPI, who can then split with their partner as agreed. Individual kill counts only matter for personal bragging rights!",
+    answer: "The per-kill reward (₹8 per kill) is calculated for the team's total kills combined. It doesn't matter who gets more kills - the total prize goes to the team leader's UPI, who can then split with their partner as agreed. Individual kill counts only matter for personal bragging rights!",
   },
   {
     question: "Do we need separate devices, or can we play from the same location?",
@@ -214,7 +214,7 @@ const faqs = [
   },
   {
     question: "How is the prize money split between duo teammates?",
-    answer: "The entire prize (Winner: ₹350, Runner-up: ₹250, plus per-kill rewards) is transferred to the team leader's UPI ID. The team leader is responsible for splitting the prize with their partner as per their agreement. We recommend discussing prize distribution before the tournament to avoid conflicts.",
+    answer: "The entire prize (Winner: ₹200, Runner-up: ₹150, plus per-kill rewards) is transferred to the team leader's UPI ID. The team leader is responsible for splitting the prize with their partner as per their agreement. We recommend discussing prize distribution before the tournament to avoid conflicts.",
   },
   {
     question: "Can the same person participate in multiple duo teams?",
@@ -236,7 +236,7 @@ const testimonials = [
   {
     name: "Aryan & Rohan",
     role: "Tournament Winners - October 2025",
-    content: "GameArena's Free Fire Max duo tournaments are incredibly well-organized. The coordination with my teammate was smooth, and we won ₹350 plus kill rewards! Prize was transferred within 24 hours. Highly recommend for serious Free Fire duos.",
+    content: "GameArena's Free Fire Max duo tournaments are incredibly well-organized. The coordination with my teammate was smooth, and we won ₹200 plus kill rewards! Prize was transferred within 24 hours. Highly recommend for serious Free Fire duos.",
     initials: "AR",
     rating: 5,
   },
@@ -250,7 +250,7 @@ const testimonials = [
   {
     name: "Karan & Vivaan",
     role: "Runner-Up - September 2025",
-    content: "Came second in our first Free Fire tournament! The ₹250 runner-up prize plus ₹9 per kill is very rewarding. Great way to test our duo skills against competitive teams. We'll definitely be back for more.",
+    content: "Came second in our first Free Fire tournament! The ₹150 runner-up prize plus ₹8 per kill is very rewarding. Great way to test our duo skills against competitive teams. We'll definitely be back for more.",
     initials: "KV",
     rating: 5,
   },
@@ -431,7 +431,7 @@ export default function FreeFireDuo() {
                       </div>
                       <div>
                         <h4 className="font-semibold mb-1">Team Prize Pool</h4>
-                        <p className="text-sm text-muted-foreground">Winner: ₹350 | Runner-Up: ₹250 | Per Kill: ₹9 - Split between team members, distributed within 24-48 hours</p>
+                        <p className="text-sm text-muted-foreground">Winner: ₹200 | Runner-Up: ₹150 | Per Kill: ₹8 - Split between team members, distributed within 24-48 hours</p>
                       </div>
                     </div>
 
@@ -755,7 +755,7 @@ export default function FreeFireDuo() {
                   </Badge>
                 </CardHeader>
                 <CardContent className="text-center space-y-4">
-                  <div className="text-5xl font-bold text-primary">₹350</div>
+                  <div className="text-5xl font-bold text-primary">₹200</div>
                   <p className="text-muted-foreground">
                     Champion duo team receives the grand prize
                   </p>
@@ -788,7 +788,7 @@ export default function FreeFireDuo() {
                   </Badge>
                 </CardHeader>
                 <CardContent className="text-center space-y-4">
-                  <div className="text-5xl font-bold text-chart-2">₹250</div>
+                  <div className="text-5xl font-bold text-chart-2">₹150</div>
                   <p className="text-muted-foreground">
                     Second-place duo team prize
                   </p>
@@ -821,7 +821,7 @@ export default function FreeFireDuo() {
                   </Badge>
                 </CardHeader>
                 <CardContent className="text-center space-y-4">
-                  <div className="text-5xl font-bold text-chart-3">₹9</div>
+                  <div className="text-5xl font-bold text-chart-3">₹8</div>
                   <p className="text-muted-foreground">
                     For every elimination your duo achieves
                   </p>
@@ -858,16 +858,16 @@ export default function FreeFireDuo() {
                   <div className="space-y-2 text-sm">
                     <div className="flex justify-between items-center">
                       <span>Winner Prize:</span>
-                      <span className="font-mono font-semibold">₹350</span>
+                      <span className="font-mono font-semibold">₹200</span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span>Kill Rewards (15 × ₹9):</span>
-                      <span className="font-mono font-semibold">₹135</span>
+                      <span>Kill Rewards (15 × ₹8):</span>
+                      <span className="font-mono font-semibold">₹120</span>
                     </div>
                     <Separator />
                     <div className="flex justify-between items-center text-lg font-bold text-primary">
                       <span>Total Prize:</span>
-                      <span className="font-mono">₹485</span>
+                      <span className="font-mono">₹320</span>
                     </div>
                   </div>
                 </div>
