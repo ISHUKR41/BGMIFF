@@ -1,9 +1,33 @@
+/**
+ * ParticlesBackground Component
+ * 
+ * Animated particles background effect using tsparticles.
+ * 
+ * Features:
+ * - Animated floating particles with connecting lines
+ * - Subtle blue color scheme matching site theme
+ * - Optimized performance with slim loader
+ * - Positioned behind content (z-index: -10)
+ * - Bounce effect at boundaries
+ * - Auto-detects retina displays
+ * 
+ * Used on hero sections and landing pages to add visual
+ * interest and create a modern, tech-focused aesthetic.
+ */
+
 import { useCallback } from "react";
 import Particles from "react-particles";
 import { loadSlim } from "tsparticles-slim";
 import type { Engine } from "tsparticles-engine";
 
+/**
+ * ParticlesBackground Component
+ * Renders an animated particle network in the background
+ */
 export default function ParticlesBackground() {
+  /**
+   * Initialize particles engine with slim loader for performance
+   */
   const particlesInit = useCallback(async (engine: Engine) => {
     await loadSlim(engine);
   }, []);

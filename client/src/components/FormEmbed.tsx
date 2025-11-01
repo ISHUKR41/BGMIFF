@@ -1,20 +1,48 @@
+/**
+ * FormEmbed Component
+ * 
+ * Embedded Google Forms component for tournament registration.
+ * 
+ * Features:
+ * - Embedded iframe for seamless registration
+ * - Fallback button to open form in new tab
+ * - Error handling with graceful fallback
+ * - Responsive iframe heights for different devices
+ * - Direct link button always available for users with embed issues
+ * 
+ * Used on tournament pages to allow users to register directly
+ * without leaving the site, improving conversion rates.
+ */
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ExternalLink } from "lucide-react";
 import { useState } from "react";
 
+/**
+ * Props interface for FormEmbed component
+ */
 interface FormEmbedProps {
-  formUrl: string;
-  embedUrl?: string;
-  title: string;
-  description: string;
+  formUrl: string;              // Direct link to the form
+  embedUrl?: string;            // Optional embed-specific URL
+  title: string;                // Form section title
+  description: string;          // Form section description
 }
 
+/**
+ * FormEmbed Component
+ * Displays an embedded registration form with fallback options
+ */
 export default function FormEmbed({ formUrl, embedUrl, title, description }: FormEmbedProps) {
+  // Track embed failures to show fallback UI
   const [embedFailed, setEmbedFailed] = useState(false);
   
+  // Use embed URL if provided, otherwise use direct form URL
   const iframeUrl = embedUrl && embedUrl !== formUrl ? embedUrl : formUrl;
   
+  /**
+   * Navigate to the form in the current window
+   */
   const handleOpenForm = () => {
     window.location.href = formUrl;
   };

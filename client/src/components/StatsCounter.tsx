@@ -1,20 +1,46 @@
+/**
+ * StatsCounter Component
+ * 
+ * Animated statistics display with counting animation.
+ * 
+ * Features:
+ * - Four key statistics (tournaments, players, prize money, success rate)
+ * - Animated number counting using react-countup
+ * - Triggers animation when scrolled into view
+ * - Responsive grid layout (2x2 on mobile, 4x1 on desktop)
+ * - Icon indicators for each stat
+ * - Support for prefixes and suffixes (₹, +, %)
+ * - Hover elevation for visual feedback
+ * 
+ * Used on the home page to showcase platform credibility
+ * and attract new players with impressive metrics.
+ */
+
 import { Card, CardContent } from "@/components/ui/card";
 import CountUp from "react-countup";
 import { useInView } from "react-intersection-observer";
 import { Trophy, Users, DollarSign, Target } from "lucide-react";
 
+/**
+ * Stat item data structure
+ */
 interface StatItem {
-  icon: React.ReactNode;
-  value: number;
-  label: string;
-  suffix?: string;
-  prefix?: string;
+  icon: React.ReactNode;       // Icon component to display
+  value: number;               // Numeric value to count up to
+  label: string;               // Label describing the stat
+  suffix?: string;             // Optional suffix (e.g., "+", "%")
+  prefix?: string;             // Optional prefix (e.g., "₹")
 }
 
+/**
+ * StatsCounter Component
+ * Displays animated platform statistics
+ */
 export default function StatsCounter() {
+  // Trigger animation when component is in view
   const { ref, inView } = useInView({
-    triggerOnce: true,
-    threshold: 0.1,
+    triggerOnce: true,          // Only animate once
+    threshold: 0.1,             // Trigger when 10% visible
   });
 
   const stats: StatItem[] = [

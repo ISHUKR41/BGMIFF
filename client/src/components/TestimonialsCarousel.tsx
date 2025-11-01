@@ -1,3 +1,20 @@
+/**
+ * TestimonialsCarousel Component
+ * 
+ * Carousel component for displaying player testimonials (simpler version).
+ * 
+ * Features:
+ * - Embla Carousel for smooth scrolling
+ * - Manual navigation with previous/next buttons
+ * - Responsive card layout (1-2-3 columns)
+ * - Quote icon for visual emphasis
+ * - Avatar with initials fallback
+ * - Infinite loop navigation
+ * 
+ * Used on tournament pages for simple testimonial displays
+ * without auto-play functionality.
+ */
+
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Quote } from "lucide-react";
@@ -6,25 +23,42 @@ import { useCallback, useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
+/**
+ * Testimonial data structure
+ */
 interface Testimonial {
-  name: string;
-  role: string;
-  content: string;
-  initials: string;
+  name: string;                // Player name
+  role: string;                // Player role/achievement
+  content: string;             // Testimonial text
+  initials: string;            // Avatar fallback initials
 }
 
+/**
+ * Props interface for TestimonialsCarousel component
+ */
 interface TestimonialsCarouselProps {
-  testimonials: Testimonial[];
+  testimonials: Testimonial[]; // Array of testimonials to display
 }
 
+/**
+ * TestimonialsCarousel Component
+ * Displays testimonials in a navigable carousel
+ */
 export default function TestimonialsCarousel({ testimonials }: TestimonialsCarouselProps) {
+  // Initialize Embla Carousel
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, align: "start" });
+  
+  // Track navigation state
   const [canScrollPrev, setCanScrollPrev] = useState(false);
   const [canScrollNext, setCanScrollNext] = useState(false);
 
+  // Navigation functions
   const scrollPrev = useCallback(() => emblaApi && emblaApi.scrollPrev(), [emblaApi]);
   const scrollNext = useCallback(() => emblaApi && emblaApi.scrollNext(), [emblaApi]);
 
+  /**
+   * Update navigation state when selection changes
+   */
   const onSelect = useCallback(() => {
     if (!emblaApi) return;
     setCanScrollPrev(emblaApi.canScrollPrev());
