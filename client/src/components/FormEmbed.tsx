@@ -5,7 +5,7 @@
  * 
  * Features:
  * - Embedded iframe for seamless registration
- * - Fallback button to open form in new tab
+ * - Fallback button to open form directly
  * - Error handling with graceful fallback
  * - Responsive iframe heights for different devices
  * - Direct link button always available for users with embed issues

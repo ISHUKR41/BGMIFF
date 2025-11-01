@@ -7,7 +7,7 @@
  * - Four key statistics (tournaments, players, prize money, success rate)
  * - Animated number counting using react-countup
  * - Triggers animation when scrolled into view
- * - Responsive grid layout (2x2 on mobile, 4x1 on desktop)
+ * - Responsive grid layout (2 columns on mobile/tablet, 4 columns on desktop)
  * - Icon indicators for each stat
  * - Support for prefixes and suffixes (₹, +, %)
  * - Hover elevation for visual feedback
