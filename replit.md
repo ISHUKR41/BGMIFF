@@ -1,10 +1,14 @@
-# GameArena BGMI Tournament Platform
+# GameArena Tournament Platform
 
 ## Overview
 
-GameArena is a professional BGMI (Battlegrounds Mobile India) tournament registration platform designed to facilitate esports competition organization. The platform enables tournament organizers to manage Solo, Duo, and Squad tournaments through integrated Google Forms for registration, with a focus on payment verification and professional presentation.
+GameArena is a professional tournament registration platform designed to facilitate esports competition organization for both BGMI (Battlegrounds Mobile India) and Free Fire Max. The platform enables tournament organizers to manage Solo, Duo, and Squad tournaments through integrated Google Forms for registration, with a focus on payment verification and professional presentation.
 
 The application serves as a modern, responsive front-end for displaying tournament information, rules, prize pools, and embedding Google Forms for participant registration. It emphasizes a clean, corporate aesthetic rather than gaming-inspired visuals, following design principles inspired by Linear's minimalist professionalism.
+
+**Supported Games:**
+- BGMI: Solo, Duo, and Squad tournaments
+- Free Fire Max: Solo, Duo, and Squad tournaments
 
 ## User Preferences
 
@@ -106,7 +110,8 @@ Preferred communication style: Simple, everyday language.
 **Google Forms Integration**:
 - External Google Forms embedded via iframe
 - Fallback to opening in new tab if embedding fails
-- Three forms for Solo, Duo, and Squad tournaments
+- Six forms total: Three for BGMI (Solo, Duo, Squad) and three for Free Fire Max (Solo, Duo, Squad)
+- Note: Free Fire Max forms currently use short URLs (forms.gle) which may not embed properly; they fall back to "Open Form" button for direct access
 
 **Key Integration Points**:
 - Google Forms serve as the primary registration mechanism
