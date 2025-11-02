@@ -342,6 +342,333 @@
     transform: translateY(0);
   }
 
+  /* Modern Bento Box Grid System - Inspired by modern design trends */
+  .bento-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  }
+
+  .bento-item {
+    border-radius: var(--radius);
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* Enhanced Glassmorphism Effect - Inspired by Stripe and modern sites */
+  .glass-card {
+    background: hsl(var(--card) / 0.6);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid hsl(var(--border) / 0.2);
+    box-shadow: 0 8px 32px 0 hsl(var(--foreground) / 0.05);
+  }
+
+  .glass-nav {
+    background: hsl(var(--background) / 0.7);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    border-bottom: 1px solid hsl(var(--border) / 0.3);
+  }
+
+  /* Floating Animation - Inspired by Cursor and modern landing pages */
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+  }
+
+  @keyframes float-delayed {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-15px); }
+  }
+
+  .float-animation {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .float-animation-delayed {
+    animation: float-delayed 8s ease-in-out infinite;
+  }
+
+  /* Magnetic Cursor Effect - Inspired by awwwards sites */
+  .magnetic {
+    transition: transform 0.2s cubic-bezier(0.165, 0.84, 0.44, 1);
+  }
+
+  .magnetic:hover {
+    transform: scale(1.05);
+  }
+
+  /* Gradient Text Animation - Inspired by modern hero sections */
+  @keyframes gradient-shift {
+    0%, 100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+
+  .animated-gradient-text {
+    background: linear-gradient(
+      90deg,
+      hsl(var(--primary)),
+      hsl(var(--chart-2)),
+      hsl(var(--chart-1)),
+      hsl(var(--primary))
+    );
+    background-size: 300% 300%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradient-shift 8s ease infinite;
+  }
+
+  /* Enhanced Card Hover Effects - Inspired by Stripe */
+  .card-hover-lift {
+    transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+  }
+
+  .card-hover-lift:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px hsl(var(--foreground) / 0.1);
+  }
+
+  /* Shimmer Loading Effect - Modern skeleton loading */
+  @keyframes shimmer {
+    0% {
+      background-position: -1000px 0;
+    }
+    100% {
+      background-position: 1000px 0;
+    }
+  }
+
+  .shimmer {
+    background: linear-gradient(
+      90deg,
+      hsl(var(--muted)) 0%,
+      hsl(var(--muted-foreground) / 0.1) 50%,
+      hsl(var(--muted)) 100%
+    );
+    background-size: 1000px 100%;
+    animation: shimmer 2s infinite linear;
+  }
+
+  /* Scroll Progress Indicator - Inspired by modern blogs */
+  .scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(
+      90deg,
+      hsl(var(--primary)),
+      hsl(var(--chart-2)),
+      hsl(var(--chart-3))
+    );
+    transform-origin: 0%;
+    z-index: 9999;
+  }
+
+  /* Spotlight Effect - Inspired by awwwards */
+  .spotlight {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .spotlight::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      hsl(var(--primary) / 0.1),
+      transparent
+    );
+    transition: left 0.5s;
+  }
+
+  .spotlight:hover::before {
+    left: 100%;
+  }
+
+  /* Modern Button Variants - Inspired by Razorpay and Stripe */
+  .btn-glow {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-glow::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: hsl(var(--primary-foreground) / 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+  }
+
+  .btn-glow:hover::before {
+    width: 300px;
+    height: 300px;
+  }
+
+  /* Neumorphism Cards - Modern soft UI */
+  .neomorph {
+    background: hsl(var(--card));
+    box-shadow: 
+      12px 12px 24px hsl(var(--foreground) / 0.08),
+      -12px -12px 24px hsl(var(--background) / 0.5);
+  }
+
+  .neomorph-inset {
+    background: hsl(var(--card));
+    box-shadow: 
+      inset 8px 8px 16px hsl(var(--foreground) / 0.05),
+      inset -8px -8px 16px hsl(var(--background) / 0.5);
+  }
+
+  /* Gradient Border Animation - Inspired by modern UI */
+  @keyframes rotate-gradient {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  .gradient-border {
+    position: relative;
+    border-radius: var(--radius);
+    padding: 2px;
+    background: linear-gradient(
+      45deg,
+      hsl(var(--primary)),
+      hsl(var(--chart-2)),
+      hsl(var(--chart-3)),
+      hsl(var(--primary))
+    );
+    background-size: 300% 300%;
+    animation: gradient-shift 6s ease infinite;
+  }
+
+  .gradient-border > * {
+    background: hsl(var(--card));
+    border-radius: calc(var(--radius) - 2px);
+  }
+
+  /* Tooltip with Arrow - Modern design */
+  .tooltip-modern {
+    position: relative;
+  }
+
+  .tooltip-modern::before {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%) translateY(10px);
+    opacity: 0;
+    padding: 8px 12px;
+    background: hsl(var(--popover));
+    color: hsl(var(--popover-foreground));
+    border-radius: 6px;
+    font-size: 12px;
+    white-space: nowrap;
+    pointer-events: none;
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .tooltip-modern:hover::before {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  /* Ambient Glow Effect - Inspired by gaming UIs */
+  .ambient-glow {
+    position: relative;
+  }
+
+  .ambient-glow::after {
+    content: '';
+    position: absolute;
+    inset: -20px;
+    background: radial-gradient(
+      circle at center,
+      hsl(var(--primary) / 0.15),
+      transparent 70%
+    );
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .ambient-glow:hover::after {
+    opacity: 1;
+  }
+
+  /* Pulse Animation for CTAs - Inspired by Razorpay */
+  @keyframes pulse-ring {
+    0% {
+      transform: scale(0.95);
+      opacity: 1;
+    }
+    50% {
+      transform: scale(1);
+      opacity: 0.7;
+    }
+    100% {
+      transform: scale(0.95);
+      opacity: 1;
+    }
+  }
+
+  .pulse-cta {
+    animation: pulse-ring 2s cubic-bezier(0.455, 0.03, 0.515, 0.955) infinite;
+  }
+
+  /* Stagger Children Animation Utility */
+  .stagger-children > * {
+    opacity: 0;
+    animation: fade-slide-up 0.6s ease forwards;
+  }
+
+  .stagger-children > *:nth-child(1) { animation-delay: 0.1s; }
+  .stagger-children > *:nth-child(2) { animation-delay: 0.2s; }
+  .stagger-children > *:nth-child(3) { animation-delay: 0.3s; }
+  .stagger-children > *:nth-child(4) { animation-delay: 0.4s; }
+  .stagger-children > *:nth-child(5) { animation-delay: 0.5s; }
+  .stagger-children > *:nth-child(6) { animation-delay: 0.6s; }
+
+  @keyframes fade-slide-up {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Modern Scroll Snap - Smooth section scrolling */
+  .scroll-snap-y {
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+  }
+
+  .scroll-snap-section {
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+
   /* .no-default-hover-elevate/no-default-active-elevate is an escape hatch so consumers of
    * buttons/badges can remove the automatic brightness adjustment on interactions
    * and program their own. */
