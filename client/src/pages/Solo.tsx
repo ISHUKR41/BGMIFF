@@ -768,10 +768,9 @@ export default function Solo() {
               <motion.div variants={staggerItem}>
                 <ProfessionalStatCard
                   icon={Ticket}
-                  title="Entry Fee"
-                  value={`₹${TOURNAMENTS.solo.entryFee}`}
-                  description="Per player registration fee"
-                  trend="Pocket-friendly"
+                  label="Entry Fee"
+                  value={TOURNAMENTS.solo.entryFee}
+                  prefix="₹"
                   delay={0}
                 />
               </motion.div>
@@ -779,10 +778,8 @@ export default function Solo() {
               <motion.div variants={staggerItem}>
                 <ProfessionalStatCard
                   icon={Users}
-                  title="Total Slots"
-                  value={TOURNAMENTS.solo.slots.toString()}
-                  description="Players per tournament"
-                  trend="Limited availability"
+                  label="Total Slots"
+                  value={TOURNAMENTS.solo.slots}
                   delay={0.1}
                 />
               </motion.div>
@@ -790,10 +787,9 @@ export default function Solo() {
               <motion.div variants={staggerItem}>
                 <ProfessionalStatCard
                   icon={Trophy}
-                  title="Winner Prize"
-                  value={`₹${TOURNAMENTS.solo.winner}`}
-                  description="1st place guaranteed"
-                  trend="+Kill Bonus"
+                  label="Winner Prize"
+                  value={TOURNAMENTS.solo.winner}
+                  prefix="₹"
                   delay={0.2}
                 />
               </motion.div>
@@ -801,10 +797,9 @@ export default function Solo() {
               <motion.div variants={staggerItem}>
                 <ProfessionalStatCard
                   icon={Target}
-                  title="Per Kill"
-                  value={`₹${TOURNAMENTS.solo.perKill}`}
-                  description="For each elimination"
-                  trend="Skill-based rewards"
+                  label="Per Kill"
+                  value={TOURNAMENTS.solo.perKill}
+                  prefix="₹"
                   delay={0.3}
                 />
               </motion.div>
@@ -1039,7 +1034,7 @@ export default function Solo() {
             </motion.div>
 
             <motion.div variants={staggerItem}>
-              <PaymentInstructions />
+              <PaymentInstructions amount={TOURNAMENTS.solo.entryFee} />
             </motion.div>
           </motion.div>
         </SectionWrapper>

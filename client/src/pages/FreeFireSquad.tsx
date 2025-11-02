@@ -624,10 +624,9 @@ export default function FreeFireSquad() {
               <motion.div variants={staggerItem}>
                 <ProfessionalStatCard
                   icon={Ticket}
-                  title="Entry Fee"
-                  value={`₹${FREEFIRE_TOURNAMENTS.squad.entryFee}`}
-                  description="Per squad (4 players)"
-                  trend="Team Registration"
+                  label="Entry Fee"
+                  value={FREEFIRE_TOURNAMENTS.squad.entryFee}
+                  prefix="₹"
                   delay={0}
                 />
               </motion.div>
@@ -635,10 +634,8 @@ export default function FreeFireSquad() {
               <motion.div variants={staggerItem}>
                 <ProfessionalStatCard
                   icon={Users}
-                  title="Total Slots"
-                  value={FREEFIRE_TOURNAMENTS.squad.slots.toString()}
-                  description="Squads per tournament"
-                  trend="Limited availability"
+                  label="Total Slots"
+                  value={FREEFIRE_TOURNAMENTS.squad.slots}
                   delay={0.1}
                 />
               </motion.div>
@@ -646,10 +643,9 @@ export default function FreeFireSquad() {
               <motion.div variants={staggerItem}>
                 <ProfessionalStatCard
                   icon={Trophy}
-                  title="Winner Prize"
-                  value={`₹${FREEFIRE_TOURNAMENTS.squad.winner}`}
-                  description="1st place guaranteed"
-                  trend="+Team Bonus"
+                  label="Winner Prize"
+                  value={FREEFIRE_TOURNAMENTS.squad.winner}
+                  prefix="₹"
                   delay={0.2}
                 />
               </motion.div>
@@ -657,10 +653,9 @@ export default function FreeFireSquad() {
               <motion.div variants={staggerItem}>
                 <ProfessionalStatCard
                   icon={Target}
-                  title="Per Kill"
-                  value={`₹${FREEFIRE_TOURNAMENTS.squad.perKill}`}
-                  description="For each elimination"
-                  trend="Squad rewards"
+                  label="Per Kill"
+                  value={FREEFIRE_TOURNAMENTS.squad.perKill}
+                  prefix="₹"
                   delay={0.3}
                 />
               </motion.div>
@@ -1092,14 +1087,12 @@ export default function FreeFireSquad() {
                     className="w-full text-lg py-6"
                     magneticStrength={0.3}
                     enableGlow={true}
-                    asChild
+                    onClick={scrollToRegistration}
                     data-testid="button-open-form"
                   >
-                    <a href={FREEFIRE_TOURNAMENTS.squad.formUrl} target="_blank" rel="noopener noreferrer">
-                      <Trophy className="w-5 h-5 mr-2" />
-                      Open Registration Form
-                      <ExternalLink className="w-5 h-5 ml-2" />
-                    </a>
+                    <Trophy className="w-5 h-5 mr-2" />
+                    Register Now
+                    <ArrowRight className="w-5 h-5 ml-2" />
                   </EnhancedMagneticButton>
 
                   <p className="text-center text-sm text-muted-foreground">
