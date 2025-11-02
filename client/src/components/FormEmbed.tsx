@@ -41,10 +41,19 @@ export default function FormEmbed({ formUrl, embedUrl, title, description }: For
   const iframeUrl = embedUrl && embedUrl !== formUrl ? embedUrl : formUrl;
   
   /**
-   * Navigate to the form in the current window
+   * Navigate to the form in the same tab (not a new window/tab)
+   * This keeps users on the website for better user experience
    */
   const handleOpenForm = () => {
-    window.location.href = formUrl;
+    // Instead of navigating away, we'll just scroll to the iframe
+    // or if iframe failed, we provide a link that opens in same tab
+    const formElement = document.getElementById('registration-form-iframe');
+    if (formElement) {
+      formElement.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      // If iframe truly failed, navigate in same tab (not new window)
+      window.location.href = formUrl;
+    }
   };
 
   return (
@@ -57,6 +66,7 @@ export default function FormEmbed({ formUrl, embedUrl, title, description }: For
         {!embedFailed ? (
           <div className="relative">
             <iframe
+              id="registration-form-iframe"
               src={iframeUrl}
               className="w-full h-[600px] md:h-[800px] lg:h-[1000px] border border-border rounded-lg"
               frameBorder="0"
