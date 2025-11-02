@@ -24,7 +24,6 @@
  * register for, and participate in BGMI solo tournaments.
  */
 
-import { motion } from "framer-motion";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import ModernHero from "@/components/ModernHero";
@@ -37,8 +36,11 @@ import MediaLightbox from "@/components/MediaLightbox";
 import ModernTestimonials from "@/components/ModernTestimonials";
 import CTABand from "@/components/CTABand";
 import FormEmbed from "@/components/FormEmbed";
+import ScrollReveal from "@/components/ScrollReveal";
+import InteractiveCard from "@/components/InteractiveCard";
+import AnimatedCounter from "@/components/AnimatedCounter";
+import GradientBlob from "@/components/GradientBlob";
 import { TOURNAMENTS } from "@/../../shared/config";
-import { fadeSlideUp, staggerContainer, staggerItem, scaleUp } from "@/lib/motion";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -441,33 +443,38 @@ export default function Solo() {
       />
       
       <main className="flex-1 pt-16">
-        {/* Hero Section with ModernHero */}
-        <ModernHero
-          title="BGMI Solo Tournament"
-          description="Compete individually in India's most competitive solo battle royale tournament. 100 players enter, only one emerges victorious. Test your skills, win big prizes, and prove you're the ultimate solo warrior."
-          backgroundImage={heroImage}
-          breadcrumbs={[
-            { label: "Home", href: "/" },
-            { label: "Tournaments", href: "/#tournaments" },
-            { label: "Solo Tournament" },
-          ]}
-          ctaButtons={[
-            { 
-              label: "Register Now", 
-              onClick: scrollToRegistration,
-              variant: "default",
-              icon: Trophy 
-            },
-            { 
-              label: "View Schedule", 
-              href: "#schedule",
-              variant: "outline",
-              icon: Calendar 
-            },
-          ]}
-          overlayOpacity={0.8}
-          minHeight="600px"
-        />
+        {/* Hero Section with ModernHero and GradientBlob backgrounds */}
+        <div className="relative">
+          <GradientBlob size="xl" position="top-right" color="primary" speed="slow" />
+          <GradientBlob size="lg" position="bottom-left" color="secondary" speed="medium" />
+          <GradientBlob size="md" position="center" color="accent" speed="fast" opacity={0.1} />
+          <ModernHero
+            title="BGMI Solo Tournament"
+            description="Compete individually in India's most competitive solo battle royale tournament. 100 players enter, only one emerges victorious. Test your skills, win big prizes, and prove you're the ultimate solo warrior."
+            backgroundImage={heroImage}
+            breadcrumbs={[
+              { label: "Home", href: "/" },
+              { label: "Tournaments", href: "/#tournaments" },
+              { label: "Solo Tournament" },
+            ]}
+            ctaButtons={[
+              { 
+                label: "Register Now", 
+                onClick: scrollToRegistration,
+                variant: "default",
+                icon: Trophy 
+              },
+              { 
+                label: "View Schedule", 
+                href: "#schedule",
+                variant: "outline",
+                icon: Calendar 
+              },
+            ]}
+            overlayOpacity={0.8}
+            minHeight="600px"
+          />
+        </div>
 
         {/* Tournament Stats */}
         <SectionWrapper variant="muted" data-testid="section-stats">
@@ -511,13 +518,8 @@ export default function Solo() {
 
         {/* Comprehensive Feature Highlight Card - Solo Tournament Benefits */}
         <SectionWrapper variant="default" data-testid="section-feature-highlight">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <Card className="hover-elevate transition-all duration-300 overflow-hidden" data-testid="feature-solo-tournament">
+          <ScrollReveal direction="bottom" delay={0.2}>
+            <InteractiveCard enableTilt className="overflow-hidden" data-testid="feature-solo-tournament">
               <div className="grid md:grid-cols-2 gap-0">
                 {/* Image Section */}
                 <div className="aspect-video md:aspect-auto overflow-hidden">

@@ -7,6 +7,11 @@ import SectionWrapper from "@/components/SectionWrapper";
 import ProfessionalStatCard from "@/components/ProfessionalStatCard";
 import ModernTestimonials from "@/components/ModernTestimonials";
 import CTABand from "@/components/CTABand";
+import ScrollReveal from "@/components/ScrollReveal";
+import AnimatedCounter from "@/components/AnimatedCounter";
+import InteractiveCard from "@/components/InteractiveCard";
+import GradientBlob from "@/components/GradientBlob";
+import MagneticButton from "@/components/MagneticButton";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -180,63 +185,60 @@ export default function Home() {
       <Navigation />
       
       <main className="flex-1 pt-16">
-        {/* Hero Section with Enhanced Animations */}
-        <ModernHero
-          title="Ghar Baithe BGMI Tournaments Khelo Aur Prizes Jeeto!"
-          description="India ka sabse trusted gaming platform. Mobile se registration karo, game khelo, aur asli paise jeeto. 10,000+ players already playing!"
-          backgroundImage={heroImage}
-          breadcrumbs={[
-            { label: "Home", href: "/" },
-            { label: "Tournaments" },
-          ]}
-          ctaButtons={[
-            {
-              label: "Tournaments Dekho",
-              href: "#tournaments",
-              icon: Trophy,
-            },
-            {
-              label: "Kaise Join Karein?",
-              href: "#how-to-join",
-              variant: "outline",
-              icon: PlayCircle,
-            },
-          ]}
-          overlayOpacity={0.75}
-          minHeight="600px"
-        />
+        {/* Hero Section with Modern Gradient Blobs and Enhanced Animations */}
+        <div className="relative overflow-hidden">
+          {/* Animated Gradient Blobs for Visual Impact */}
+          <GradientBlob color="primary" size="xl" position="top-left" opacity={0.2} speed="slow" />
+          <GradientBlob color="secondary" size="lg" position="top-right" opacity={0.15} speed="medium" />
+          <GradientBlob color="accent" size="md" position="bottom-right" opacity={0.1} speed="fast" />
+          
+          <ModernHero
+            title="Ghar Baithe BGMI Tournaments Khelo Aur Prizes Jeeto!"
+            description="India ka sabse trusted gaming platform. Mobile se registration karo, game khelo, aur asli paise jeeto. 10,000+ players already playing!"
+            backgroundImage={heroImage}
+            breadcrumbs={[
+              { label: "Home", href: "/" },
+              { label: "Tournaments" },
+            ]}
+            ctaButtons={[
+              {
+                label: "Tournaments Dekho",
+                href: "#tournaments",
+                icon: Trophy,
+              },
+              {
+                label: "Kaise Join Karein?",
+                href: "#how-to-join",
+                variant: "outline",
+                icon: PlayCircle,
+              },
+            ]}
+            overlayOpacity={0.75}
+            minHeight="600px"
+          />
+        </div>
 
-        {/* What is GameArena - Simple Explainer with Staggered Cards */}
+        {/* What is GameArena - Modern Explainer with Scroll Reveals */}
         <SectionWrapper variant="muted" data-testid="section-what-is-gamearena">
-          <motion.div
-            variants={fadeSlideUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.2 }}
-            className="text-center mb-16"
-          >
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-primary/20 to-primary/5 mb-6">
-              <Gamepad2 className="w-8 h-8 text-primary" />
+          <ScrollReveal direction="bottom">
+            <div className="text-center mb-16">
+              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-primary/20 to-primary/5 mb-6 magnetic scale-hover">
+                <Gamepad2 className="w-8 h-8 text-primary" />
+              </div>
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6">GameArena Kya Hai?</h2>
+              <p className="text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+                Ek simple platform jahan aap <strong>BGMI aur Free Fire Max tournaments</strong> mein participate karke <strong>asli paise</strong> jeet sakte ho. 
+                Bas apne phone se register karo, game khelo, aur prizes ghar baithe receive karo!
+              </p>
             </div>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6">GameArena Kya Hai?</h2>
-            <p className="text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-              Ek simple platform jahan aap <strong>BGMI aur Free Fire Max tournaments</strong> mein participate karke <strong>asli paise</strong> jeet sakte ho. 
-              Bas apne phone se register karo, game khelo, aur prizes ghar baithe receive karo!
-            </p>
-          </motion.div>
+          </ScrollReveal>
 
-          {/* Staggered Animation for Step Cards */}
-          <motion.div
-            variants={staggerContainer}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.2 }}
-            className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto"
-          >
-            <motion.div variants={staggerItem}>
-              <Card className="text-center h-full hover-elevate transition-all duration-300 group" data-testid="explainer-step-1">
-                <CardContent className="pt-10 pb-10 px-6">
-                  <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-500/20 via-blue-500/10 to-transparent mb-6 group-hover:scale-110 transition-transform duration-300">
+          {/* Modern Interactive Step Cards with Scroll Reveals */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            <ScrollReveal direction="left" delay={0.1}>
+              <InteractiveCard enableTilt tiltIntensity={5} data-testid="explainer-step-1">
+                <CardContent className="pt-10 pb-10 px-6 text-center">
+                  <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-500/20 via-blue-500/10 to-transparent mb-6 magnetic">
                     <Smartphone className="w-10 h-10 text-blue-500" />
                   </div>
                   <h3 className="text-xl font-bold mb-4">1. Mobile Se Register Karo</h3>
@@ -244,13 +246,13 @@ export default function Home() {
                     Apne phone se tournament choose karo aur ₹20 se start karo. Google Pay, PhonePe, Paytm - sab chalega!
                   </p>
                 </CardContent>
-              </Card>
-            </motion.div>
+              </InteractiveCard>
+            </ScrollReveal>
 
-            <motion.div variants={staggerItem}>
-              <Card className="text-center h-full hover-elevate transition-all duration-300 group" data-testid="explainer-step-2">
-                <CardContent className="pt-10 pb-10 px-6">
-                  <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-purple-500/20 via-purple-500/10 to-transparent mb-6 group-hover:scale-110 transition-transform duration-300">
+            <ScrollReveal direction="bottom" delay={0.2}>
+              <InteractiveCard enableTilt tiltIntensity={5} data-testid="explainer-step-2">
+                <CardContent className="pt-10 pb-10 px-6 text-center">
+                  <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-purple-500/20 via-purple-500/10 to-transparent mb-6 magnetic">
                     <Target className="w-10 h-10 text-purple-500" />
                   </div>
                   <h3 className="text-xl font-bold mb-4">2. Game Khelo</h3>
@@ -258,13 +260,13 @@ export default function Home() {
                     Tournament time pe room ID milega WhatsApp pe. Join karo aur apna best game khelo!
                   </p>
                 </CardContent>
-              </Card>
-            </motion.div>
+              </InteractiveCard>
+            </ScrollReveal>
 
-            <motion.div variants={staggerItem}>
-              <Card className="text-center h-full hover-elevate transition-all duration-300 group" data-testid="explainer-step-3">
-                <CardContent className="pt-10 pb-10 px-6">
-                  <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-amber-500/20 via-amber-500/10 to-transparent mb-6 group-hover:scale-110 transition-transform duration-300">
+            <ScrollReveal direction="right" delay={0.3}>
+              <InteractiveCard enableTilt tiltIntensity={5} data-testid="explainer-step-3">
+                <CardContent className="pt-10 pb-10 px-6 text-center">
+                  <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-amber-500/20 via-amber-500/10 to-transparent mb-6 magnetic">
                     <Gift className="w-10 h-10 text-amber-500" />
                   </div>
                   <h3 className="text-xl font-bold mb-4">3. Prize Jeeto!</h3>
@@ -272,9 +274,9 @@ export default function Home() {
                     Winner, runner-up, ya har kill pe paisa! 24-48 ghante mein prize aapke account mein.
                   </p>
                 </CardContent>
-              </Card>
-            </motion.div>
-          </motion.div>
+              </InteractiveCard>
+            </ScrollReveal>
+          </div>
         </SectionWrapper>
 
         {/* Tournaments Section with Stagger Animation */}
@@ -552,149 +554,151 @@ export default function Home() {
           </motion.div>
         </SectionWrapper>
 
-        {/* Trust Indicators - Stats with Enhanced Spacing */}
+        {/* Trust Indicators - Modern Animated Stats */}
         <SectionWrapper variant="default" data-testid="section-trust-stats">
-          <motion.div
-            variants={fadeSlideUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.2 }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6">Kyun Trust Karein GameArena Ko?</h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Numbers jhooth nahi bolte - dekho kitne log hamare saath khel rahe hain!
-            </p>
-          </motion.div>
+          <ScrollReveal direction="bottom">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6">Kyun Trust Karein GameArena Ko?</h2>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Numbers jhooth nahi bolte - dekho kitne log hamare saath khel rahe hain!
+              </p>
+            </div>
+          </ScrollReveal>
 
-          {/* Stats Grid with Stagger Animation */}
-          <motion.div
-            variants={staggerContainer}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.2 }}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
-          >
-            <motion.div variants={staggerItem}>
-              <ProfessionalStatCard
-                icon={Users}
-                value={10000}
-                label="Active Players"
-                suffix="+"
-                delay={0}
-                data-testid="stat-players"
-              />
-            </motion.div>
-            <motion.div variants={staggerItem}>
-              <ProfessionalStatCard
-                icon={Trophy}
-                value={150}
-                label="Tournaments Complete"
-                suffix="+"
-                delay={0}
-                data-testid="stat-tournaments"
-              />
-            </motion.div>
-            <motion.div variants={staggerItem}>
-              <ProfessionalStatCard
-                icon={DollarSign}
-                value={500000}
-                label="Total Prizes Distributed"
-                prefix="₹"
-                delay={0}
-                data-testid="stat-prizes"
-              />
-            </motion.div>
-            <motion.div variants={staggerItem}>
-              <ProfessionalStatCard
-                icon={Star}
-                value={4.9}
-                label="Player Rating"
-                suffix="/5"
-                decimals={1}
-                delay={0}
-                data-testid="stat-rating"
-              />
-            </motion.div>
-          </motion.div>
+          {/* Stats Grid with Modern Animated Counters and Scroll Reveals */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <ScrollReveal direction="scale" delay={0.1}>
+              <InteractiveCard enableGlow data-testid="stat-players">
+                <CardContent className="pt-10 pb-10 px-6 text-center">
+                  <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500/20 via-blue-500/10 to-transparent mb-6 magnetic">
+                    <Users className="w-8 h-8 text-blue-500" />
+                  </div>
+                  <div className="text-4xl font-bold mb-2 gradient-text-animated">
+                    <AnimatedCounter end={10000} suffix="+" duration={2500} />
+                  </div>
+                  <div className="text-sm text-muted-foreground font-medium">Active Players</div>
+                </CardContent>
+              </InteractiveCard>
+            </ScrollReveal>
+
+            <ScrollReveal direction="scale" delay={0.2}>
+              <InteractiveCard enableGlow data-testid="stat-tournaments">
+                <CardContent className="pt-10 pb-10 px-6 text-center">
+                  <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-green-500/20 via-green-500/10 to-transparent mb-6 magnetic">
+                    <Trophy className="w-8 h-8 text-green-500" />
+                  </div>
+                  <div className="text-4xl font-bold mb-2 gradient-text-animated">
+                    <AnimatedCounter end={150} suffix="+" duration={2500} />
+                  </div>
+                  <div className="text-sm text-muted-foreground font-medium">Tournaments Complete</div>
+                </CardContent>
+              </InteractiveCard>
+            </ScrollReveal>
+
+            <ScrollReveal direction="scale" delay={0.3}>
+              <InteractiveCard enableGlow data-testid="stat-prizes">
+                <CardContent className="pt-10 pb-10 px-6 text-center">
+                  <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-500/20 via-purple-500/10 to-transparent mb-6 magnetic">
+                    <DollarSign className="w-8 h-8 text-purple-500" />
+                  </div>
+                  <div className="text-4xl font-bold mb-2 gradient-text-animated">
+                    <AnimatedCounter end={500000} prefix="₹" duration={2500} separator="," />
+                  </div>
+                  <div className="text-sm text-muted-foreground font-medium">Total Prizes Distributed</div>
+                </CardContent>
+              </InteractiveCard>
+            </ScrollReveal>
+
+            <ScrollReveal direction="scale" delay={0.4}>
+              <InteractiveCard enableGlow data-testid="stat-rating">
+                <CardContent className="pt-10 pb-10 px-6 text-center">
+                  <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-500/20 via-amber-500/10 to-transparent mb-6 magnetic">
+                    <Star className="w-8 h-8 text-amber-500" />
+                  </div>
+                  <div className="text-4xl font-bold mb-2 gradient-text-animated">
+                    <AnimatedCounter end={4.9} suffix="/5" decimals={1} duration={2500} />
+                  </div>
+                  <div className="text-sm text-muted-foreground font-medium">Player Rating</div>
+                </CardContent>
+              </InteractiveCard>
+            </ScrollReveal>
+          </div>
         </SectionWrapper>
 
         {/* Why Choose Us - Enhanced Feature Cards with Gradient Icons */}
         <SectionWrapper variant="muted" data-testid="section-benefits">
-          <motion.div
-            variants={fadeSlideUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.2 }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6">GameArena Kyun Choose Karein?</h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Hamari khas baatein jo hame sabse alag banati hain
-            </p>
-          </motion.div>
+          <div className="relative">
+            <GradientBlob color="secondary" size="lg" position="top-left" opacity={0.08} speed="slow" />
+            
+            <ScrollReveal direction="bottom">
+              <div className="text-center mb-16">
+                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6">GameArena Kyun Choose Karein?</h2>
+                <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                  Hamari khas baatein jo hame sabse alag banati hain
+                </p>
+              </div>
+            </ScrollReveal>
 
-          {/* Benefits Grid with Stagger and Glow Effects */}
-          <motion.div
-            variants={staggerContainer}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.1 }}
-            className="grid grid-cols-1 md:grid-cols-2 gap-8"
-          >
-            {[
-              {
-                icon: Shield,
-                title: "100% Safe & Secure",
-                description: "Har payment verified hoti hai. Koi fraud nahi, sab legitimate. 10,000+ players hampe trust karte hain.",
-                gradient: "from-green-500/20 via-green-500/10 to-transparent",
-                iconColor: "text-green-500",
-                glowColor: "group-hover:shadow-[0_0_30px_rgba(34,197,94,0.3)]",
-              },
-              {
-                icon: Zap,
-                title: "Fast Prize Payment",
-                description: "Jeetne ke baad 24-48 ghante mein prize direct aapke UPI pe. No delays, no excuses - guaranteed!",
-                gradient: "from-blue-500/20 via-blue-500/10 to-transparent",
-                iconColor: "text-blue-500",
-                glowColor: "group-hover:shadow-[0_0_30px_rgba(59,130,246,0.3)]",
-              },
-              {
-                icon: MessageCircle,
-                title: "24/7 WhatsApp Support",
-                description: "Koi bhi problem ho, WhatsApp pe message karo. 5 minute mein reply milega. Hindi mein baat kar sakte ho!",
-                gradient: "from-purple-500/20 via-purple-500/10 to-transparent",
-                iconColor: "text-purple-500",
-                glowColor: "group-hover:shadow-[0_0_30px_rgba(168,85,247,0.3)]",
-              },
-              {
-                icon: Trophy,
-                title: "Fair Gameplay",
-                description: "Cheating allowed nahi hai. Har tournament fair hota hai. Aapki skill se jeetoge, kisi trick se nahi!",
-                gradient: "from-amber-500/20 via-amber-500/10 to-transparent",
-                iconColor: "text-amber-500",
-                glowColor: "group-hover:shadow-[0_0_30px_rgba(245,158,11,0.3)]",
-              },
-            ].map((benefit, index) => (
-              <motion.div key={benefit.title} variants={staggerItem}>
-                <Card className={`hover-elevate transition-all duration-300 h-full group ${benefit.glowColor}`} data-testid={`benefit-${index}`}>
-                  <CardHeader className="pb-6">
-                    <div className="flex items-start gap-6">
-                      <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${benefit.gradient} flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300`}>
-                        <benefit.icon className={`w-8 h-8 ${benefit.iconColor}`} />
+            {/* Benefits Grid with ScrollReveal and Interactive Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {[
+                {
+                  icon: Shield,
+                  title: "100% Safe & Secure",
+                  description: "Har payment verified hoti hai. Koi fraud nahi, sab legitimate. 10,000+ players hampe trust karte hain.",
+                  gradient: "from-green-500/20 via-green-500/10 to-transparent",
+                  iconColor: "text-green-500",
+                  direction: "left" as const,
+                  delay: 0.1,
+                },
+                {
+                  icon: Zap,
+                  title: "Fast Prize Payment",
+                  description: "Jeetne ke baad 24-48 ghante mein prize direct aapke UPI pe. No delays, no excuses - guaranteed!",
+                  gradient: "from-blue-500/20 via-blue-500/10 to-transparent",
+                  iconColor: "text-blue-500",
+                  direction: "right" as const,
+                  delay: 0.2,
+                },
+                {
+                  icon: MessageCircle,
+                  title: "24/7 WhatsApp Support",
+                  description: "Koi bhi problem ho, WhatsApp pe message karo. 5 minute mein reply milega. Hindi mein baat kar sakte ho!",
+                  gradient: "from-purple-500/20 via-purple-500/10 to-transparent",
+                  iconColor: "text-purple-500",
+                  direction: "left" as const,
+                  delay: 0.3,
+                },
+                {
+                  icon: Trophy,
+                  title: "Fair Gameplay",
+                  description: "Cheating allowed nahi hai. Har tournament fair hota hai. Aapki skill se jeetoge, kisi trick se nahi!",
+                  gradient: "from-amber-500/20 via-amber-500/10 to-transparent",
+                  iconColor: "text-amber-500",
+                  direction: "right" as const,
+                  delay: 0.4,
+                },
+              ].map((benefit, index) => (
+                <ScrollReveal key={benefit.title} direction={benefit.direction} delay={benefit.delay}>
+                  <InteractiveCard enableTilt tiltIntensity={5} data-testid={`benefit-${index}`}>
+                    <CardHeader className="pb-6">
+                      <div className="flex items-start gap-6">
+                        <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${benefit.gradient} flex items-center justify-center flex-shrink-0 magnetic`}>
+                          <benefit.icon className={`w-8 h-8 ${benefit.iconColor}`} />
+                        </div>
+                        <div className="flex-1">
+                          <CardTitle className="text-2xl mb-3">{benefit.title}</CardTitle>
+                          <CardDescription className="text-base leading-relaxed">
+                            {benefit.description}
+                          </CardDescription>
+                        </div>
                       </div>
-                      <div className="flex-1">
-                        <CardTitle className="text-2xl mb-3">{benefit.title}</CardTitle>
-                        <CardDescription className="text-base leading-relaxed">
-                          {benefit.description}
-                        </CardDescription>
-                      </div>
-                    </div>
-                  </CardHeader>
-                </Card>
-              </motion.div>
-            ))}
-          </motion.div>
+                    </CardHeader>
+                  </InteractiveCard>
+                </ScrollReveal>
+              ))}
+            </div>
+          </div>
         </SectionWrapper>
 
         {/* Testimonials - Enhanced with Smooth Entrance */}
@@ -772,85 +776,79 @@ export default function Home() {
 
         {/* Contact Quick Links with Enhanced Icons */}
         <SectionWrapper variant="default" data-testid="section-quick-contact">
-          <motion.div
-            variants={fadeSlideUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.2 }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6">Abhi Bhi Koi Doubt Hai?</h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Hum yahan hain help karne ke liye - contact karo kisi bhi tarah se!
-            </p>
-          </motion.div>
+          <div className="relative">
+            <GradientBlob color="accent" size="md" position="bottom-right" opacity={0.1} speed="medium" />
+            
+            <ScrollReveal direction="bottom">
+              <div className="text-center mb-16">
+                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6">Abhi Bhi Koi Doubt Hai?</h2>
+                <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                  Hum yahan hain help karne ke liye - contact karo kisi bhi tarah se!
+                </p>
+              </div>
+            </ScrollReveal>
 
-          {/* Contact Cards with Stagger Animation */}
-          <motion.div
-            variants={staggerContainer}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.2 }}
-            className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto"
-          >
-            <motion.div variants={staggerItem}>
-              <Card className="text-center hover-elevate transition-all duration-300 group hover:shadow-[0_0_30px_rgba(34,197,94,0.2)]" data-testid="contact-whatsapp">
-                <CardContent className="pt-10 pb-10 px-6">
-                  <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-green-500/20 via-green-500/10 to-transparent mb-6 group-hover:scale-110 transition-transform duration-300">
-                    <MessageCircle className="w-10 h-10 text-green-500" />
-                  </div>
-                  <h3 className="text-xl font-bold mb-2">WhatsApp Chat</h3>
-                  <p className="text-muted-foreground mb-6">24/7 Available</p>
-                  <Button variant="outline" className="w-full" asChild data-testid="button-whatsapp">
-                    <a 
-                      href="https://wa.me/917541024846" 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                    >
-                      Message Karo
-                      <ArrowRight className="w-4 h-4 ml-2" />
-                    </a>
-                  </Button>
-                </CardContent>
-              </Card>
-            </motion.div>
-
-            <motion.div variants={staggerItem}>
-              <Card className="text-center hover-elevate transition-all duration-300 group hover:shadow-[0_0_30px_rgba(59,130,246,0.2)]" data-testid="contact-phone">
-                <CardContent className="pt-10 pb-10 px-6">
-                  <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-500/20 via-blue-500/10 to-transparent mb-6 group-hover:scale-110 transition-transform duration-300">
-                    <PhoneCall className="w-10 h-10 text-blue-500" />
-                  </div>
-                  <h3 className="text-xl font-bold mb-2">Phone Call</h3>
-                  <p className="text-muted-foreground mb-6">10 AM - 8 PM</p>
-                  <Button variant="outline" className="w-full" asChild data-testid="button-phone">
-                    <a href="tel:+917541024846">
-                      Call Karo
-                      <ArrowRight className="w-4 h-4 ml-2" />
-                    </a>
-                  </Button>
-                </CardContent>
-              </Card>
-            </motion.div>
-
-            <motion.div variants={staggerItem}>
-              <Card className="text-center hover-elevate transition-all duration-300 group hover:shadow-[0_0_30px_rgba(168,85,247,0.2)]" data-testid="contact-email">
-                <CardContent className="pt-10 pb-10 px-6">
-                  <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-purple-500/20 via-purple-500/10 to-transparent mb-6 group-hover:scale-110 transition-transform duration-300">
-                    <Mail className="w-10 h-10 text-purple-500" />
-                  </div>
-                  <h3 className="text-xl font-bold mb-2">Email Us</h3>
-                  <p className="text-muted-foreground mb-6">24 hour reply</p>
-                  <Link href="/contact">
-                    <Button variant="outline" className="w-full" data-testid="button-contact-page">
-                      Email Bhejo
-                      <ArrowRight className="w-4 h-4 ml-2" />
+            {/* Contact Cards with ScrollReveal and Interactive Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+              <ScrollReveal direction="left" delay={0.1}>
+                <InteractiveCard enableTilt tiltIntensity={8} data-testid="contact-whatsapp">
+                  <CardContent className="pt-10 pb-10 px-6 text-center">
+                    <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-green-500/20 via-green-500/10 to-transparent mb-6 magnetic">
+                      <MessageCircle className="w-10 h-10 text-green-500" />
+                    </div>
+                    <h3 className="text-xl font-bold mb-2">WhatsApp Chat</h3>
+                    <p className="text-muted-foreground mb-6">24/7 Available</p>
+                    <Button variant="outline" className="w-full" asChild data-testid="button-whatsapp">
+                      <a 
+                        href="https://wa.me/917541024846" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                      >
+                        Message Karo
+                        <ArrowRight className="w-4 h-4 ml-2" />
+                      </a>
                     </Button>
-                  </Link>
-                </CardContent>
-              </Card>
-            </motion.div>
-          </motion.div>
+                  </CardContent>
+                </InteractiveCard>
+              </ScrollReveal>
+
+              <ScrollReveal direction="bottom" delay={0.2}>
+                <InteractiveCard enableTilt tiltIntensity={8} data-testid="contact-phone">
+                  <CardContent className="pt-10 pb-10 px-6 text-center">
+                    <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-500/20 via-blue-500/10 to-transparent mb-6 magnetic">
+                      <PhoneCall className="w-10 h-10 text-blue-500" />
+                    </div>
+                    <h3 className="text-xl font-bold mb-2">Phone Call</h3>
+                    <p className="text-muted-foreground mb-6">10 AM - 8 PM</p>
+                    <Button variant="outline" className="w-full" asChild data-testid="button-phone">
+                      <a href="tel:+917541024846">
+                        Call Karo
+                        <ArrowRight className="w-4 h-4 ml-2" />
+                      </a>
+                    </Button>
+                  </CardContent>
+                </InteractiveCard>
+              </ScrollReveal>
+
+              <ScrollReveal direction="right" delay={0.3}>
+                <InteractiveCard enableTilt tiltIntensity={8} data-testid="contact-email">
+                  <CardContent className="pt-10 pb-10 px-6 text-center">
+                    <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-purple-500/20 via-purple-500/10 to-transparent mb-6 magnetic">
+                      <Mail className="w-10 h-10 text-purple-500" />
+                    </div>
+                    <h3 className="text-xl font-bold mb-2">Email Us</h3>
+                    <p className="text-muted-foreground mb-6">24 hour reply</p>
+                    <Link href="/contact">
+                      <Button variant="outline" className="w-full" data-testid="button-contact-page">
+                        Email Bhejo
+                        <ArrowRight className="w-4 h-4 ml-2" />
+                      </Button>
+                    </Link>
+                  </CardContent>
+                </InteractiveCard>
+              </ScrollReveal>
+            </div>
+          </div>
         </SectionWrapper>
 
         {/* Final CTA */}
