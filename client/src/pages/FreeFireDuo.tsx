@@ -1,179 +1,198 @@
 /**
- * Free Fire Max Duo Tournament Page Component
+ * Free Fire Max Duo Tournament Page Component - Modern Redesign
  * 
- * Dedicated page for Free Fire Max Duo Tournament (2-player team) registration and information.
+ * Enhanced with split hero layout, scroll-triggered animations, and full responsiveness
+ * Matches the exact design pattern of Free Fire Solo page
  * 
- * Key Sections:
- * 1. Hero Section - Duo tournament banner with partner-focused messaging
- * 2. Tournament Stats - Entry fee (per team), team slots, and prize breakdown
- * 3. Feature Highlight - Benefits of duo teamwork and coordination
- * 4. Registration Form - Embedded Google Form for team registration
- * 5. Detailed Rules - Team requirements, payment, gameplay, and conduct
- * 6. FAQ Section - Duo-specific questions (teammate changes, coordination, prizes)
- * 7. Past Winners - Showcasing successful duo teams and their achievements
- * 8. Leaderboard - Current standings with team names and both players
- * 9. Payment Instructions - Team payment process and verification
- * 10. Player Testimonials - Reviews from duo tournament participants
- * 11. Strategy Tips - Duo coordination tactics and communication advice
- * 12. Team Gallery - Action shots of duo teams in competition
- * 13. CTA Band - Final registration encouragement
- * 
- * Emphasizes the importance of teamwork, communication, and partner coordination
- * while providing all necessary information for duo team registration.
+ * Key Improvements:
+ * - Split hero section with tournament info and registration form side-by-side
+ * - Scroll-triggered fade-in animations on all sections
+ * - Framer-motion stagger effects for cards and grids
+ * - Magnetic button effects for CTAs
+ * - Parallax effects on hero background
+ * - Glassmorphism effects for modern aesthetic
+ * - Fully responsive: mobile (stack), tablet (2-col), desktop (3-4 col)
  */
 
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef } from "react";
+import { useInView } from "react-intersection-observer";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
-import ModernHero from "@/components/ModernHero";
 import StickyCTA from "@/components/StickyCTA";
 import SectionWrapper from "@/components/SectionWrapper";
 import ProfessionalStatCard from "@/components/ProfessionalStatCard";
+import RulesAccordion from "@/components/RulesAccordion";
+import PaymentInstructions from "@/components/PaymentInstructions";
 import MediaLightbox from "@/components/MediaLightbox";
 import ModernTestimonials from "@/components/ModernTestimonials";
 import CTABand from "@/components/CTABand";
-import RulesAccordion from "@/components/RulesAccordion";
-import PaymentInstructions from "@/components/PaymentInstructions";
 import FormEmbed from "@/components/FormEmbed";
+import FloatingOrbs from "@/components/FloatingOrbs";
+import BlurFade from "@/components/BlurFade";
+import EnhancedMagneticButton from "@/components/EnhancedMagneticButton";
 import { FREEFIRE_TOURNAMENTS } from "@shared/config";
 import { fadeSlideUp, staggerContainer, staggerItem, scaleUp } from "@/lib/motion";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  Trophy,
-  Users,
-  Coins,
-  Ticket,
-  Calendar,
-  Clock,
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Separator } from "@/components/ui/separator";
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
+import { 
+  Trophy, 
+  Users, 
+  Coins, 
+  Ticket, 
+  Calendar, 
+  Clock, 
   Target,
   Award,
-  TrendingUp,
-  CheckCircle2,
-  AlertCircle,
   Zap,
-  MessageSquare,
   Shield,
+  Wifi,
+  Smartphone,
+  CheckCircle2,
+  ArrowRight,
   Star,
+  TrendingUp,
   Medal,
   Crown,
-  Timer,
-  UserPlus,
-  FileText,
-  CreditCard,
-  PlayCircle,
+  Play,
   ExternalLink,
-  ArrowRight,
+  AlertCircle,
+  Sparkles,
+  MessageSquare
 } from "lucide-react";
+import { BarChart, Bar, PieChart, Pie, Cell, ResponsiveContainer, XAxis, YAxis, Legend, Tooltip } from "recharts";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 
-// Import Free Fire Max images showcasing duo team action and coordination
+// Import Free Fire Max duo team images for gallery and hero section
 import heroImage from "@assets/generated_images/Free_Fire_duo_team_coordination_4f78207d.png";
-import duoImage1 from "@assets/generated_images/Free_Fire_hero_battle_scene_a40d612c.png";
-import duoImage2 from "@assets/generated_images/Free_Fire_combat_firefight_scene_0a317ba9.png";
-import duoImage3 from "@assets/generated_images/Free_Fire_victory_celebration_45370171.png";
-import duoImage4 from "@assets/generated_images/Free_Fire_tournament_competitive_scene_5bc9ee86.png";
-import duoImage5 from "@assets/generated_images/Free_Fire_weapon_showcase_60414721.png";
-import duoImage6 from "@assets/generated_images/Free_Fire_championship_trophy_26620803.png";
-import duoImage7 from "@assets/generated_images/Free_Fire_character_lineup_2e5c6102.png";
-// Feature Card Image for team strategy
-import teamStrategyImage from "@assets/generated_images/Free_Fire_duo_team_coordination_4f78207d.png";
+import tournamentImage1 from "@assets/generated_images/Free_Fire_hero_battle_scene_a40d612c.png";
+import tournamentImage2 from "@assets/generated_images/Free_Fire_combat_firefight_scene_0a317ba9.png";
+import tournamentImage3 from "@assets/generated_images/Free_Fire_victory_celebration_45370171.png";
+import esportsImage1 from "@assets/generated_images/Free_Fire_tournament_competitive_scene_5bc9ee86.png";
+import esportsImage2 from "@assets/generated_images/Free_Fire_weapon_showcase_60414721.png";
+import gamingImage1 from "@assets/generated_images/Free_Fire_character_lineup_2e5c6102.png";
+import gamingImage2 from "@assets/generated_images/Free_Fire_championship_trophy_26620803.png";
 
-// Duo tournament rules organized by category for Free Fire Max
-// Covers team formation, payment, gameplay, and disqualification policies
-const rules = [
+// Prize breakdown data for visual pie chart
+const prizeBreakdownData = [
+  { name: "Winner", value: FREEFIRE_TOURNAMENTS.duo.winner, percentage: 40, fill: "hsl(var(--chart-1))" },
+  { name: "Runner-Up", value: FREEFIRE_TOURNAMENTS.duo.runnerUp, percentage: 30, fill: "hsl(var(--chart-2))" },
+  { name: "Per Kill Pool", value: 300, percentage: 30, fill: "hsl(var(--chart-3))" },
+];
+
+// Kill rewards breakdown table data
+const killRewardsData = [
+  { kills: "0-5", reward: `₹0-${FREEFIRE_TOURNAMENTS.duo.perKill * 5}` },
+  { kills: "6-10", reward: `₹${FREEFIRE_TOURNAMENTS.duo.perKill * 6}-${FREEFIRE_TOURNAMENTS.duo.perKill * 10}` },
+  { kills: "11-15", reward: `₹${FREEFIRE_TOURNAMENTS.duo.perKill * 11}-${FREEFIRE_TOURNAMENTS.duo.perKill * 15}` },
+  { kills: "16+", reward: `₹${FREEFIRE_TOURNAMENTS.duo.perKill * 16}+` },
+];
+
+// Historical data of past Free Fire Max duo tournament winners
+const pastWinners = [
   {
-    title: "Team Registration Requirements",
-    type: "info" as const,
-    content: [
-      "Register with your 2-player team - both players must be confirmed before registration",
-      "Team name must be unique, appropriate, and follow community guidelines",
-      "Both players' Free Fire Max IDs and in-game names must be accurate and verified",
-      "Team leader's WhatsApp number is required for all official communications",
-      "Payment verification is mandatory before slot confirmation - no exceptions",
-      "Once registered, team composition cannot be changed without prior approval",
-    ],
+    teamName: "Fire Phoenix",
+    player1: "Aryan_FF",
+    player2: "Rohan_Pro",
+    kills: 17,
+    prize: "₹336",
+    date: "October 20, 2025",
+    placement: 1,
   },
   {
-    title: "Payment Process",
-    type: "info" as const,
-    content: [
-      "Entry fee: ₹40 per team (covers both players)",
-      "Payment must be made via official GameArena QR code only",
-      "Upload a clear, unedited screenshot of payment confirmation",
-      "Enter the correct Transaction ID exactly as shown in your payment receipt",
-      "Slots will be automatically canceled if payment is not verified within 24 hours",
-      "No refunds after slot confirmation - ensure team commitment before payment",
-    ],
+    teamName: "Blaze Legends",
+    player1: "Priya_YT",
+    player2: "Neha_GG",
+    kills: 14,
+    prize: "₹262",
+    date: "October 5, 2025",
+    placement: 2,
   },
   {
-    title: "Tournament Rules & Fair Play",
-    type: "success" as const,
-    content: [
-      "Absolutely no use of hacks, cheats, emulators, or third-party applications",
-      "Both team members must maintain professional sportsmanship at all times",
-      "Follow room credentials and join instructions shared by tournament admin",
-      "Both players must be online 15 minutes before tournament start time",
-      "Team members cannot be substituted after registration deadline",
-      "Any toxic behavior, harassment, or unsportsmanlike conduct leads to immediate disqualification",
-      "Stream sniping or ghosting will result in permanent ban from future tournaments",
-    ],
+    teamName: "Thunder Strike",
+    player1: "Karan_OP",
+    player2: "Vivaan_Ace",
+    kills: 19,
+    prize: "₹352",
+    date: "September 22, 2025",
+    placement: 1,
   },
   {
-    title: "Prize Distribution",
-    type: "success" as const,
-    content: [
-      "Winner Team: ₹200 (First place)",
-      "Runner-Up Team: ₹150 (Second place)",
-      "Per Kill Reward: ₹8 (for each elimination)",
-      "Prizes will be distributed within 24-48 hours after tournament completion",
-      "Team leader's valid UPI ID required for prize transfer",
-      "Prize will be transferred to team leader who distributes to partner",
-      "Winners must provide valid ID proof for prizes above ₹10,000 (tax compliance)",
-    ],
-  },
-  {
-    title: "Communication & Coordination",
-    type: "info" as const,
-    content: [
-      "Team must use in-game voice chat or approved external voice apps",
-      "WhatsApp group will be created for all participating teams",
-      "Admin announcements and updates will be shared in the official group",
-      "Check WhatsApp regularly for room details and match schedules",
-      "Any queries must be directed to official support, not spam in group",
-    ],
-  },
-  {
-    title: "Disqualification Policy",
-    type: "warning" as const,
-    content: [
-      "Providing incorrect, incomplete, or fraudulent team details",
-      "Payment verification failure or fake payment screenshots",
-      "Use of unauthorized applications, hacks, or cheats by any team member",
-      "Toxic behavior, harassment, or unsportsmanlike conduct by any player",
-      "Not following admin instructions or room joining protocols",
-      "Playing with different team member than registered",
-      "Late arrival (not present 15 minutes before tournament)",
-      "No refunds in case of disqualification under any circumstances",
-    ],
-  },
-  {
-    title: "YouTube Streaming & Content",
-    type: "info" as const,
-    content: [
-      "This tournament may be streamed live on our official YouTube channel",
-      "Your vote in the registration form helps us decide streaming schedule",
-      "Majority decision will determine if matches are live-streamed",
-      "Streaming brings more visibility, recognition, and excitement to the tournament",
-      "By participating, you consent to being featured in our tournament content",
-    ],
+    teamName: "Victory Squad",
+    player1: "Aarav_TX",
+    player2: "Ishaan_King",
+    kills: 13,
+    prize: "₹304",
+    date: "September 8, 2025",
+    placement: 1,
   },
 ];
 
-// Duo-specific frequently asked questions for Free Fire Max
-// Addresses team coordination, communication, and partnership concerns
+// Current tournament leaderboard for display
+const mockLeaderboard = [
+  { rank: 1, teamName: "Dragon Slayers", player1: "Dev_FF", player2: "Raj_Max", kills: 15, points: 148, prize: "₹320" },
+  { rank: 2, teamName: "Elite Fighters", player1: "Sam_Pro", player2: "Max_GG", kills: 13, points: 135, prize: "₹254" },
+  { rank: 3, teamName: "Night Hawks", player1: "Jay_YT", player2: "Sid_OP", kills: 12, points: 130, prize: "₹96" },
+  { rank: 4, teamName: "Storm Warriors", player1: "Nik_Ace", player2: "Ash_TX", kills: 11, points: 118, prize: "₹88" },
+  { rank: 5, teamName: "Fire Legends", player1: "Ron_GG", player2: "Tom_Pro", kills: 10, points: 110, prize: "₹80" },
+  { rank: 6, teamName: "Blaze Force", player1: "Leo_YT", player2: "Dan_OP", kills: 9, points: 98, prize: "₹72" },
+  { rank: 7, teamName: "Titan Duo", player1: "Ben_Max", player2: "Ken_FF", kills: 8, points: 90, prize: "₹64" },
+  { rank: 8, teamName: "Viper Team", player1: "Zen_Pro", player2: "Ace_GG", kills: 7, points: 79, prize: "₹56" },
+];
+
+// Player testimonials specific to Free Fire Max duo tournament experiences
+const testimonials = [
+  {
+    name: "Aryan & Rohan",
+    role: "Duo Tournament Winners - Oct 2025",
+    content: "GameArena's Free Fire Max duo tournaments are incredibly well-organized. The coordination with my teammate was smooth, and we won ₹200 plus kill rewards! Prize was transferred within 24 hours. Highly recommend for serious Free Fire duos.",
+    initials: "AR",
+    rating: 5,
+  },
+  {
+    name: "Priya & Neha",
+    role: "Regular Participants",
+    content: "We've participated in 5 Free Fire duo tournaments here. The competition is intense but fair. Admin support is excellent, and the registration process is straightforward. Best duo tournament platform for Free Fire Max!",
+    initials: "PN",
+    rating: 5,
+  },
+  {
+    name: "Karan & Vivaan",
+    role: "Runner-Up - Sept 2025",
+    content: "Came second in our first Free Fire tournament! The ₹150 runner-up prize plus ₹8 per kill is very rewarding. Great way to test our duo skills against competitive teams. We'll definitely be back for more.",
+    initials: "KV",
+    rating: 5,
+  },
+  {
+    name: "Aarav & Ishaan",
+    role: "Duo Champions - Aug 2025",
+    content: "My partner and I have been gaming together for years. This Free Fire tournament brought out the best teamwork in us. Fair rules, quick prize distribution, and great competition. Can't wait for the next one!",
+    initials: "AI",
+    rating: 5,
+  },
+  {
+    name: "Raj & Aditya",
+    role: "Multiple Top 5 Finishes",
+    content: "Even though we haven't won yet, every Free Fire tournament improves our coordination. The per-kill rewards keep it exciting, and we always make back our entry fee. Best practice for serious duo teams!",
+    initials: "RA",
+    rating: 4,
+  },
+];
+
+// Comprehensive FAQ section for Free Fire Max duo tournaments
 const faqs = [
   {
     question: "Can I change my teammate after registration?",
@@ -200,20 +219,12 @@ const faqs = [
     answer: "Each elimination counts as one kill for your team. The kill is credited to the player who gets the finishing blow. Both team members' kills are combined for the total team kill count. Final kill count is verified from match results, and ₹8 per kill is added to your prize.",
   },
   {
-    question: "What if both teammates have the same number of kills?",
-    answer: "The per-kill reward (₹8 per kill) is calculated for the team's total kills combined. It doesn't matter who gets more kills - the total prize goes to the team leader's UPI, who can then split with their partner as agreed. Individual kill counts only matter for personal bragging rights!",
-  },
-  {
     question: "Do we need separate devices, or can we play from the same location?",
     answer: "Each player must have their own mobile device and separate Free Fire Max accounts. You can be in the same physical location or play remotely - whatever works best for your team's coordination. Many successful duo teams practice and compete while sitting together for better communication.",
   },
   {
     question: "What happens if one player gets disconnected during the match?",
     answer: "Technical issues are unfortunate but are the team's responsibility. If a player disconnects, they should rejoin as quickly as possible. The match will not be paused or restarted. Your teammate can try to survive until you reconnect. Ensure stable internet connection before the tournament starts.",
-  },
-  {
-    question: "Is there a minimum rank or level requirement for duo tournaments?",
-    answer: "No, Free Fire duo tournaments are open to all skill levels. Whether you're Bronze or Heroic, you and your teammate can participate. However, higher-skilled teams naturally have better chances of winning. Focus on teamwork and communication - these often matter more than individual skill.",
   },
   {
     question: "How is the prize money split between duo teammates?",
@@ -228,109 +239,211 @@ const faqs = [
     answer: "Communication is crucial in duo mode, so it's best to team up with someone who speaks the same language. However, if you have a communication system that works (basic callouts, pings, etc.), you can make it work. Many successful teams use simple English callouts regardless of their native language.",
   },
   {
-    question: "Are there any specific device or graphics requirements?",
-    answer: "No specific requirements, but we recommend: Smooth graphics settings, stable 30+ FPS, good network connection (WiFi preferred over mobile data), and sufficient battery or charger ready. Performance issues are your responsibility and won't be grounds for match restart.",
+    question: "Can I participate if I'm a beginner?",
+    answer: "Absolutely! While our tournaments attract competitive teams, beginners are welcome. It's a great way to test your skills with your partner, learn from experienced teams, and improve your gameplay. Even if you don't win, the experience is valuable. Start with realistic expectations and focus on improvement.",
   },
 ];
 
-// Testimonials from Free Fire duo tournament participants
-// Highlights successful partnerships and team experiences
-const testimonials = [
+// Comprehensive tournament rules organized by category
+const detailedRules = [
   {
-    name: "Aryan & Rohan",
-    role: "Tournament Winners - October 2025",
-    content: "GameArena's Free Fire Max duo tournaments are incredibly well-organized. The coordination with my teammate was smooth, and we won ₹200 plus kill rewards! Prize was transferred within 24 hours. Highly recommend for serious Free Fire duos.",
-    initials: "AR",
-    rating: 5,
+    title: "Team Registration Requirements",
+    type: "info" as const,
+    content: [
+      "Register with your 2-player team - both players must be confirmed before registration",
+      "Team name must be unique, appropriate, and follow community guidelines",
+      "Both players' Free Fire Max IDs and in-game names must be accurate and verified",
+      "Team leader's WhatsApp number is required for all official communications",
+      "Payment verification is mandatory before slot confirmation",
+      "Double-check all entered information before submission",
+      "Once registered, team composition cannot be changed without prior approval",
+    ],
   },
   {
-    name: "Priya & Neha",
-    role: "Regular Participants",
-    content: "We've participated in 5 Free Fire duo tournaments here. The competition is intense but fair. Admin support is excellent, and the registration process is straightforward. Best duo tournament platform for Free Fire Max!",
-    initials: "PN",
-    rating: 5,
+    title: "Payment Process & Verification",
+    type: "info" as const,
+    content: [
+      "Entry fee: ₹40 per team (covers both players - non-refundable except in specific cases)",
+      "Payment must be made via official GameArena UPI QR code only",
+      "Upload clear, unedited screenshot of payment confirmation",
+      "Note down and enter the correct Transaction ID/UPI Reference Number",
+      "Payment verification typically takes 2-4 hours during business hours",
+      "Slots will be canceled if payment cannot be verified within 24 hours",
+      "Do not make payment to any other QR code or UPI ID - check official sources",
+      "Keep payment receipt safe until tournament completion",
+    ],
   },
   {
-    name: "Karan & Vivaan",
-    role: "Runner-Up - September 2025",
-    content: "Came second in our first Free Fire tournament! The ₹150 runner-up prize plus ₹8 per kill is very rewarding. Great way to test our duo skills against competitive teams. We'll definitely be back for more.",
-    initials: "KV",
-    rating: 5,
+    title: "Match Rules & Gameplay",
+    type: "success" as const,
+    content: [
+      "Both team members must be online 15 minutes before tournament start time",
+      "Join the match using Room ID and Password shared via WhatsApp",
+      "Map and match settings will be announced 1 hour before start time",
+      "No use of hacks, cheats, mods, or third-party applications whatsoever",
+      "Emulators are strictly prohibited - only mobile devices allowed",
+      "Both team members must maintain sportsmanship and respect towards other players",
+      "Follow all admin instructions during the tournament",
+      "Recording your gameplay is recommended for dispute resolution",
+    ],
   },
   {
-    name: "Aarav & Ishaan",
-    role: "Duo Champions - August 2025",
-    content: "My partner and I have been gaming together for years. This Free Fire tournament brought out the best teamwork in us. Fair rules, quick prize distribution, and great competition. Can't wait for the next one!",
-    initials: "AI",
-    rating: 5,
+    title: "Prize Distribution & Rewards",
+    type: "success" as const,
+    content: [
+      "Winner Team (1st Place): ₹200 guaranteed",
+      "Runner-Up Team (2nd Place): ₹150 guaranteed",
+      "Per Kill Reward: ₹8 per elimination (verified from match stats)",
+      "Total Prize Pool: ₹650+ (varies based on total kills)",
+      "Prizes distributed within 24-48 hours after tournament",
+      "Valid UPI ID required for prize transfer - must match team leader name",
+      "All kills verified from official Free Fire Max match statistics",
+      "Team must provide screenshot of final stats for verification",
+      "Tax deductions may apply as per Indian regulations (if applicable)",
+    ],
   },
   {
-    name: "Raj & Aditya",
-    role: "Multiple Top 5 Finishes",
-    content: "Even though we haven't won yet, every Free Fire tournament improves our coordination. The per-kill rewards keep it exciting, and we always make back our entry fee. Best practice for serious duo teams!",
-    initials: "RA",
-    rating: 4,
+    title: "Team Communication & Coordination",
+    type: "info" as const,
+    content: [
+      "Team must use in-game voice chat or approved external voice apps (Discord, etc.)",
+      "Communicate constantly - call out enemies, share loot, coordinate rotations",
+      "Practice together before tournament to build synergy and chemistry",
+      "Both players should agree on landing spot and strategy beforehand",
+      "Maintain close proximity during match - stick together for team advantage",
+      "Have backup communication method ready in case of technical issues",
+    ],
+  },
+  {
+    title: "Fair Play & Anti-Cheat",
+    type: "warning" as const,
+    content: [
+      "Zero tolerance policy for cheating, hacking, or unfair practices by any team member",
+      "Suspicious activity will be investigated thoroughly",
+      "Account sharing or player substitution is strictly prohibited",
+      "Use of VPN, game boosters, or unauthorized apps will lead to ban",
+      "Admin reserves right to check device and game version",
+      "Match replays may be reviewed for suspicious gameplay",
+      "Reports of cheating will be investigated with evidence",
+      "Fair play ensures quality competition for all participants",
+    ],
+  },
+  {
+    title: "Disqualification Policy",
+    type: "warning" as const,
+    content: [
+      "Providing incorrect, incomplete, or fraudulent team registration details",
+      "Payment verification failure or suspicious payment activity",
+      "Use of unauthorized applications, cheats, hacks, or mods by any player",
+      "Toxic behavior, harassment, or abuse towards other players/admin",
+      "Not following admin instructions or tournament guidelines",
+      "Late entry or absence from match without prior notice",
+      "Playing with different team member than registered",
+      "No refunds issued in case of disqualification due to rule violations",
+    ],
+  },
+  {
+    title: "Communication & Support",
+    type: "info" as const,
+    content: [
+      "All official communication via WhatsApp tournament group only",
+      "Join the WhatsApp group link shared after registration confirmation",
+      "Room credentials shared 30 minutes before tournament start",
+      "Admin available for queries and support during tournament hours",
+      "Report technical issues immediately via WhatsApp",
+      "Check announcements regularly for updates and important info",
+      "Disputes must be raised within 1 hour of match completion",
+    ],
   },
 ];
 
-// Historical Free Fire duo tournament winners with team details
-// Shows both players' names and combined achievements
-const pastWinners = [
+// Step-by-step registration process visualization
+const registrationSteps = [
   {
-    teamName: "Fire Phoenix",
-    player1: "Aryan_FF",
-    player2: "Rohan_Pro",
-    kills: 17,
-    prize: "₹503",
-    date: "October 20, 2025",
-    placement: 1,
+    title: "Make Team Payment",
+    description: "Pay ₹40 entry fee via official QR code and save transaction screenshot",
+    icon: Coins,
+    time: "2 minutes",
   },
   {
-    teamName: "Blaze Legends",
-    player1: "Priya_YT",
-    player2: "Neha_GG",
-    kills: 14,
-    prize: "₹376",
-    date: "October 5, 2025",
-    placement: 2,
+    title: "Fill Team Registration Form",
+    description: "Complete form with both players' Free Fire IDs, team name, and payment details",
+    icon: CheckCircle2,
+    time: "5 minutes",
   },
   {
-    teamName: "Thunder Strike",
-    player1: "Karan_OP",
-    player2: "Vivaan_Ace",
-    kills: 19,
-    prize: "₹521",
-    date: "September 22, 2025",
-    placement: 1,
+    title: "Payment Verification",
+    description: "Admin verifies your payment and confirms your duo team slot",
+    icon: Shield,
+    time: "2-4 hours",
   },
   {
-    teamName: "Victory Squad",
-    player1: "Aarav_TX",
-    player2: "Ishaan_King",
-    kills: 13,
-    prize: "₹367",
-    date: "September 8, 2025",
-    placement: 1,
+    title: "Receive Credentials",
+    description: "Get room ID and password via WhatsApp 30 minutes before match",
+    icon: Zap,
+    time: "Day of tournament",
+  },
+  {
+    title: "Join Tournament Together",
+    description: "Both team members enter the match room and compete for prizes",
+    icon: Trophy,
+    time: "Match time",
   },
 ];
 
-// Current tournament leaderboard showing Free Fire duo teams
-// Displays both players, kills, and points for transparency
-const leaderboardData = [
-  { rank: 1, teamName: "Dragon Slayers", player1: "Dev_FF", player2: "Raj_Max", kills: 15, points: 148 },
-  { rank: 2, teamName: "Elite Fighters", player1: "Sam_Pro", player2: "Max_GG", kills: 13, points: 135 },
-  { rank: 3, teamName: "Night Hawks", player1: "Jay_YT", player2: "Sid_OP", kills: 12, points: 130 },
-  { rank: 4, teamName: "Storm Warriors", player1: "Nik_Ace", player2: "Ash_TX", kills: 11, points: 118 },
-  { rank: 5, teamName: "Fire Legends", player1: "Ron_GG", player2: "Tom_Pro", kills: 10, points: 110 },
-  { rank: 6, teamName: "Blaze Force", player1: "Leo_YT", player2: "Dan_OP", kills: 9, points: 98 },
-  { rank: 7, teamName: "Titan Duo", player1: "Ben_Max", player2: "Ken_FF", kills: 8, points: 90 },
-  { rank: 8, teamName: "Viper Team", player1: "Zen_Pro", player2: "Ace_GG", kills: 7, points: 79 },
+// Tournament schedule timeline with important dates
+const scheduleData = [
+  {
+    stage: "Registration Opens",
+    date: "November 1, 2025",
+    time: "12:00 PM IST",
+    status: "Open",
+    description: "Teams start registering by making payment and filling form",
+  },
+  {
+    stage: "Registration Closes",
+    date: "November 8, 2025",
+    time: "11:59 PM IST",
+    status: "Upcoming",
+    description: "Last date to register - slots confirmed on first-come basis",
+  },
+  {
+    stage: "Credentials Distribution",
+    date: "November 9, 2025",
+    time: "5:30 PM IST",
+    status: "Upcoming",
+    description: "Room ID and Password shared via WhatsApp group",
+  },
+  {
+    stage: "Tournament Begins",
+    date: "November 9, 2025",
+    time: "6:00 PM IST",
+    status: "Upcoming",
+    description: "Match starts - both team members online 15 minutes early",
+  },
+  {
+    stage: "Results & Distribution",
+    date: "November 10, 2025",
+    time: "2:00 PM IST",
+    status: "Upcoming",
+    description: "Winners announced and prizes distributed within 48 hours",
+  },
 ];
 
 export default function FreeFireDuo() {
+  const heroRef = useRef<HTMLDivElement>(null);
+  
+  // Parallax scroll effect for hero background
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"]
+  });
+  
+  const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
+  const overlayOpacity = useTransform(scrollYProgress, [0, 1], [0.8, 0.95]);
+  
   /**
-   * Smooth scroll to team registration section
-   * Helps users quickly access the registration form from any CTA
+   * Smooth scroll to registration section
    */
   const scrollToRegistration = () => {
     document.getElementById("registration")?.scrollIntoView({ behavior: "smooth" });
@@ -348,663 +461,427 @@ export default function FreeFireDuo() {
       />
       
       <main className="flex-1 pt-16">
-        {/* Hero Section - Free Fire Max Duo Tournament banner with dynamic background */}
-        <ModernHero
-          title="Free Fire Max Duo Tournament"
-          description="Partner up and dominate Free Fire Max battleground. Compete as a duo team for exciting prizes, recognition, and glory. 50 teams, one ultimate duo champion."
-          backgroundImage={heroImage}
-          breadcrumbs={[
-            { label: "Home", href: "/" },
-            { label: "Tournaments", href: "/#tournaments" },
-            { label: "Free Fire Duo Tournament" },
-          ]}
-          ctaButtons={[
-            { label: "Register Now", onClick: scrollToRegistration, icon: UserPlus },
-            { label: "View Rules", href: "#rules", variant: "outline", icon: FileText },
-          ]}
-          overlayOpacity={0.75}
-          minHeight="600px"
-        />
-
-        {/* Registration Form - User-friendly registration with prominent button */}
-        <SectionWrapper id="registration" variant="muted" data-testid="section-registration">
+        {/* SPLIT HERO SECTION - Modern two-column layout */}
+        <div 
+          ref={heroRef}
+          className="relative min-h-[90vh] lg:min-h-[85vh] overflow-hidden"
+          data-testid="hero-section"
+        >
+          {/* Floating Orbs Background Effect */}
+          <FloatingOrbs count={4} />
+          
+          {/* Parallax Background Image */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="space-y-8 animate-slide-bottom"
-          >
-            <div className="text-center space-y-4">
-              <div className="flex items-center justify-center gap-2">
-                <Trophy className="w-8 h-8 text-primary" />
-                <h2 className="text-4xl font-bold" data-testid="heading-registration">Register Now</h2>
-              </div>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Complete the registration form to secure your duo team spot in the tournament. Make sure all details are accurate.
-              </p>
-            </div>
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+            style={{ 
+              backgroundImage: `url(${heroImage})`,
+              y: backgroundY 
+            }}
+          />
+          
+          {/* Enhanced Gradient Overlay */}
+          <motion.div
+            className="absolute inset-0"
+            style={{ 
+              background: "var(--gradient-dark)",
+              opacity: overlayOpacity
+            }}
+          />
+          
+          {/* Gradient Glow Effect */}
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{ background: "var(--gradient-glow)" }}
+          />
 
-            <div className="max-w-4xl mx-auto">
-              <Card className="hover-elevate transition-all duration-300">
-                <CardHeader>
-                  <div className="flex items-start justify-between gap-4">
-                    <div>
-                      <CardTitle className="text-2xl">Free Fire Max Duo Tournament Registration</CardTitle>
-                      <CardDescription className="mt-2">
-                        {FREEFIRE_TOURNAMENTS.duo.description}
-                      </CardDescription>
-                    </div>
-                    <Badge variant="default" className="flex-shrink-0">
-                      <Users className="w-3 h-3 mr-1" />
-                      Duo
-                    </Badge>
+          {/* Hero Content Container - Responsive Split Layout */}
+          <div className="relative z-10 container mx-auto px-4 py-8 lg:py-12 h-full min-h-[90vh] lg:min-h-[85vh]">
+            {/* Breadcrumbs */}
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="mb-6 lg:mb-8"
+            >
+              <Breadcrumb>
+                <BreadcrumbList>
+                  <BreadcrumbItem>
+                    <BreadcrumbLink href="/" className="text-foreground/80 hover:text-foreground">
+                      Home
+                    </BreadcrumbLink>
+                  </BreadcrumbItem>
+                  <BreadcrumbSeparator />
+                  <BreadcrumbItem>
+                    <BreadcrumbLink href="/#tournaments" className="text-foreground/80 hover:text-foreground">
+                      Tournaments
+                    </BreadcrumbLink>
+                  </BreadcrumbItem>
+                  <BreadcrumbSeparator />
+                  <BreadcrumbItem>
+                    <BreadcrumbPage className="text-foreground">Free Fire Duo</BreadcrumbPage>
+                  </BreadcrumbItem>
+                </BreadcrumbList>
+              </Breadcrumb>
+            </motion.div>
+
+            {/* Split Layout Grid - Stacks on mobile, side-by-side on desktop */}
+            <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+              {/* LEFT COLUMN - Tournament Information */}
+              <motion.div
+                initial={{ opacity: 0, x: -50 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                className="space-y-6 lg:space-y-8"
+              >
+                {/* Tournament Badge */}
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.5, delay: 0.3 }}
+                >
+                  <Badge variant="outline" className="text-base px-4 py-2 bg-primary/10 border-primary/30 backdrop-blur-sm">
+                    <Users className="w-4 h-4 mr-2" />
+                    Duo Tournament
+                  </Badge>
+                </motion.div>
+
+                {/* Main Heading with Gradient */}
+                <motion.h1
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 0.4 }}
+                  className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight gradient-text leading-tight"
+                >
+                  Free Fire Max<br />Duo Tournament
+                </motion.h1>
+
+                {/* Description */}
+                <motion.p
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 0.5 }}
+                  className="text-lg md:text-xl lg:text-2xl text-foreground/90 leading-relaxed max-w-xl"
+                >
+                  Partner up and dominate Free Fire Max battleground. Compete as a duo team for exciting prizes, recognition, and glory. 25 teams, one ultimate duo champion.
+                </motion.p>
+
+                {/* Quick Stats - Glassmorphic Cards */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 0.6 }}
+                  className="grid grid-cols-2 sm:grid-cols-4 gap-3 lg:gap-4"
+                >
+                  <div className="glass-effect rounded-lg p-4 text-center space-y-1">
+                    <div className="text-2xl lg:text-3xl font-bold text-primary">₹{FREEFIRE_TOURNAMENTS.duo.entryFee}</div>
+                    <div className="text-xs text-foreground/70">Entry Fee</div>
                   </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-6">
-                    {/* Tournament Summary Stats */}
-                    <div className="grid sm:grid-cols-3 gap-4">
-                      <div className="flex items-center gap-2 p-4 bg-primary/5 rounded-lg border border-primary/10">
-                        <Ticket className="w-6 h-6 text-primary flex-shrink-0" />
-                        <div>
-                          <p className="text-xs text-muted-foreground font-medium">Entry Fee</p>
-                          <p className="font-bold text-lg">₹{FREEFIRE_TOURNAMENTS.duo.entryFee}</p>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-2 p-4 bg-primary/5 rounded-lg border border-primary/10">
-                        <Users className="w-6 h-6 text-primary flex-shrink-0" />
-                        <div>
-                          <p className="text-xs text-muted-foreground font-medium">Total Slots</p>
-                          <p className="font-bold text-lg">{FREEFIRE_TOURNAMENTS.duo.slots} Teams</p>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-2 p-4 bg-primary/5 rounded-lg border border-primary/10">
-                        <Trophy className="w-6 h-6 text-primary flex-shrink-0" />
-                        <div>
-                          <p className="text-xs text-muted-foreground font-medium">Winner Prize</p>
-                          <p className="font-bold text-lg">₹{FREEFIRE_TOURNAMENTS.duo.winner}</p>
-                        </div>
-                      </div>
-                    </div>
+                  <div className="glass-effect rounded-lg p-4 text-center space-y-1">
+                    <div className="text-2xl lg:text-3xl font-bold text-primary">{FREEFIRE_TOURNAMENTS.duo.slots}</div>
+                    <div className="text-xs text-foreground/70">Teams</div>
+                  </div>
+                  <div className="glass-effect rounded-lg p-4 text-center space-y-1">
+                    <div className="text-2xl lg:text-3xl font-bold text-primary">₹{FREEFIRE_TOURNAMENTS.duo.winner}</div>
+                    <div className="text-xs text-foreground/70">Winner</div>
+                  </div>
+                  <div className="glass-effect rounded-lg p-4 text-center space-y-1">
+                    <div className="text-2xl lg:text-3xl font-bold text-primary">₹{FREEFIRE_TOURNAMENTS.duo.perKill}</div>
+                    <div className="text-xs text-foreground/70">Per Kill</div>
+                  </div>
+                </motion.div>
 
-                    {/* Prize Breakdown */}
-                    <div className="p-4 bg-gradient-to-r from-primary/10 to-chart-2/10 rounded-lg border border-primary/20">
-                      <div className="flex items-center gap-2 mb-3">
-                        <Award className="w-5 h-5 text-primary" />
-                        <h4 className="font-semibold text-base">Prize Distribution</h4>
-                      </div>
-                      <div className="grid sm:grid-cols-3 gap-3 text-sm">
-                        <div className="flex items-center justify-between">
-                          <span className="text-muted-foreground">Winner:</span>
-                          <span className="font-bold text-primary">₹{FREEFIRE_TOURNAMENTS.duo.winner}</span>
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <span className="text-muted-foreground">Runner-Up:</span>
-                          <span className="font-bold text-chart-2">₹{FREEFIRE_TOURNAMENTS.duo.runnerUp}</span>
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <span className="text-muted-foreground">Per Kill:</span>
-                          <span className="font-bold text-chart-3">₹{FREEFIRE_TOURNAMENTS.duo.perKill}</span>
-                        </div>
-                      </div>
-                    </div>
+                {/* CTA Buttons */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 0.7 }}
+                  className="flex flex-wrap gap-4"
+                >
+                  <EnhancedMagneticButton
+                    variant="default"
+                    size="lg"
+                    magneticStrength={0.4}
+                    enableGlow={true}
+                    onClick={scrollToRegistration}
+                    className="text-base px-8 py-6 shadow-lg"
+                    data-testid="button-register-now"
+                  >
+                    <Trophy className="w-5 h-5 mr-2" />
+                    Register Your Team
+                  </EnhancedMagneticButton>
+                  
+                  <EnhancedMagneticButton
+                    variant="outline"
+                    size="lg"
+                    magneticStrength={0.3}
+                    asChild
+                    className="text-base px-8 py-6 backdrop-blur-sm bg-background/20"
+                    data-testid="button-view-schedule"
+                  >
+                    <a href="#schedule">
+                      <Calendar className="w-5 h-5 mr-2" />
+                      View Schedule
+                    </a>
+                  </EnhancedMagneticButton>
+                </motion.div>
+              </motion.div>
 
-                    {/* Registration Steps */}
+              {/* RIGHT COLUMN - Quick Registration Card */}
+              <motion.div
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.8, delay: 0.4 }}
+                className="lg:mt-0"
+              >
+                <Card className="glass-effect border-primary/20 shadow-2xl overflow-hidden">
+                  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-chart-2 to-primary" />
+                  
+                  <CardHeader className="pb-4">
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="space-y-2">
+                        <CardTitle className="text-2xl lg:text-3xl flex items-center gap-2">
+                          <Sparkles className="w-6 h-6 text-primary" />
+                          Quick Team Registration
+                        </CardTitle>
+                        <CardDescription className="text-base">
+                          Secure your duo team spot in minutes
+                        </CardDescription>
+                      </div>
+                      <Badge variant="default" className="flex-shrink-0 px-3 py-1">
+                        <Users className="w-3 h-3 mr-1" />
+                        {FREEFIRE_TOURNAMENTS.duo.slots} Slots
+                      </Badge>
+                    </div>
+                  </CardHeader>
+                  
+                  <CardContent className="space-y-6 pb-6">
+                    {/* Registration Steps Preview */}
                     <div className="space-y-3">
-                      <h4 className="font-semibold flex items-center gap-2">
-                        <CheckCircle2 className="w-5 h-5 text-primary" />
-                        How to Register (3 Simple Steps)
-                      </h4>
-                      <div className="grid gap-2 text-sm">
-                        <div className="flex items-start gap-3 p-3 bg-muted/50 rounded-md">
-                          <div className="w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-xs flex-shrink-0">1</div>
-                          <div>
-                            <p className="font-medium">Pay Entry Fee (₹{FREEFIRE_TOURNAMENTS.duo.entryFee})</p>
-                            <p className="text-muted-foreground text-xs">Use the QR code shown in the form</p>
-                          </div>
+                      <div className="flex items-start gap-3 p-3 bg-muted/30 rounded-lg hover-elevate transition-all">
+                        <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0">
+                          <span className="text-sm font-bold text-primary">1</span>
                         </div>
-                        <div className="flex items-start gap-3 p-3 bg-muted/50 rounded-md">
-                          <div className="w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-xs flex-shrink-0">2</div>
-                          <div>
-                            <p className="font-medium">Fill Registration Form</p>
-                            <p className="text-muted-foreground text-xs">Enter both players' Free Fire UIDs, names, WhatsApp number, and upload payment screenshot</p>
-                          </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="font-semibold text-sm">Make Team Payment</div>
+                          <div className="text-xs text-muted-foreground">Pay ₹{FREEFIRE_TOURNAMENTS.duo.entryFee} via UPI QR code</div>
                         </div>
-                        <div className="flex items-start gap-3 p-3 bg-muted/50 rounded-md">
-                          <div className="w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-xs flex-shrink-0">3</div>
-                          <div>
-                            <p className="font-medium">Get Confirmation</p>
-                            <p className="text-muted-foreground text-xs">Receive room details on WhatsApp before tournament</p>
-                          </div>
+                        <CheckCircle2 className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+                      </div>
+                      
+                      <div className="flex items-start gap-3 p-3 bg-muted/30 rounded-lg hover-elevate transition-all">
+                        <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0">
+                          <span className="text-sm font-bold text-primary">2</span>
                         </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="font-semibold text-sm">Fill Team Details</div>
+                          <div className="text-xs text-muted-foreground">Both players' IDs, team name & payment proof</div>
+                        </div>
+                        <CheckCircle2 className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+                      </div>
+                      
+                      <div className="flex items-start gap-3 p-3 bg-muted/30 rounded-lg hover-elevate transition-all">
+                        <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0">
+                          <span className="text-sm font-bold text-primary">3</span>
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="font-semibold text-sm">Get Confirmed</div>
+                          <div className="text-xs text-muted-foreground">Receive slot confirmation in 2-4 hours</div>
+                        </div>
+                        <CheckCircle2 className="w-4 h-4 text-muted-foreground flex-shrink-0" />
                       </div>
                     </div>
 
-                    {/* Main Registration Button */}
-                    <div className="pt-4">
-                      <Button 
-                        size="lg" 
-                        className="w-full h-16 text-lg font-bold" 
-                        asChild 
-                        data-testid="button-register-now"
+                    {/* Important Info */}
+                    <div className="bg-primary/10 border border-primary/20 rounded-lg p-4 space-y-2">
+                      <div className="flex items-start gap-2">
+                        <AlertCircle className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                        <p className="text-sm text-foreground/80">
+                          <strong className="text-foreground">Limited Slots:</strong> Only {FREEFIRE_TOURNAMENTS.duo.slots} teams accepted. First come, first served.
+                        </p>
+                      </div>
+                      <div className="flex items-start gap-2">
+                        <Clock className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                        <p className="text-sm text-foreground/80">
+                          <strong className="text-foreground">Fast Process:</strong> Complete team registration takes under 10 minutes
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Primary CTA */}
+                    <EnhancedMagneticButton
+                      variant="default"
+                      size="lg"
+                      className="w-full text-lg py-6"
+                      magneticStrength={0.3}
+                      enableGlow={true}
+                      onClick={scrollToRegistration}
+                      data-testid="button-start-registration"
+                    >
+                      <Trophy className="w-5 h-5 mr-2" />
+                      Start Team Registration
+                      <ArrowRight className="w-5 h-5 ml-2" />
+                    </EnhancedMagneticButton>
+
+                    {/* Secondary Actions */}
+                    <div className="grid grid-cols-2 gap-3 pt-2">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        asChild
+                        className="text-xs"
+                        data-testid="button-view-rules"
                       >
-                        <a href={FREEFIRE_TOURNAMENTS.duo.formUrl}>
-                          <Trophy className="w-6 h-6 mr-3" />
-                          Click Here to Register Now - Open Duo Registration Form
-                          <ExternalLink className="w-5 h-5 ml-3" />
+                        <a href="#rules">
+                          <Shield className="w-3 h-3 mr-1" />
+                          View Rules
                         </a>
                       </Button>
-                      <p className="text-center text-xs text-muted-foreground mt-2">
-                        Complete all fields to secure your duo team slot.
-                      </p>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        asChild
+                        className="text-xs"
+                        data-testid="button-view-prizes"
+                      >
+                        <a href="#prizes">
+                          <Award className="w-3 h-3 mr-1" />
+                          Prize Pool
+                        </a>
+                      </Button>
                     </div>
-                  </div>
-                </CardContent>
-                <CardFooter className="flex flex-col items-start gap-3 bg-muted/30">
-                  <div className="flex items-start gap-2">
-                    <Shield className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
-                    <p className="text-sm text-muted-foreground">
-                      Your information is secure and will only be used for tournament administration. We never share your data with third parties.
-                    </p>
-                  </div>
-                  <div className="flex items-start gap-2">
-                    <Zap className="w-5 h-5 text-chart-2 mt-0.5 flex-shrink-0" />
-                    <p className="text-sm text-muted-foreground">
-                      <strong>Quick Support:</strong> Contact admin on WhatsApp at +917541024846 for any registration issues.
-                    </p>
-                  </div>
-                </CardFooter>
-              </Card>
+                  </CardContent>
+                </Card>
+              </motion.div>
             </div>
-          </motion.div>
-        </SectionWrapper>
-
-        {/* Stats Section - Key tournament metrics displayed as animated cards */}
-        <SectionWrapper variant="muted" data-testid="section-stats">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <ProfessionalStatCard
-              icon={Ticket}
-              value={FREEFIRE_TOURNAMENTS.duo.entryFee}
-              label="Entry Fee per Team"
-              prefix="₹"
-              data-testid="stat-entry-fee"
-            />
-            <ProfessionalStatCard
-              icon={Users}
-              value={FREEFIRE_TOURNAMENTS.duo.slots}
-              label="Total Team Slots"
-              data-testid="stat-total-teams"
-            />
-            <ProfessionalStatCard
-              icon={Trophy}
-              value={FREEFIRE_TOURNAMENTS.duo.winner}
-              label="Winner Prize"
-              prefix="₹"
-              glassmorphism
-              data-testid="stat-winner-prize"
-            />
-            <ProfessionalStatCard
-              icon={Coins}
-              value={FREEFIRE_TOURNAMENTS.duo.perKill}
-              label="Per Kill Reward"
-              prefix="₹"
-              data-testid="stat-per-kill"
-            />
           </div>
+        </div>
+
+        {/* Tournament Stats Section - Animated stat cards */}
+        <SectionWrapper variant="muted" data-testid="section-stats">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={staggerContainer}
+            className="space-y-12"
+          >
+            <motion.div 
+              variants={staggerItem}
+              className="text-center space-y-4"
+            >
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold" data-testid="heading-stats">
+                Tournament Overview
+              </h2>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Everything you need to know about the duo tournament at a glance
+              </p>
+            </motion.div>
+
+            <motion.div 
+              variants={staggerContainer}
+              className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto"
+            >
+              <motion.div variants={staggerItem}>
+                <ProfessionalStatCard
+                  icon={Ticket}
+                  title="Entry Fee"
+                  value={`₹${FREEFIRE_TOURNAMENTS.duo.entryFee}`}
+                  description="Per team (both players)"
+                  trend="Pocket-friendly"
+                  delay={0}
+                />
+              </motion.div>
+              
+              <motion.div variants={staggerItem}>
+                <ProfessionalStatCard
+                  icon={Users}
+                  title="Total Slots"
+                  value={`${FREEFIRE_TOURNAMENTS.duo.slots} Teams`}
+                  description="50 players total"
+                  trend="Limited availability"
+                  delay={0.1}
+                />
+              </motion.div>
+              
+              <motion.div variants={staggerItem}>
+                <ProfessionalStatCard
+                  icon={Trophy}
+                  title="Winner Prize"
+                  value={`₹${FREEFIRE_TOURNAMENTS.duo.winner}`}
+                  description="1st place guaranteed"
+                  trend="+Booyah Bonus"
+                  delay={0.2}
+                />
+              </motion.div>
+              
+              <motion.div variants={staggerItem}>
+                <ProfessionalStatCard
+                  icon={Target}
+                  title="Per Kill"
+                  value={`₹${FREEFIRE_TOURNAMENTS.duo.perKill}`}
+                  description="For each elimination"
+                  trend="Team-based rewards"
+                  delay={0.3}
+                />
+              </motion.div>
+            </motion.div>
+          </motion.div>
         </SectionWrapper>
 
-        {/* Comprehensive Feature Highlight Card - Free Fire Duo Tournament Benefits */}
-        <SectionWrapper variant="default" data-testid="section-feature-highlight">
+        {/* Tournament Schedule - Timeline with dates */}
+        <SectionWrapper id="schedule" data-testid="section-schedule">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={staggerContainer}
+            className="space-y-12"
           >
-            <Card className="hover-elevate transition-all duration-300 overflow-hidden" data-testid="feature-duo-tournament">
-              <div className="grid md:grid-cols-2 gap-0">
-                {/* Image Section with hover effect */}
-                <div className="aspect-video md:aspect-auto overflow-hidden">
-                  <img
-                    src={teamStrategyImage}
-                    alt="Free Fire Max Duo Tournament Team Strategy"
-                    className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
-                  />
-                </div>
-                
-                {/* Content Section with feature details */}
-                <div className="p-6 md:p-8 flex flex-col justify-center">
-                  <div className="mb-4">
-                    <div className="flex items-center gap-2 mb-3">
-                      <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-                        <Users className="w-6 h-6 text-primary" />
-                      </div>
-                      <h3 className="text-2xl md:text-3xl font-bold">Duo Tournament Excellence</h3>
-                    </div>
-                    <p className="text-muted-foreground">
-                      Team up with your partner for competitive duo Free Fire Max gameplay with guaranteed prizes and professional management
-                    </p>
-                  </div>
-
-                  {/* Feature highlights with icons */}
-                  <div className="space-y-4 mb-6">
-                    <div className="flex items-start gap-3">
-                      <div className="w-10 h-10 rounded-full bg-green-500/10 flex items-center justify-center flex-shrink-0">
-                        <Trophy className="w-5 h-5 text-green-500" />
-                      </div>
-                      <div>
-                        <h4 className="font-semibold mb-1">Team Prize Pool</h4>
-                        <p className="text-sm text-muted-foreground">Winner: ₹200 | Runner-Up: ₹150 | Per Kill: ₹8 - Split between team members, distributed within 24-48 hours</p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-start gap-3">
-                      <div className="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center flex-shrink-0">
-                        <Shield className="w-5 h-5 text-blue-500" />
-                      </div>
-                      <div>
-                        <h4 className="font-semibold mb-1">Team Registration Process</h4>
-                        <p className="text-sm text-muted-foreground">Simple team registration with secure payment verification - Both members confirmed in 2-6 hours via WhatsApp</p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-start gap-3">
-                      <div className="w-10 h-10 rounded-full bg-purple-500/10 flex items-center justify-center flex-shrink-0">
-                        <MessageSquare className="w-5 h-5 text-purple-500" />
-                      </div>
-                      <div>
-                        <h4 className="font-semibold mb-1">Teamwork & Coordination</h4>
-                        <p className="text-sm text-muted-foreground">Strategize with your duo partner, coordinate attacks, and dominate the Free Fire battlefield together</p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-start gap-3">
-                      <div className="w-10 h-10 rounded-full bg-orange-500/10 flex items-center justify-center flex-shrink-0">
-                        <Star className="w-5 h-5 text-orange-500" />
-                      </div>
-                      <div>
-                        <h4 className="font-semibold mb-1">Professional Support</h4>
-                        <p className="text-sm text-muted-foreground">24/7 tournament support, fair play monitoring, and transparent prize distribution for all teams</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* CTA buttons for action */}
-                  <div className="flex flex-wrap gap-3">
-                    <Button onClick={scrollToRegistration} data-testid="button-register-duo-feature">
-                      Register Your Team - ₹{FREEFIRE_TOURNAMENTS.duo.entryFee}
-                      <ArrowRight className="w-4 h-4 ml-2" />
-                    </Button>
-                    <Button variant="outline" data-testid="button-rules-duo-feature">
-                      <a href="#rules" className="flex items-center">
-                        View Duo Rules
-                        <ExternalLink className="w-4 h-4 ml-2" />
-                      </a>
-                    </Button>
-                  </div>
-                </div>
+            <motion.div 
+              variants={staggerItem}
+              className="text-center space-y-4"
+            >
+              <div className="flex items-center justify-center gap-2">
+                <Calendar className="w-8 h-8 text-primary" />
+                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold" data-testid="heading-schedule">
+                  Tournament Schedule
+                </h2>
               </div>
-            </Card>
-          </motion.div>
-        </SectionWrapper>
-
-        {/* Tournament Schedule Section - Important dates and timelines */}
-        <SectionWrapper data-testid="section-schedule">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <div className="text-center mb-12">
-              <Badge variant="secondary" className="mb-4">
-                <Calendar className="w-4 h-4 mr-2" />
-                Tournament Schedule
-              </Badge>
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                Upcoming Duo Tournament Schedule
-              </h2>
-              <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-                Plan ahead with our detailed tournament schedule. Registration opens early - secure your duo team slot before it fills up!
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Mark these important dates and times in your calendar
               </p>
-            </div>
+            </motion.div>
 
-            {/* Schedule cards showing registration and tournament phases */}
-            <div className="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
-              <Card className="hover-elevate transition-all duration-300" data-testid="schedule-registration">
-                <CardHeader>
-                  <div className="flex items-center gap-3 mb-2">
-                    <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-                      <UserPlus className="w-6 h-6 text-primary" />
-                    </div>
-                    <CardTitle>Registration Phase</CardTitle>
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="flex items-start gap-3">
-                    <Calendar className="w-5 h-5 text-muted-foreground mt-1" />
-                    <div>
-                      <p className="font-semibold">Opens: Every Monday</p>
-                      <p className="text-sm text-muted-foreground">Registration starts at 10:00 AM</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <Clock className="w-5 h-5 text-muted-foreground mt-1" />
-                    <div>
-                      <p className="font-semibold">Closes: Friday 8:00 PM</p>
-                      <p className="text-sm text-muted-foreground">No late registrations accepted</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <CreditCard className="w-5 h-5 text-muted-foreground mt-1" />
-                    <div>
-                      <p className="font-semibold">Payment Deadline</p>
-                      <p className="text-sm text-muted-foreground">Within 24 hours of registration</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="hover-elevate transition-all duration-300" data-testid="schedule-tournament">
-                <CardHeader>
-                  <div className="flex items-center gap-3 mb-2">
-                    <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-                      <Trophy className="w-6 h-6 text-primary" />
-                    </div>
-                    <CardTitle>Tournament Day</CardTitle>
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="flex items-start gap-3">
-                    <Calendar className="w-5 h-5 text-muted-foreground mt-1" />
-                    <div>
-                      <p className="font-semibold">Every Saturday</p>
-                      <p className="text-sm text-muted-foreground">Weekly duo tournaments</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <Timer className="w-5 h-5 text-muted-foreground mt-1" />
-                    <div>
-                      <p className="font-semibold">Check-in: 5:45 PM</p>
-                      <p className="text-sm text-muted-foreground">Both players must be online</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <PlayCircle className="w-5 h-5 text-muted-foreground mt-1" />
-                    <div>
-                      <p className="font-semibold">Match Start: 6:00 PM</p>
-                      <p className="text-sm text-muted-foreground">Room details shared at 5:50 PM</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-
-            {/* Important schedule notes */}
-            <Card className="mt-6 bg-primary/5 border-primary/20" data-testid="schedule-note">
-              <CardContent className="p-6">
-                <div className="flex items-start gap-3">
-                  <AlertCircle className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
-                  <div>
-                    <p className="font-semibold mb-2">Important Schedule Notes:</p>
-                    <ul className="space-y-1 text-sm text-muted-foreground">
-                      <li>• Slots are allocated on first-come, first-served basis after payment verification</li>
-                      <li>• Both team members must be online 15 minutes before match start</li>
-                      <li>• Late arrivals will result in team disqualification with no refund</li>
-                      <li>• Tournament duration: Approximately 20-30 minutes per match</li>
-                      <li>• Prize distribution within 24-48 hours after tournament completion</li>
-                    </ul>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
-        </SectionWrapper>
-
-        {/* Prize Breakdown Visualization - Detailed prize structure */}
-        <SectionWrapper variant="muted" data-testid="section-prize-breakdown">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <div className="text-center mb-12">
-              <Badge variant="secondary" className="mb-4">
-                <Award className="w-4 h-4 mr-2" />
-                Prize Structure
-              </Badge>
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                Detailed Prize Breakdown
-              </h2>
-              <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-                Transparent and rewarding prize distribution. Win big for placements and earn per-kill rewards!
-              </p>
-            </div>
-
-            {/* Prize cards for Winner, Runner-up, and Per Kill */}
-            <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto mb-8">
-              <Card className="hover-elevate transition-all duration-300 border-2 border-primary/50" data-testid="prize-winner">
-                <CardHeader className="text-center pb-4">
-                  <div className="w-16 h-16 mx-auto rounded-full bg-gradient-to-br from-yellow-400 to-yellow-600 flex items-center justify-center mb-4">
-                    <Crown className="w-8 h-8 text-white" />
-                  </div>
-                  <CardTitle className="text-2xl">Winner Team</CardTitle>
-                  <Badge className="mx-auto mt-2 bg-gradient-to-r from-yellow-400 to-yellow-600">
-                    #1 Place
-                  </Badge>
-                </CardHeader>
-                <CardContent className="text-center space-y-4">
-                  <div className="text-5xl font-bold text-primary">₹200</div>
-                  <p className="text-muted-foreground">
-                    Champion duo team receives the grand prize
-                  </p>
-                  <Separator />
-                  <div className="space-y-2 text-sm">
-                    <p className="flex items-center justify-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-green-500" />
-                      Winner Title & Recognition
-                    </p>
-                    <p className="flex items-center justify-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-green-500" />
-                      Featured on Winners Showcase
-                    </p>
-                    <p className="flex items-center justify-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-green-500" />
-                      Plus Per-Kill Rewards
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="hover-elevate transition-all duration-300 border-2 border-chart-2/50" data-testid="prize-runnerup">
-                <CardHeader className="text-center pb-4">
-                  <div className="w-16 h-16 mx-auto rounded-full bg-gradient-to-br from-gray-300 to-gray-500 flex items-center justify-center mb-4">
-                    <Medal className="w-8 h-8 text-white" />
-                  </div>
-                  <CardTitle className="text-2xl">Runner-Up Team</CardTitle>
-                  <Badge className="mx-auto mt-2 bg-gradient-to-r from-gray-300 to-gray-500">
-                    #2 Place
-                  </Badge>
-                </CardHeader>
-                <CardContent className="text-center space-y-4">
-                  <div className="text-5xl font-bold text-chart-2">₹150</div>
-                  <p className="text-muted-foreground">
-                    Second-place duo team prize
-                  </p>
-                  <Separator />
-                  <div className="space-y-2 text-sm">
-                    <p className="flex items-center justify-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-green-500" />
-                      Runner-Up Recognition
-                    </p>
-                    <p className="flex items-center justify-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-green-500" />
-                      Featured on Leaderboard
-                    </p>
-                    <p className="flex items-center justify-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-green-500" />
-                      Plus Per-Kill Rewards
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="hover-elevate transition-all duration-300 border-2 border-chart-3/50" data-testid="prize-perkill">
-                <CardHeader className="text-center pb-4">
-                  <div className="w-16 h-16 mx-auto rounded-full bg-gradient-to-br from-chart-3 to-chart-4 flex items-center justify-center mb-4">
-                    <Target className="w-8 h-8 text-white" />
-                  </div>
-                  <CardTitle className="text-2xl">Per Kill Reward</CardTitle>
-                  <Badge className="mx-auto mt-2 bg-gradient-to-r from-chart-3 to-chart-4">
-                    All Teams
-                  </Badge>
-                </CardHeader>
-                <CardContent className="text-center space-y-4">
-                  <div className="text-5xl font-bold text-chart-3">₹8</div>
-                  <p className="text-muted-foreground">
-                    For every elimination your duo achieves
-                  </p>
-                  <Separator />
-                  <div className="space-y-2 text-sm">
-                    <p className="flex items-center justify-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-green-500" />
-                      Applies to All Teams
-                    </p>
-                    <p className="flex items-center justify-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-green-500" />
-                      Counted from Match Results
-                    </p>
-                    <p className="flex items-center justify-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-green-500" />
-                      Added to Final Prize
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-
-            {/* Prize calculation example */}
-            <Card className="max-w-4xl mx-auto" data-testid="prize-calculation">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <TrendingUp className="w-5 h-5" />
-                  Prize Calculation Example
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="p-4 rounded-lg bg-muted/50">
-                  <p className="font-semibold mb-3">Scenario: Your duo wins with 15 kills</p>
-                  <div className="space-y-2 text-sm">
-                    <div className="flex justify-between items-center">
-                      <span>Winner Prize:</span>
-                      <span className="font-mono font-semibold">₹200</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span>Kill Rewards (15 × ₹8):</span>
-                      <span className="font-mono font-semibold">₹120</span>
-                    </div>
-                    <Separator />
-                    <div className="flex justify-between items-center text-lg font-bold text-primary">
-                      <span>Total Prize:</span>
-                      <span className="font-mono">₹320</span>
-                    </div>
-                  </div>
-                </div>
-                <p className="text-sm text-muted-foreground flex items-start gap-2">
-                  <AlertCircle className="w-4 h-4 mt-0.5 flex-shrink-0" />
-                  Prize is transferred to team leader's UPI. Leader distributes to partner as per team agreement.
-                </p>
-              </CardContent>
-            </Card>
-          </motion.div>
-        </SectionWrapper>
-
-        {/* Registration Timeline - Visual step-by-step process */}
-        <SectionWrapper data-testid="section-timeline">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <div className="text-center mb-12">
-              <Badge variant="secondary" className="mb-4">
-                <CheckCircle2 className="w-4 h-4 mr-2" />
-                Registration Process
-              </Badge>
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                How to Register Your Duo Team
-              </h2>
-              <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-                Follow these simple steps to secure your duo team slot in the tournament
-              </p>
-            </div>
-
-            {/* Timeline cards showing each registration step */}
-            <div className="max-w-4xl mx-auto space-y-6">
-              {[
-                {
-                  step: 1,
-                  icon: FileText,
-                  title: "Fill Registration Form",
-                  description: "Complete the registration form with accurate details for both team members. Include team name, Free Fire IDs, in-game names, and contact information.",
-                  time: "2-3 minutes",
-                },
-                {
-                  step: 2,
-                  icon: CreditCard,
-                  title: "Make Payment",
-                  description: "Pay ₹40 entry fee using the official GameArena QR code. Take a clear screenshot of the payment confirmation showing transaction ID.",
-                  time: "1-2 minutes",
-                },
-                {
-                  step: 3,
-                  icon: CheckCircle2,
-                  title: "Submit Payment Proof",
-                  description: "Upload payment screenshot in the registration form. Enter the exact transaction ID. Our team verifies payments within 2-6 hours.",
-                  time: "1 minute",
-                },
-                {
-                  step: 4,
-                  icon: MessageSquare,
-                  title: "Join WhatsApp Group",
-                  description: "After verification, you'll be added to the official tournament WhatsApp group. You'll receive room details and updates here.",
-                  time: "Instant",
-                },
-                {
-                  step: 5,
-                  icon: Trophy,
-                  title: "Tournament Day",
-                  description: "Be online 15 minutes early. Check WhatsApp for room credentials. Join the room with your duo partner and compete for glory!",
-                  time: "20-30 min match",
-                },
-              ].map((item, index) => (
+            <motion.div 
+              variants={staggerContainer}
+              className="max-w-4xl mx-auto space-y-4"
+            >
+              {scheduleData.map((item, index) => (
                 <motion.div
-                  key={item.step}
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  key={index}
+                  variants={staggerItem}
+                  data-testid={`schedule-item-${index}`}
                 >
-                  <Card className="hover-elevate transition-all duration-300" data-testid={`timeline-step-${item.step}`}>
+                  <Card className="hover-elevate transition-all duration-300">
                     <CardContent className="p-6">
-                      <div className="flex items-start gap-4">
-                        <div className="flex-shrink-0">
-                          <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-                            <item.icon className="w-6 h-6 text-primary" />
+                      <div className="flex flex-col md:flex-row md:items-center gap-4">
+                        <div className="flex-1 space-y-2">
+                          <div className="flex items-center gap-3 flex-wrap">
+                            <h3 className="font-bold text-lg">{item.stage}</h3>
+                            <Badge 
+                              variant={item.status === "Open" ? "default" : "outline"}
+                              className="flex-shrink-0"
+                            >
+                              {item.status}
+                            </Badge>
                           </div>
+                          <p className="text-sm text-muted-foreground">{item.description}</p>
                         </div>
-                        <div className="flex-1">
-                          <div className="flex items-center gap-3 mb-2">
-                            <Badge variant="outline">Step {item.step}</Badge>
-                            <h3 className="text-xl font-semibold">{item.title}</h3>
-                          </div>
-                          <p className="text-muted-foreground mb-3">{item.description}</p>
-                          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                            <Clock className="w-4 h-4" />
-                            <span>{item.time}</span>
+                        <div className="text-left md:text-right space-y-1 flex-shrink-0">
+                          <div className="font-semibold">{item.date}</div>
+                          <div className="text-sm text-muted-foreground flex items-center md:justify-end gap-1">
+                            <Clock className="w-3 h-3" />
+                            {item.time}
                           </div>
                         </div>
                       </div>
@@ -1012,565 +889,839 @@ export default function FreeFireDuo() {
                   </Card>
                 </motion.div>
               ))}
-            </div>
+            </motion.div>
           </motion.div>
         </SectionWrapper>
 
-        {/* Past Winners Section - Hall of Fame */}
-        <SectionWrapper variant="muted" data-testid="section-past-winners">
+        {/* Prize Breakdown Section - Charts and tables */}
+        <SectionWrapper variant="muted" id="prizes" data-testid="section-prizes">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={staggerContainer}
+            className="space-y-12"
           >
-            <div className="text-center mb-12">
-              <Badge variant="secondary" className="mb-4">
-                <Star className="w-4 h-4 mr-2" />
-                Hall of Fame
-              </Badge>
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                Past Duo Champions
-              </h2>
-              <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-                Celebrating our legendary duo teams who conquered the Free Fire battleground
+            <motion.div 
+              variants={staggerItem}
+              className="text-center space-y-4"
+            >
+              <div className="flex items-center justify-center gap-2">
+                <Award className="w-8 h-8 text-primary" />
+                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold" data-testid="heading-prizes">
+                  Prize Distribution
+                </h2>
+              </div>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Transparent prize pool breakdown with team-based and performance-based rewards
               </p>
+            </motion.div>
+
+            <div className="grid lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
+              {/* Prize Breakdown Chart */}
+              <motion.div variants={staggerItem}>
+                <Card className="hover-elevate transition-all duration-300 h-full">
+                  <CardHeader>
+                    <CardTitle>Prize Pool Distribution</CardTitle>
+                    <CardDescription>How the total prize money is allocated</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="h-[300px]">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <PieChart>
+                          <Pie
+                            data={prizeBreakdownData}
+                            cx="50%"
+                            cy="50%"
+                            labelLine={false}
+                            label={({ name, percentage }) => `${name} ${percentage}%`}
+                            outerRadius={100}
+                            fill="#8884d8"
+                            dataKey="value"
+                          >
+                            {prizeBreakdownData.map((entry, index) => (
+                              <Cell key={`cell-${index}`} fill={entry.fill} />
+                            ))}
+                          </Pie>
+                          <Tooltip />
+                          <Legend />
+                        </PieChart>
+                      </ResponsiveContainer>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+
+              {/* Kill Rewards Table */}
+              <motion.div variants={staggerItem}>
+                <Card className="hover-elevate transition-all duration-300 h-full">
+                  <CardHeader>
+                    <CardTitle>Per Kill Rewards</CardTitle>
+                    <CardDescription>Earn more with every team elimination</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Team Kills</TableHead>
+                          <TableHead className="text-right">Kill Bonus</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {killRewardsData.map((row, index) => (
+                          <TableRow key={index}>
+                            <TableCell className="font-semibold">{row.kills}</TableCell>
+                            <TableCell className="text-right font-bold text-primary">{row.reward}</TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                    <div className="mt-4 p-4 bg-primary/10 rounded-lg">
+                      <p className="text-sm text-center">
+                        <strong>Pro Tip:</strong> Aggressive teamwork pays off! Each kill adds ₹{FREEFIRE_TOURNAMENTS.duo.perKill} to your prize.
+                      </p>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
             </div>
 
-            {/* Winner cards grid */}
-            <div className="grid md:grid-cols-2 gap-6 max-w-6xl mx-auto">
+            {/* Guaranteed Prizes Highlight */}
+            <motion.div 
+              variants={staggerItem}
+              className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl mx-auto"
+            >
+              <Card className="text-center hover-elevate transition-all duration-300 border-primary/30">
+                <CardContent className="p-6 space-y-3">
+                  <Crown className="w-12 h-12 mx-auto text-primary" />
+                  <div>
+                    <div className="text-3xl font-bold text-primary">₹{FREEFIRE_TOURNAMENTS.duo.winner}</div>
+                    <div className="text-sm text-muted-foreground mt-1">1st Place Winners</div>
+                  </div>
+                  <Badge variant="default" className="w-full justify-center">
+                    + Kill Bonus
+                  </Badge>
+                </CardContent>
+              </Card>
+
+              <Card className="text-center hover-elevate transition-all duration-300 border-chart-2/30">
+                <CardContent className="p-6 space-y-3">
+                  <Medal className="w-12 h-12 mx-auto text-chart-2" />
+                  <div>
+                    <div className="text-3xl font-bold text-chart-2">₹{FREEFIRE_TOURNAMENTS.duo.runnerUp}</div>
+                    <div className="text-sm text-muted-foreground mt-1">2nd Place Runners-Up</div>
+                  </div>
+                  <Badge variant="outline" className="w-full justify-center border-chart-2/50">
+                    + Kill Bonus
+                  </Badge>
+                </CardContent>
+              </Card>
+
+              <Card className="text-center hover-elevate transition-all duration-300 border-chart-3/30 sm:col-span-2 lg:col-span-1">
+                <CardContent className="p-6 space-y-3">
+                  <Target className="w-12 h-12 mx-auto text-chart-3" />
+                  <div>
+                    <div className="text-3xl font-bold text-chart-3">₹{FREEFIRE_TOURNAMENTS.duo.perKill}</div>
+                    <div className="text-sm text-muted-foreground mt-1">Per Kill Reward</div>
+                  </div>
+                  <Badge variant="outline" className="w-full justify-center border-chart-3/50">
+                    All Teams
+                  </Badge>
+                </CardContent>
+              </Card>
+            </motion.div>
+          </motion.div>
+        </SectionWrapper>
+
+        {/* Payment Instructions Section */}
+        <SectionWrapper data-testid="section-payment">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={staggerContainer}
+            className="space-y-12"
+          >
+            <motion.div 
+              variants={staggerItem}
+              className="text-center space-y-4"
+            >
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold" data-testid="heading-payment">
+                Payment Instructions
+              </h2>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Follow these simple steps to complete your team payment and registration
+              </p>
+            </motion.div>
+
+            <motion.div variants={staggerItem}>
+              <PaymentInstructions />
+            </motion.div>
+          </motion.div>
+        </SectionWrapper>
+
+        {/* Registration Form Section */}
+        <SectionWrapper variant="muted" id="registration" data-testid="section-registration">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={staggerContainer}
+            className="space-y-12"
+          >
+            <motion.div 
+              variants={staggerItem}
+              className="text-center space-y-4"
+            >
+              <div className="flex items-center justify-center gap-2">
+                <Trophy className="w-8 h-8 text-primary" />
+                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold" data-testid="heading-registration">
+                  Complete Your Team Registration
+                </h2>
+              </div>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Fill out the form below after making your payment. All team details must be accurate for slot confirmation.
+              </p>
+            </motion.div>
+
+            <motion.div variants={staggerItem}>
+              <FormEmbed
+                formUrl={FREEFIRE_TOURNAMENTS.duo.formUrl}
+                embedUrl={FREEFIRE_TOURNAMENTS.duo.embedUrl}
+                title="Duo Tournament Registration Form"
+                description="Complete all required fields for both team members. Your slot will be confirmed after payment verification."
+              />
+            </motion.div>
+          </motion.div>
+        </SectionWrapper>
+
+        {/* Past Winners Showcase */}
+        <SectionWrapper data-testid="section-past-winners">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={staggerContainer}
+            className="space-y-12"
+          >
+            <motion.div 
+              variants={staggerItem}
+              className="text-center space-y-4"
+            >
+              <div className="flex items-center justify-center gap-2">
+                <Crown className="w-8 h-8 text-primary" />
+                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold" data-testid="heading-past-winners">
+                  Hall of Champions
+                </h2>
+              </div>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Celebrate our past duo tournament winners and their incredible team performances
+              </p>
+            </motion.div>
+
+            <motion.div 
+              variants={staggerContainer}
+              className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto"
+            >
               {pastWinners.map((winner, index) => (
                 <motion.div
                   key={index}
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  variants={staggerItem}
+                  data-testid={`past-winner-${index}`}
                 >
-                  <Card className="hover-elevate transition-all duration-300" data-testid={`past-winner-${index}`}>
-                    <CardHeader>
-                      <div className="flex items-start justify-between">
-                        <div className="flex-1">
-                          <div className="flex items-center gap-2 mb-3">
-                            {winner.placement === 1 ? (
-                              <Crown className="w-6 h-6 text-yellow-500" />
-                            ) : (
-                              <Medal className="w-6 h-6 text-gray-400" />
-                            )}
-                            <CardTitle className="text-xl">{winner.teamName}</CardTitle>
-                          </div>
-                          <div className="space-y-1 text-sm text-muted-foreground">
-                            <p className="flex items-center gap-2">
-                              <Users className="w-4 h-4" />
-                              {winner.player1} & {winner.player2}
-                            </p>
-                            <p className="flex items-center gap-2">
-                              <Calendar className="w-4 h-4" />
-                              {winner.date}
-                            </p>
-                          </div>
+                  <Card className="hover-elevate transition-all duration-300 text-center group">
+                    <CardContent className="p-6 space-y-4">
+                      <div className="relative inline-block">
+                        <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-2 group-hover:scale-110 transition-transform">
+                          <Users className="w-10 h-10 text-primary" />
                         </div>
-                        <Badge className={winner.placement === 1 ? "bg-gradient-to-r from-yellow-400 to-yellow-600" : "bg-gradient-to-r from-gray-300 to-gray-500"}>
-                          {winner.placement === 1 ? "Winner" : "Runner-Up"}
-                        </Badge>
+                        <div className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-primary flex items-center justify-center shadow-lg">
+                          <Crown className="w-4 h-4 text-primary-foreground" />
+                        </div>
                       </div>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="grid grid-cols-2 gap-4">
-                        <div className="text-center p-4 rounded-lg bg-muted/50">
-                          <Target className="w-6 h-6 mx-auto mb-2 text-primary" />
-                          <p className="text-2xl font-bold">{winner.kills}</p>
-                          <p className="text-sm text-muted-foreground">Total Kills</p>
+                      <div>
+                        <h3 className="font-bold text-lg mb-1">{winner.teamName}</h3>
+                        <p className="text-sm text-muted-foreground">{winner.player1}</p>
+                        <p className="text-sm text-muted-foreground">{winner.player2}</p>
+                        <p className="text-xs text-muted-foreground mt-1">{winner.date}</p>
+                      </div>
+                      <Separator />
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm text-muted-foreground">Kills</span>
+                          <Badge variant="secondary">{winner.kills}</Badge>
                         </div>
-                        <div className="text-center p-4 rounded-lg bg-muted/50">
-                          <Trophy className="w-6 h-6 mx-auto mb-2 text-primary" />
-                          <p className="text-2xl font-bold">{winner.prize}</p>
-                          <p className="text-sm text-muted-foreground">Prize Won</p>
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm text-muted-foreground">Prize Won</span>
+                          <Badge variant="default">{winner.prize}</Badge>
                         </div>
                       </div>
                     </CardContent>
                   </Card>
                 </motion.div>
               ))}
-            </div>
-          </motion.div>
-        </SectionWrapper>
-
-        {/* Team Coordination Tips - Free Fire specific strategies */}
-        <SectionWrapper data-testid="section-coordination-tips">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <div className="text-center mb-12">
-              <Badge variant="secondary" className="mb-4">
-                <Zap className="w-4 h-4 mr-2" />
-                Pro Tips
-              </Badge>
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                Free Fire Duo Coordination & Strategy Tips
-              </h2>
-              <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-                Master these coordination strategies to improve your Free Fire duo teamwork and win more matches
-              </p>
-            </div>
-
-            {/* Tabbed strategy guide */}
-            <Tabs defaultValue="communication" className="max-w-5xl mx-auto" data-testid="coordination-tabs">
-              <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 mb-8">
-                <TabsTrigger value="communication" data-testid="tab-communication">
-                  <MessageSquare className="w-4 h-4 mr-2" />
-                  Communication
-                </TabsTrigger>
-                <TabsTrigger value="positioning" data-testid="tab-positioning">
-                  <Target className="w-4 h-4 mr-2" />
-                  Positioning
-                </TabsTrigger>
-                <TabsTrigger value="combat" data-testid="tab-combat">
-                  <Zap className="w-4 h-4 mr-2" />
-                  Combat
-                </TabsTrigger>
-                <TabsTrigger value="endgame" data-testid="tab-endgame">
-                  <Trophy className="w-4 h-4 mr-2" />
-                  Endgame
-                </TabsTrigger>
-              </TabsList>
-
-              {/* Communication tab */}
-              <TabsContent value="communication" className="space-y-6">
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Effective Communication</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    {[
-                      {
-                        title: "Clear Callouts",
-                        description: "Use specific directions (North, South, Clock positions) and landmarks in Free Fire. Say 'Enemy at warehouse, 12 o'clock' instead of 'over there'.",
-                      },
-                      {
-                        title: "Constant Updates",
-                        description: "Share everything: armor level, ammo count, healing items, enemy movements, and your position. Over-communication is better than silence in Free Fire duo mode.",
-                      },
-                      {
-                        title: "Voice Chat Discipline",
-                        description: "Stay calm during intense moments. One person calls shots in combat. Avoid talking over each other. Use short, clear phrases for quick reactions.",
-                      },
-                      {
-                        title: "Plan Before Action",
-                        description: "Discuss strategy before rotating or engaging. Agree on landing spots, character selection, rotation paths, and engagement rules before the match starts.",
-                      },
-                    ].map((tip, index) => (
-                      <div key={index} className="flex items-start gap-3 p-4 rounded-lg bg-muted/30">
-                        <CheckCircle2 className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
-                        <div>
-                          <p className="font-semibold mb-1">{tip.title}</p>
-                          <p className="text-sm text-muted-foreground">{tip.description}</p>
-                        </div>
-                      </div>
-                    ))}
-                  </CardContent>
-                </Card>
-              </TabsContent>
-
-              {/* Positioning tab */}
-              <TabsContent value="positioning" className="space-y-6">
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Strategic Positioning</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    {[
-                      {
-                        title: "Stay Together",
-                        description: "Never be more than 30-50m apart in Free Fire. Close proximity allows quick support if one player is engaged. Distance = death in duo mode.",
-                      },
-                      {
-                        title: "Cover Different Angles",
-                        description: "While staying close, cover complementary directions. If your partner watches North, you watch South. Use gloo walls to create cover and angles.",
-                      },
-                      {
-                        title: "High Ground Advantage",
-                        description: "Always prioritize buildings and elevation. One player holds high ground while the other scouts or flanks from lower positions when needed.",
-                      },
-                      {
-                        title: "Zone Rotation",
-                        description: "Rotate early to the next zone in Free Fire. Move together along the edge, not through the center. Use vehicles when safe, but exit together.",
-                      },
-                    ].map((tip, index) => (
-                      <div key={index} className="flex items-start gap-3 p-4 rounded-lg bg-muted/30">
-                        <CheckCircle2 className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
-                        <div>
-                          <p className="font-semibold mb-1">{tip.title}</p>
-                          <p className="text-sm text-muted-foreground">{tip.description}</p>
-                        </div>
-                      </div>
-                    ))}
-                  </CardContent>
-                </Card>
-              </TabsContent>
-
-              {/* Combat tab */}
-              <TabsContent value="combat" className="space-y-6">
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Combat Coordination</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    {[
-                      {
-                        title: "Focus Fire & Character Abilities",
-                        description: "Both players shoot the same enemy when possible. Coordinate character abilities - if one uses Chrono, other pushes aggressively. Two guns on one target = faster knock.",
-                      },
-                      {
-                        title: "Instant Revive",
-                        description: "If partner is knocked, eliminate threats first, then revive immediately. Use gloo walls to create cover for safer revives. Drop med kits for downed partner.",
-                      },
-                      {
-                        title: "Gloo Wall Teamwork",
-                        description: "One player creates gloo wall cover while the other pushes or heals. Practice synchronized gloo wall placements to create defensive positions quickly.",
-                      },
-                      {
-                        title: "Retreat Together",
-                        description: "If overwhelmed, both players retreat together using gloo walls and smoke grenades. Covering fire while partner heals. Never leave your teammate behind.",
-                      },
-                    ].map((tip, index) => (
-                      <div key={index} className="flex items-start gap-3 p-4 rounded-lg bg-muted/30">
-                        <CheckCircle2 className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
-                        <div>
-                          <p className="font-semibold mb-1">{tip.title}</p>
-                          <p className="text-sm text-muted-foreground">{tip.description}</p>
-                        </div>
-                      </div>
-                    ))}
-                  </CardContent>
-                </Card>
-              </TabsContent>
-
-              {/* Endgame tab */}
-              <TabsContent value="endgame" className="space-y-6">
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Final Circle Strategy</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    {[
-                      {
-                        title: "Zone Control",
-                        description: "In final circles, secure center position early. Use grenades and gloo walls to deny other teams from entering your area. Build defensive structures.",
-                      },
-                      {
-                        title: "Smart Movement",
-                        description: "Use prone and crawl in final zones. Move during firefights between other teams. Both players move together, never split up. Time movements with zone shrinks.",
-                      },
-                      {
-                        title: "Resource Management",
-                        description: "Conserve throwables, gloo walls, and healing for final fights. Share resources - if one player has extra grenades or medkits, distribute evenly.",
-                      },
-                      {
-                        title: "Third-Party Timing",
-                        description: "Let other duo teams fight first in Free Fire. Third-party when both teams are weak. Rush together as soon as you hear knocks from their battle.",
-                      },
-                    ].map((tip, index) => (
-                      <div key={index} className="flex items-start gap-3 p-4 rounded-lg bg-muted/30">
-                        <CheckCircle2 className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
-                        <div>
-                          <p className="font-semibold mb-1">{tip.title}</p>
-                          <p className="text-sm text-muted-foreground">{tip.description}</p>
-                        </div>
-                      </div>
-                    ))}
-                  </CardContent>
-                </Card>
-              </TabsContent>
-            </Tabs>
+            </motion.div>
           </motion.div>
         </SectionWrapper>
 
         {/* Live Leaderboard Preview */}
         <SectionWrapper variant="muted" data-testid="section-leaderboard">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={staggerContainer}
+            className="space-y-12"
           >
-            <div className="text-center mb-12">
-              <Badge variant="secondary" className="mb-4">
-                <TrendingUp className="w-4 h-4 mr-2" />
-                Live Rankings
-              </Badge>
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                Tournament Leaderboard Preview
-              </h2>
-              <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-                Track top-performing duo teams in real-time during tournaments
+            <motion.div 
+              variants={staggerItem}
+              className="text-center space-y-4"
+            >
+              <div className="flex items-center justify-center gap-2">
+                <TrendingUp className="w-8 h-8 text-primary" />
+                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold" data-testid="heading-leaderboard">
+                  Live Leaderboard Preview
+                </h2>
+              </div>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                See how duo teams compete during tournaments. Rankings update in real-time.
               </p>
-            </div>
+            </motion.div>
 
-            {/* Leaderboard table */}
-            <Card className="max-w-5xl mx-auto" data-testid="leaderboard-card">
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <CardTitle>Current Tournament Rankings</CardTitle>
-                  <Badge variant="outline">Live</Badge>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="overflow-x-auto">
-                  <table className="w-full">
-                    <thead>
-                      <tr className="border-b">
-                        <th className="text-left p-3 font-semibold">Rank</th>
-                        <th className="text-left p-3 font-semibold">Team</th>
-                        <th className="text-left p-3 font-semibold hidden md:table-cell">Players</th>
-                        <th className="text-center p-3 font-semibold">Kills</th>
-                        <th className="text-center p-3 font-semibold">Points</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {leaderboardData.map((team, index) => (
-                        <motion.tr
-                          key={team.rank}
-                          initial={{ opacity: 0, x: -20 }}
-                          whileInView={{ opacity: 1, x: 0 }}
-                          viewport={{ once: true }}
-                          transition={{ duration: 0.3, delay: index * 0.05 }}
-                          className="border-b hover-elevate transition-all"
-                          data-testid={`leaderboard-row-${team.rank}`}
-                        >
-                          <td className="p-3">
-                            <div className="flex items-center gap-2">
-                              {team.rank === 1 && <Crown className="w-5 h-5 text-yellow-500" />}
-                              {team.rank === 2 && <Medal className="w-5 h-5 text-gray-400" />}
-                              {team.rank === 3 && <Medal className="w-5 h-5 text-orange-600" />}
-                              <span className="font-semibold">#{team.rank}</span>
+            <motion.div variants={staggerItem}>
+              <Card className="max-w-6xl mx-auto hover-elevate transition-all duration-300">
+                <CardHeader>
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                    <div>
+                      <CardTitle>Current Team Standings</CardTitle>
+                      <CardDescription>Top 8 duo teams - Sample data from previous tournament</CardDescription>
+                    </div>
+                    <Badge variant="outline" className="gap-2 self-start sm:self-auto">
+                      <div className="w-2 h-2 bg-primary rounded-full animate-pulse" />
+                      Live
+                    </Badge>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <div className="overflow-x-auto">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead className="w-20">Rank</TableHead>
+                          <TableHead>Team Name</TableHead>
+                          <TableHead className="hidden sm:table-cell">Players</TableHead>
+                          <TableHead className="text-center">Kills</TableHead>
+                          <TableHead className="text-center">Points</TableHead>
+                          <TableHead className="text-right">Current Prize</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {mockLeaderboard.map((team, index) => (
+                          <TableRow 
+                            key={index} 
+                            className={index < 2 ? "bg-primary/5" : ""}
+                            data-testid={`leaderboard-row-${index}`}
+                          >
+                            <TableCell className="font-bold">
+                              <div className="flex items-center gap-2">
+                                {index === 0 && <Crown className="w-4 h-4 text-primary" />}
+                                {index === 1 && <Medal className="w-4 h-4 text-chart-2" />}
+                                #{team.rank}
+                              </div>
+                            </TableCell>
+                            <TableCell className="font-semibold">{team.teamName}</TableCell>
+                            <TableCell className="hidden sm:table-cell text-sm text-muted-foreground">
+                              {team.player1} & {team.player2}
+                            </TableCell>
+                            <TableCell className="text-center">
+                              <Badge variant="secondary">{team.kills}</Badge>
+                            </TableCell>
+                            <TableCell className="text-center font-semibold">{team.points}</TableCell>
+                            <TableCell className="text-right font-bold text-primary">{team.prize}</TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+          </motion.div>
+        </SectionWrapper>
+
+        {/* Registration Timeline */}
+        <SectionWrapper data-testid="section-timeline">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={staggerContainer}
+            className="space-y-12"
+          >
+            <motion.div 
+              variants={staggerItem}
+              className="text-center space-y-4"
+            >
+              <div className="flex items-center justify-center gap-2">
+                <Zap className="w-8 h-8 text-primary" />
+                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold" data-testid="heading-timeline">
+                  Registration Process
+                </h2>
+              </div>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Simple 5-step process to secure your duo team spot. We guide you every step of the way.
+              </p>
+            </motion.div>
+
+            <div className="max-w-4xl mx-auto">
+              <div className="relative">
+                {/* Timeline line - Vertical line connecting all steps */}
+                <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-0.5 bg-border -translate-x-1/2" />
+
+                {registrationSteps.map((step, index) => {
+                  const Icon = step.icon;
+                  const isEven = index % 2 === 0;
+
+                  return (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, x: isEven ? -30 : 30 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.5, delay: index * 0.1 }}
+                      className="relative mb-12 last:mb-0"
+                      data-testid={`timeline-step-${index}`}
+                    >
+                      <div className={`md:flex items-center ${isEven ? 'md:flex-row' : 'md:flex-row-reverse'}`}>
+                        {/* Content Card */}
+                        <div className="md:w-5/12">
+                          <Card className="hover-elevate transition-all duration-300 group">
+                            <CardContent className="p-6 space-y-3">
+                              <div className="flex items-center gap-3">
+                                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center group-hover:scale-110 transition-transform">
+                                  <Icon className="w-6 h-6 text-primary" />
+                                </div>
+                                <div>
+                                  <h3 className="font-bold text-lg">{step.title}</h3>
+                                  <p className="text-sm text-muted-foreground flex items-center gap-1">
+                                    <Clock className="w-3 h-3" />
+                                    {step.time}
+                                  </p>
+                                </div>
+                              </div>
+                              <p className="text-muted-foreground">{step.description}</p>
+                            </CardContent>
+                          </Card>
+                        </div>
+
+                        {/* Timeline Node - Animated dot indicator */}
+                        <div className="hidden md:flex md:w-2/12 justify-center">
+                          <div className="relative w-6 h-6">
+                            <div className="absolute inset-0 bg-primary rounded-full animate-ping opacity-20" />
+                            <div className="relative w-6 h-6 bg-primary rounded-full border-4 border-background flex items-center justify-center shadow-lg">
+                              <div className="w-2 h-2 bg-primary-foreground rounded-full" />
                             </div>
-                          </td>
-                          <td className="p-3">
-                            <p className="font-semibold">{team.teamName}</p>
-                          </td>
-                          <td className="p-3 text-sm text-muted-foreground hidden md:table-cell">
-                            {team.player1} & {team.player2}
-                          </td>
-                          <td className="p-3 text-center">
-                            <Badge variant="outline">{team.kills}</Badge>
-                          </td>
-                          <td className="p-3 text-center">
-                            <span className="font-bold text-primary">{team.points}</span>
-                          </td>
-                        </motion.tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-                <div className="mt-6 p-4 rounded-lg bg-muted/30 text-sm text-muted-foreground">
-                  <p className="flex items-start gap-2">
-                    <AlertCircle className="w-4 h-4 mt-0.5 flex-shrink-0" />
-                    This is a sample leaderboard showing how rankings will be displayed during live tournaments. Actual leaderboard updates in real-time during matches.
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
-        </SectionWrapper>
-
-        {/* Enhanced FAQ Section */}
-        <SectionWrapper data-testid="section-faq">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <div className="text-center mb-12">
-              <Badge variant="secondary" className="mb-4">
-                <Shield className="w-4 h-4 mr-2" />
-                Common Questions
-              </Badge>
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                Duo Tournament FAQs
-              </h2>
-              <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-                Everything you need to know about Free Fire duo tournaments, team coordination, and participation
-              </p>
-            </div>
-
-            {/* FAQ cards */}
-            <div className="max-w-4xl mx-auto space-y-4">
-              {faqs.map((faq, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 10 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: index * 0.05 }}
-                >
-                  <Card className="hover-elevate transition-all duration-300" data-testid={`faq-${index}`}>
-                    <CardHeader>
-                      <CardTitle className="text-lg flex items-start gap-3">
-                        <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                          <span className="text-xs font-bold text-primary">Q</span>
+                          </div>
                         </div>
-                        {faq.question}
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="flex items-start gap-3">
-                        <div className="w-6 h-6 rounded-full bg-chart-2/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                          <span className="text-xs font-bold text-chart-2">A</span>
-                        </div>
-                        <p className="text-muted-foreground flex-1">{faq.answer}</p>
+
+                        {/* Spacing for alternating layout */}
+                        <div className="hidden md:block md:w-5/12" />
                       </div>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              ))}
+                    </motion.div>
+                  );
+                })}
+              </div>
             </div>
-          </motion.div>
-        </SectionWrapper>
-
-        {/* Team Testimonials */}
-        <SectionWrapper variant="muted" data-testid="section-testimonials">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <div className="text-center mb-12">
-              <Badge variant="secondary" className="mb-4">
-                <Star className="w-4 h-4 mr-2" />
-                Community Voices
-              </Badge>
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                What Duo Teams Are Saying
-              </h2>
-              <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-                Hear from successful Free Fire duo teams about their tournament experiences
-              </p>
-            </div>
-
-            <ModernTestimonials testimonials={testimonials} autoPlay={true} autoPlayInterval={6000} />
           </motion.div>
         </SectionWrapper>
 
         {/* Tournament Rules Deep Dive */}
-        <SectionWrapper data-testid="section-rules">
+        <SectionWrapper variant="muted" id="rules" data-testid="section-rules">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={staggerContainer}
+            className="space-y-12"
           >
-            <div className="text-center mb-12">
-              <Badge variant="secondary" className="mb-4">
-                <Shield className="w-4 h-4 mr-2" />
-                Official Guidelines
-              </Badge>
-              <h2 className="text-3xl md:text-4xl font-bold mb-4" id="rules">
-                Tournament Rules & Guidelines
-              </h2>
-              <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-                Comprehensive rules and guidelines for fair and competitive Free Fire duo tournament play
+            <motion.div 
+              variants={staggerItem}
+              className="text-center space-y-4"
+            >
+              <div className="flex items-center justify-center gap-2">
+                <Shield className="w-8 h-8 text-primary" />
+                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold" data-testid="heading-rules">
+                  Complete Tournament Rules
+                </h2>
+              </div>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Read all rules carefully before registering. Fair play ensures the best experience for everyone.
               </p>
-            </div>
+            </motion.div>
 
-            <div className="max-w-4xl mx-auto">
-              <RulesAccordion rules={rules} />
-            </div>
+            <motion.div variants={staggerItem}>
+              <Tabs defaultValue="all" className="max-w-4xl mx-auto">
+                <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-1">
+                  <TabsTrigger value="all" data-testid="tab-all-rules">All Rules</TabsTrigger>
+                  <TabsTrigger value="registration" data-testid="tab-registration">Registration</TabsTrigger>
+                  <TabsTrigger value="payment" data-testid="tab-payment">Payment</TabsTrigger>
+                  <TabsTrigger value="gameplay" data-testid="tab-gameplay">Gameplay</TabsTrigger>
+                  <TabsTrigger value="prizes" data-testid="tab-prizes">Prizes</TabsTrigger>
+                  <TabsTrigger value="communication" data-testid="tab-communication">Communication</TabsTrigger>
+                  <TabsTrigger value="fairplay" data-testid="tab-fairplay">Fair Play</TabsTrigger>
+                  <TabsTrigger value="support" data-testid="tab-support">Support</TabsTrigger>
+                </TabsList>
+
+                <TabsContent value="all" className="mt-6">
+                  <RulesAccordion rules={detailedRules} />
+                </TabsContent>
+
+                <TabsContent value="registration" className="mt-6">
+                  <RulesAccordion rules={[detailedRules[0]]} />
+                </TabsContent>
+
+                <TabsContent value="payment" className="mt-6">
+                  <RulesAccordion rules={[detailedRules[1]]} />
+                </TabsContent>
+
+                <TabsContent value="gameplay" className="mt-6">
+                  <RulesAccordion rules={[detailedRules[2]]} />
+                </TabsContent>
+
+                <TabsContent value="prizes" className="mt-6">
+                  <RulesAccordion rules={[detailedRules[3]]} />
+                </TabsContent>
+
+                <TabsContent value="communication" className="mt-6">
+                  <RulesAccordion rules={[detailedRules[4]]} />
+                </TabsContent>
+
+                <TabsContent value="fairplay" className="mt-6">
+                  <RulesAccordion rules={[detailedRules[5], detailedRules[6]]} />
+                </TabsContent>
+
+                <TabsContent value="support" className="mt-6">
+                  <RulesAccordion rules={[detailedRules[7]]} />
+                </TabsContent>
+              </Tabs>
+            </motion.div>
           </motion.div>
         </SectionWrapper>
 
-        {/* Payment Instructions */}
-        <SectionWrapper variant="muted" data-testid="section-payment">
+        {/* Technical Requirements */}
+        <SectionWrapper data-testid="section-technical">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={staggerContainer}
+            className="space-y-12"
           >
-            <div className="text-center mb-12">
-              <Badge variant="secondary" className="mb-4">
-                <CreditCard className="w-4 h-4 mr-2" />
-                Secure Payment
-              </Badge>
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                Payment Instructions
-              </h2>
-              <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-                Complete your duo team registration with secure payment via UPI
+            <motion.div 
+              variants={staggerItem}
+              className="text-center space-y-4"
+            >
+              <div className="flex items-center justify-center gap-2">
+                <Smartphone className="w-8 h-8 text-primary" />
+                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold" data-testid="heading-technical">
+                  Technical Requirements
+                </h2>
+              </div>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Ensure both team members' devices and connections meet these requirements for smooth gameplay
               </p>
-            </div>
+            </motion.div>
 
-            <div className="max-w-4xl mx-auto">
-              <PaymentInstructions amount={FREEFIRE_TOURNAMENTS.duo.entryFee} />
-            </div>
+            <motion.div 
+              variants={staggerContainer}
+              className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto"
+            >
+              {/* Device Requirements Card */}
+              <motion.div variants={staggerItem}>
+                <Card className="hover-elevate transition-all duration-300 h-full">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Smartphone className="w-5 h-5 text-primary" />
+                      Device Specs
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div>
+                      <p className="text-sm font-semibold text-muted-foreground mb-2">Minimum Requirements</p>
+                      <ul className="space-y-2 text-sm">
+                        <li className="flex items-start gap-2">
+                          <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                          <span>3GB RAM</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                          <span>Snapdragon 625 / Helio G70</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                          <span>Android 5.0 or higher</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                          <span>2GB free storage</span>
+                        </li>
+                      </ul>
+                    </div>
+                    <Separator />
+                    <div>
+                      <p className="text-sm font-semibold text-muted-foreground mb-2">Recommended</p>
+                      <ul className="space-y-2 text-sm">
+                        <li className="flex items-start gap-2">
+                          <Star className="w-4 h-4 text-chart-2 mt-0.5 flex-shrink-0" />
+                          <span>4GB+ RAM</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <Star className="w-4 h-4 text-chart-2 mt-0.5 flex-shrink-0" />
+                          <span>Snapdragon 660 or better</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <Star className="w-4 h-4 text-chart-2 mt-0.5 flex-shrink-0" />
+                          <span>90Hz display (advantage)</span>
+                        </li>
+                      </ul>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+
+              {/* Internet Requirements Card */}
+              <motion.div variants={staggerItem}>
+                <Card className="hover-elevate transition-all duration-300 h-full">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Wifi className="w-5 h-5 text-primary" />
+                      Internet Connection
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div>
+                      <p className="text-sm font-semibold text-muted-foreground mb-2">Minimum Speed</p>
+                      <ul className="space-y-2 text-sm">
+                        <li className="flex items-start gap-2">
+                          <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                          <span>8 Mbps download</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                          <span>4 Mbps upload</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                          <span>Ping under 100ms</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                          <span>Stable connection</span>
+                        </li>
+                      </ul>
+                    </div>
+                    <Separator />
+                    <div>
+                      <p className="text-sm font-semibold text-muted-foreground mb-2">Recommended</p>
+                      <ul className="space-y-2 text-sm">
+                        <li className="flex items-start gap-2">
+                          <Star className="w-4 h-4 text-chart-2 mt-0.5 flex-shrink-0" />
+                          <span>20+ Mbps download</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <Star className="w-4 h-4 text-chart-2 mt-0.5 flex-shrink-0" />
+                          <span>WiFi connection preferred</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <Star className="w-4 h-4 text-chart-2 mt-0.5 flex-shrink-0" />
+                          <span>Ping under 50ms</span>
+                        </li>
+                      </ul>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+
+              {/* Team Communication Card */}
+              <motion.div variants={staggerItem}>
+                <Card className="hover-elevate transition-all duration-300 h-full md:col-span-2 lg:col-span-1">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <MessageSquare className="w-5 h-5 text-primary" />
+                      Team Communication
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div>
+                      <p className="text-sm font-semibold text-muted-foreground mb-2">Essential Tools</p>
+                      <ul className="space-y-2 text-sm">
+                        <li className="flex items-start gap-2">
+                          <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                          <span>In-game voice chat</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                          <span>Discord (recommended)</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                          <span>WhatsApp for admin</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                          <span>Working microphone</span>
+                        </li>
+                      </ul>
+                    </div>
+                    <Separator />
+                    <div className="p-3 bg-primary/10 rounded-lg">
+                      <p className="text-xs text-muted-foreground">
+                        <strong className="text-foreground">Pro Tip:</strong> Practice with your teammate before the tournament to ensure communication is smooth and strategies are coordinated.
+                      </p>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            </motion.div>
           </motion.div>
         </SectionWrapper>
 
-        {/* Team Gallery - Action shots from tournaments */}
-        <SectionWrapper data-testid="section-gallery">
+        {/* FAQ Section */}
+        <SectionWrapper variant="muted" data-testid="section-faq">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={staggerContainer}
+            className="space-y-12"
           >
-            <div className="text-center mb-12">
-              <Badge variant="secondary" className="mb-4">
-                <Target className="w-4 h-4 mr-2" />
-                Tournament Gallery
-              </Badge>
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                Free Fire Duo Action Shots
-              </h2>
-              <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-                Experience the intensity and excitement of our duo tournaments through these action-packed moments
+            <motion.div 
+              variants={staggerItem}
+              className="text-center space-y-4"
+            >
+              <div className="flex items-center justify-center gap-2">
+                <AlertCircle className="w-8 h-8 text-primary" />
+                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold" data-testid="heading-faq">
+                  Frequently Asked Questions
+                </h2>
+              </div>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Find answers to common questions about duo tournaments, team coordination, and prizes
               </p>
-            </div>
+            </motion.div>
 
-            <MediaLightbox
-              items={[
-                { src: duoImage1, alt: "Free Fire Max Duo Battle Scene", caption: "Intense duo battle action" },
-                { src: duoImage2, alt: "Free Fire Max Combat Firefight", caption: "Coordinated duo combat" },
-                { src: duoImage3, alt: "Free Fire Max Victory Celebration", caption: "Duo champions celebrating" },
-                { src: duoImage4, alt: "Free Fire Max Tournament Scene", caption: "Competitive tournament action" },
-                { src: duoImage5, alt: "Free Fire Max Weapon Showcase", caption: "Strategic weapon loadouts" },
-                { src: duoImage6, alt: "Free Fire Max Championship Trophy", caption: "Winner duo team trophy" },
-                { src: duoImage7, alt: "Free Fire Max Character Lineup", caption: "Tournament character selection" },
-                { src: heroImage, alt: "Free Fire Max Duo Coordination", caption: "Perfect duo teamwork" },
-              ]}
-              columns={{ sm: 1, md: 2, lg: 3 }}
-            />
+            <motion.div variants={staggerItem} className="max-w-4xl mx-auto">
+              <Accordion type="single" collapsible className="space-y-4">
+                {faqs.map((faq, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.4, delay: index * 0.05 }}
+                  >
+                    <AccordionItem 
+                      value={`faq-${index}`} 
+                      className="border border-border rounded-lg px-6 hover-elevate transition-all"
+                      data-testid={`faq-item-${index}`}
+                    >
+                      <AccordionTrigger className="text-left hover:no-underline py-4">
+                        <span className="font-semibold">{faq.question}</span>
+                      </AccordionTrigger>
+                      <AccordionContent className="text-muted-foreground pb-4">
+                        {faq.answer}
+                      </AccordionContent>
+                    </AccordionItem>
+                  </motion.div>
+                ))}
+              </Accordion>
+            </motion.div>
           </motion.div>
         </SectionWrapper>
 
-        {/* Final CTA Band - Encourage registration */}
-        <SectionWrapper variant="default" data-testid="section-final-cta">
-          <CTABand
-            title="Ready to Dominate as a Duo?"
-            description="Join hundreds of Free Fire Max players competing for glory and prizes. Register your duo team now and showcase your coordination skills!"
-            buttons={[
-              { 
-                label: "Register Your Duo Team", 
-                onClick: scrollToRegistration, 
-                icon: Trophy 
-              },
-              { 
-                label: "View Tournament Rules", 
-                href: "#rules", 
-                variant: "outline", 
-                icon: Shield 
-              },
-            ]}
-            variant="gradient"
-            icon={Users}
-            data-testid="cta-final-registration"
-          />
+        {/* Testimonials Section */}
+        <SectionWrapper data-testid="section-testimonials">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={staggerContainer}
+            className="space-y-12"
+          >
+            <motion.div 
+              variants={staggerItem}
+              className="text-center space-y-4"
+            >
+              <div className="flex items-center justify-center gap-2">
+                <Star className="w-8 h-8 text-primary" />
+                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold" data-testid="heading-testimonials">
+                  What Duo Teams Say
+                </h2>
+              </div>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Hear from successful duo teams who competed in our Free Fire Max tournaments
+              </p>
+            </motion.div>
+
+            <motion.div variants={staggerItem}>
+              <ModernTestimonials testimonials={testimonials} />
+            </motion.div>
+          </motion.div>
         </SectionWrapper>
+
+        {/* Media Gallery */}
+        <SectionWrapper variant="muted" data-testid="section-gallery">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={staggerContainer}
+            className="space-y-12"
+          >
+            <motion.div 
+              variants={staggerItem}
+              className="text-center space-y-4"
+            >
+              <div className="flex items-center justify-center gap-2">
+                <Play className="w-8 h-8 text-primary" />
+                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold" data-testid="heading-gallery">
+                  Tournament Gallery
+                </h2>
+              </div>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Action-packed moments from Free Fire Max duo tournaments
+              </p>
+            </motion.div>
+
+            <motion.div variants={staggerItem}>
+              <MediaLightbox
+                items={[
+                  { src: tournamentImage1, alt: "Free Fire Duo Combat Action", caption: "Intense duo firefight" },
+                  { src: tournamentImage2, alt: "Free Fire Team Coordination", caption: "Perfect team coordination" },
+                  { src: tournamentImage3, alt: "Free Fire Victory Celebration", caption: "Duo victory celebration" },
+                  { src: esportsImage1, alt: "Free Fire Tournament Scene", caption: "Competitive tournament atmosphere" },
+                  { src: esportsImage2, alt: "Free Fire Weapon Showcase", caption: "Duo weapon mastery" },
+                  { src: gamingImage1, alt: "Free Fire Character Lineup", caption: "Character selection strategy" },
+                  { src: gamingImage2, alt: "Free Fire Championship Trophy", caption: "Championship glory awaits" },
+                  { src: heroImage, alt: "Free Fire Duo Team Coordination", caption: "Ultimate duo teamwork" },
+                ]}
+              />
+            </motion.div>
+          </motion.div>
+        </SectionWrapper>
+
+        {/* Final CTA Band */}
+        <CTABand
+          title="Ready to Dominate as a Duo?"
+          description="Join the most competitive Free Fire Max duo tournament. Register your team now and compete for exciting prizes!"
+          variant="gradient"
+          icon={Trophy}
+          buttons={[
+            { label: "Register Your Team Now", onClick: scrollToRegistration, variant: "secondary", icon: UserPlus },
+            { label: "View Complete Rules", href: "#rules", variant: "outline" },
+          ]}
+          data-testid="cta-band"
+        />
       </main>
 
       <Footer />

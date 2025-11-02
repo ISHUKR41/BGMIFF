@@ -1,33 +1,23 @@
 /**
- * Free Fire Max Solo Tournament Page Component
+ * Free Fire Max Solo Tournament Page Component - Modern Redesign
  * 
- * Dedicated page for Free Fire Max Solo Tournament registration and information.
+ * Enhanced with split hero layout, scroll-triggered animations, and full responsiveness
  * 
- * Key Sections:
- * 1. Hero Section - Tournament banner with registration CTA
- * 2. Tournament Stats - Entry fee, slots, prizes displayed as animated cards
- * 3. Feature Highlight - Detailed benefits of solo tournament participation
- * 4. Prize Breakdown Charts - Visual representation of prize distribution
- * 5. Registration Timeline - Step-by-step registration process
- * 6. Tournament Schedule - Important dates and times
- * 7. Detailed Rules - Comprehensive rules organized by category with accordions
- * 8. Payment Instructions - QR code and payment verification process
- * 9. Leaderboard - Current/past tournament standings
- * 10. Past Winners - Showcase of previous tournament champions
- * 11. FAQ Section - Common questions specific to solo tournaments
- * 12. Player Testimonials - Reviews from solo tournament participants
- * 13. Strategy Tips - Gameplay advice for Free Fire solo mode
- * 14. Image Gallery - Action shots from past solo tournaments
- * 15. Registration Form - Google Forms embed for tournament signup
- * 
- * This page provides all necessary information for solo players to understand,
- * register for, and participate in Free Fire Max solo tournaments.
+ * Key Improvements:
+ * - Split hero section with tournament info and registration form side-by-side
+ * - Scroll-triggered fade-in animations on all sections
+ * - Framer-motion stagger effects for cards and grids
+ * - Magnetic button effects for CTAs
+ * - Parallax effects on hero background
+ * - Glassmorphism effects for modern aesthetic
+ * - Fully responsive: mobile (stack), tablet (2-col), desktop (3-4 col)
  */
 
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef } from "react";
+import { useInView } from "react-intersection-observer";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
-import ModernHero from "@/components/ModernHero";
 import StickyCTA from "@/components/StickyCTA";
 import SectionWrapper from "@/components/SectionWrapper";
 import ProfessionalStatCard from "@/components/ProfessionalStatCard";
@@ -39,7 +29,6 @@ import CTABand from "@/components/CTABand";
 import FormEmbed from "@/components/FormEmbed";
 import FloatingOrbs from "@/components/FloatingOrbs";
 import BlurFade from "@/components/BlurFade";
-import { BentoGrid, BentoCard } from "@/components/BentoGrid";
 import EnhancedMagneticButton from "@/components/EnhancedMagneticButton";
 import { FREEFIRE_TOURNAMENTS } from "@shared/config";
 import { fadeSlideUp, staggerContainer, staggerItem, scaleUp } from "@/lib/motion";
@@ -72,9 +61,18 @@ import {
   Crown,
   Play,
   ExternalLink,
-  AlertCircle
+  AlertCircle,
+  Sparkles
 } from "lucide-react";
 import { BarChart, Bar, PieChart, Pie, Cell, ResponsiveContainer, XAxis, YAxis, Legend, Tooltip } from "recharts";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 
 // Import Free Fire Max action images for gallery and hero section
 import heroImage from "@assets/generated_images/Free_Fire_solo_player_action_89936b71.png";
@@ -87,7 +85,6 @@ import gamingImage1 from "@assets/generated_images/Free_Fire_character_lineup_2e
 import gamingImage2 from "@assets/generated_images/Free_Fire_championship_trophy_26620803.png";
 
 // Prize breakdown data for visual pie chart
-// Shows distribution of total prize pool across different categories for Free Fire Max tournament
 const prizeBreakdownData = [
   { name: "Winner", value: FREEFIRE_TOURNAMENTS.solo.winner, percentage: 45, fill: "hsl(var(--chart-1))" },
   { name: "Runner-Up", value: FREEFIRE_TOURNAMENTS.solo.runnerUp, percentage: 30, fill: "hsl(var(--chart-2))" },
@@ -95,7 +92,6 @@ const prizeBreakdownData = [
 ];
 
 // Kill rewards breakdown table data
-// Shows potential earnings based on elimination count in Free Fire Max
 const killRewardsData = [
   { kills: "0-5", reward: `₹0-${FREEFIRE_TOURNAMENTS.solo.perKill * 5}` },
   { kills: "6-10", reward: `₹${FREEFIRE_TOURNAMENTS.solo.perKill * 6}-${FREEFIRE_TOURNAMENTS.solo.perKill * 10}` },
@@ -104,7 +100,6 @@ const killRewardsData = [
 ];
 
 // Historical data of past Free Fire Max solo tournament winners
-// Showcases top performers and their achievements
 const pastWinners = [
   {
     name: "PhoenixFlame_YT",
@@ -141,7 +136,6 @@ const pastWinners = [
 ];
 
 // Current tournament leaderboard for display
-// In production, this would be fetched from backend API
 const mockLeaderboard = [
   { rank: 1, player: "DragonSlayer_Pro", kills: 10, points: 72, prize: "₹400" },
   { rank: 2, player: "NinjaWarrior_YT", kills: 9, points: 68, prize: "₹195" },
@@ -156,7 +150,6 @@ const mockLeaderboard = [
 ];
 
 // Player testimonials specific to Free Fire Max solo tournament experiences
-// Real feedback builds trust and credibility
 const testimonials = [
   {
     name: "Rajesh Kumar",
@@ -196,7 +189,6 @@ const testimonials = [
 ];
 
 // Comprehensive FAQ section for Free Fire Max solo tournaments
-// Covers eligibility, registration, gameplay, prizes, and technical requirements
 const faqs = [
   {
     question: "Who is eligible to participate in the Free Fire Max Solo Tournament?",
@@ -249,7 +241,6 @@ const faqs = [
 ];
 
 // Comprehensive tournament rules organized by category
-// Each category has a type (info/success/warning) for visual distinction
 const detailedRules = [
   {
     title: "Registration Requirements",
@@ -351,7 +342,6 @@ const detailedRules = [
 ];
 
 // Step-by-step registration process visualization
-// Helps players understand the complete registration workflow
 const registrationSteps = [
   {
     title: "Make Payment",
@@ -386,7 +376,6 @@ const registrationSteps = [
 ];
 
 // Tournament schedule timeline with important dates
-// Displays registration period, credential distribution, and tournament timing
 const scheduleData = [
   {
     stage: "Registration Opens",
@@ -426,9 +415,19 @@ const scheduleData = [
 ];
 
 export default function FreeFireSolo() {
+  const heroRef = useRef<HTMLDivElement>(null);
+  
+  // Parallax scroll effect for hero background
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"]
+  });
+  
+  const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
+  const overlayOpacity = useTransform(scrollYProgress, [0, 1], [0.8, 0.95]);
+  
   /**
    * Smooth scroll to registration section
-   * Provides quick navigation from CTA buttons to registration form
    */
   const scrollToRegistration = () => {
     document.getElementById("registration")?.scrollIntoView({ behavior: "smooth" });
@@ -446,551 +445,681 @@ export default function FreeFireSolo() {
       />
       
       <main className="flex-1 pt-16">
-        {/* Hero Section with ModernHero - Tournament banner with striking visuals */}
-        <div className="relative">
-          <FloatingOrbs count={3} />
-          <ModernHero
-            title="Free Fire Max Solo Tournament"
-            description="Compete individually in India's most exciting Free Fire Max solo battle royale tournament. 50 players enter, only one claims victory. Test your skills, win amazing prizes, and prove you're the ultimate Free Fire warrior."
-            backgroundImage={heroImage}
-            breadcrumbs={[
-              { label: "Home", href: "/" },
-              { label: "Tournaments", href: "/#tournaments" },
-              { label: "Free Fire Solo" },
-            ]}
-            ctaButtons={[
-              { 
-                label: "Register Now", 
-                onClick: scrollToRegistration,
-                variant: "default",
-                icon: Trophy 
-              },
-              { 
-                label: "View Schedule", 
-                href: "#schedule",
-                variant: "outline",
-                icon: Calendar 
-              },
-            ]}
-            overlayOpacity={0.8}
-            minHeight="600px"
-          />
-        </div>
-
-        {/* Registration Form - Google Forms embed for tournament signup */}
-        <SectionWrapper variant="muted" id="registration" data-testid="section-registration">
+        {/* SPLIT HERO SECTION - Modern two-column layout */}
+        <div 
+          ref={heroRef}
+          className="relative min-h-[90vh] lg:min-h-[85vh] overflow-hidden"
+          data-testid="hero-section"
+        >
+          {/* Floating Orbs Background Effect */}
+          <FloatingOrbs count={4} />
+          
+          {/* Parallax Background Image */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="space-y-8 animate-slide-bottom"
-          >
-            <div className="text-center space-y-4">
-              <div className="flex items-center justify-center gap-2">
-                <Trophy className="w-8 h-8 text-primary" />
-                <h2 className="text-4xl font-bold" data-testid="heading-registration">Register Now</h2>
-              </div>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Complete the registration form below to secure your spot in the tournament. Make sure all details are accurate.
-              </p>
-            </div>
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+            style={{ 
+              backgroundImage: `url(${heroImage})`,
+              y: backgroundY 
+            }}
+          />
+          
+          {/* Enhanced Gradient Overlay */}
+          <motion.div
+            className="absolute inset-0"
+            style={{ 
+              background: "var(--gradient-dark)",
+              opacity: overlayOpacity
+            }}
+          />
+          
+          {/* Gradient Glow Effect */}
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{ background: "var(--gradient-glow)" }}
+          />
 
-            <div className="max-w-4xl mx-auto">
-              <Card className="hover-elevate transition-all duration-300">
-                <CardHeader>
-                  <div className="flex items-start justify-between gap-4">
-                    <div>
-                      <CardTitle className="text-2xl">Free Fire Max Solo Tournament Registration</CardTitle>
-                      <CardDescription className="mt-2">
-                        {FREEFIRE_TOURNAMENTS.solo.description}
-                      </CardDescription>
-                    </div>
-                    <Badge variant="default" className="flex-shrink-0">
-                      <Trophy className="w-3 h-3 mr-1" />
-                      Solo
-                    </Badge>
+          {/* Hero Content Container - Responsive Split Layout */}
+          <div className="relative z-10 container mx-auto px-4 py-8 lg:py-12 h-full min-h-[90vh] lg:min-h-[85vh]">
+            {/* Breadcrumbs */}
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="mb-6 lg:mb-8"
+            >
+              <Breadcrumb>
+                <BreadcrumbList>
+                  <BreadcrumbItem>
+                    <BreadcrumbLink href="/" className="text-foreground/80 hover:text-foreground">
+                      Home
+                    </BreadcrumbLink>
+                  </BreadcrumbItem>
+                  <BreadcrumbSeparator />
+                  <BreadcrumbItem>
+                    <BreadcrumbLink href="/#tournaments" className="text-foreground/80 hover:text-foreground">
+                      Tournaments
+                    </BreadcrumbLink>
+                  </BreadcrumbItem>
+                  <BreadcrumbSeparator />
+                  <BreadcrumbItem>
+                    <BreadcrumbPage className="text-foreground">Free Fire Solo</BreadcrumbPage>
+                  </BreadcrumbItem>
+                </BreadcrumbList>
+              </Breadcrumb>
+            </motion.div>
+
+            {/* Split Layout Grid - Stacks on mobile, side-by-side on desktop */}
+            <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+              {/* LEFT COLUMN - Tournament Information */}
+              <motion.div
+                initial={{ opacity: 0, x: -50 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                className="space-y-6 lg:space-y-8"
+              >
+                {/* Tournament Badge */}
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.5, delay: 0.3 }}
+                >
+                  <Badge variant="outline" className="text-base px-4 py-2 bg-primary/10 border-primary/30 backdrop-blur-sm">
+                    <Trophy className="w-4 h-4 mr-2" />
+                    Solo Tournament
+                  </Badge>
+                </motion.div>
+
+                {/* Main Heading with Gradient */}
+                <motion.h1
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 0.4 }}
+                  className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight gradient-text leading-tight"
+                >
+                  Free Fire Max<br />Solo Tournament
+                </motion.h1>
+
+                {/* Description */}
+                <motion.p
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 0.5 }}
+                  className="text-lg md:text-xl lg:text-2xl text-foreground/90 leading-relaxed max-w-xl"
+                >
+                  Compete individually in India's most exciting Free Fire Max solo battle royale tournament. 50 players enter, only one claims victory.
+                </motion.p>
+
+                {/* Quick Stats - Glassmorphic Cards */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 0.6 }}
+                  className="grid grid-cols-2 sm:grid-cols-4 gap-3 lg:gap-4"
+                >
+                  <div className="glass-effect rounded-lg p-4 text-center space-y-1">
+                    <div className="text-2xl lg:text-3xl font-bold text-primary">₹{FREEFIRE_TOURNAMENTS.solo.entryFee}</div>
+                    <div className="text-xs text-foreground/70">Entry Fee</div>
                   </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-6">
-                    {/* Tournament Summary Stats */}
-                    <div className="grid sm:grid-cols-3 gap-4">
-                      <div className="flex items-center gap-2 p-4 bg-primary/5 rounded-lg border border-primary/10">
-                        <Ticket className="w-6 h-6 text-primary flex-shrink-0" />
-                        <div>
-                          <p className="text-xs text-muted-foreground font-medium">Entry Fee</p>
-                          <p className="font-bold text-lg">₹{FREEFIRE_TOURNAMENTS.solo.entryFee}</p>
-                        </div>
+                  <div className="glass-effect rounded-lg p-4 text-center space-y-1">
+                    <div className="text-2xl lg:text-3xl font-bold text-primary">{FREEFIRE_TOURNAMENTS.solo.slots}</div>
+                    <div className="text-xs text-foreground/70">Players</div>
+                  </div>
+                  <div className="glass-effect rounded-lg p-4 text-center space-y-1">
+                    <div className="text-2xl lg:text-3xl font-bold text-primary">₹{FREEFIRE_TOURNAMENTS.solo.winner}</div>
+                    <div className="text-xs text-foreground/70">Winner</div>
+                  </div>
+                  <div className="glass-effect rounded-lg p-4 text-center space-y-1">
+                    <div className="text-2xl lg:text-3xl font-bold text-primary">₹{FREEFIRE_TOURNAMENTS.solo.perKill}</div>
+                    <div className="text-xs text-foreground/70">Per Kill</div>
+                  </div>
+                </motion.div>
+
+                {/* CTA Buttons */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 0.7 }}
+                  className="flex flex-wrap gap-4"
+                >
+                  <EnhancedMagneticButton
+                    variant="default"
+                    size="lg"
+                    magneticStrength={0.4}
+                    enableGlow={true}
+                    onClick={scrollToRegistration}
+                    className="text-base px-8 py-6 shadow-lg"
+                    data-testid="button-register-now"
+                  >
+                    <Trophy className="w-5 h-5 mr-2" />
+                    Register Now
+                  </EnhancedMagneticButton>
+                  
+                  <EnhancedMagneticButton
+                    variant="outline"
+                    size="lg"
+                    magneticStrength={0.3}
+                    asChild
+                    className="text-base px-8 py-6 backdrop-blur-sm bg-background/20"
+                    data-testid="button-view-schedule"
+                  >
+                    <a href="#schedule">
+                      <Calendar className="w-5 h-5 mr-2" />
+                      View Schedule
+                    </a>
+                  </EnhancedMagneticButton>
+                </motion.div>
+              </motion.div>
+
+              {/* RIGHT COLUMN - Quick Registration Card */}
+              <motion.div
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.8, delay: 0.4 }}
+                className="lg:mt-0"
+              >
+                <Card className="glass-effect border-primary/20 shadow-2xl overflow-hidden">
+                  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-chart-2 to-primary" />
+                  
+                  <CardHeader className="pb-4">
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="space-y-2">
+                        <CardTitle className="text-2xl lg:text-3xl flex items-center gap-2">
+                          <Sparkles className="w-6 h-6 text-primary" />
+                          Quick Registration
+                        </CardTitle>
+                        <CardDescription className="text-base">
+                          Secure your spot in minutes
+                        </CardDescription>
                       </div>
-                      <div className="flex items-center gap-2 p-4 bg-primary/5 rounded-lg border border-primary/10">
-                        <Users className="w-6 h-6 text-primary flex-shrink-0" />
-                        <div>
-                          <p className="text-xs text-muted-foreground font-medium">Total Slots</p>
-                          <p className="font-bold text-lg">{FREEFIRE_TOURNAMENTS.solo.slots} Players</p>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-2 p-4 bg-primary/5 rounded-lg border border-primary/10">
-                        <Trophy className="w-6 h-6 text-primary flex-shrink-0" />
-                        <div>
-                          <p className="text-xs text-muted-foreground font-medium">Winner Prize</p>
-                          <p className="font-bold text-lg">₹{FREEFIRE_TOURNAMENTS.solo.winner}</p>
-                        </div>
-                      </div>
+                      <Badge variant="default" className="flex-shrink-0 px-3 py-1">
+                        <Users className="w-3 h-3 mr-1" />
+                        {FREEFIRE_TOURNAMENTS.solo.slots} Slots
+                      </Badge>
                     </div>
-
-                    {/* Prize Breakdown */}
-                    <div className="p-4 bg-gradient-to-r from-primary/10 to-chart-2/10 rounded-lg border border-primary/20">
-                      <div className="flex items-center gap-2 mb-3">
-                        <Award className="w-5 h-5 text-primary" />
-                        <h4 className="font-semibold text-base">Prize Distribution</h4>
-                      </div>
-                      <div className="grid sm:grid-cols-3 gap-3 text-sm">
-                        <div className="flex items-center justify-between">
-                          <span className="text-muted-foreground">Winner:</span>
-                          <span className="font-bold text-primary">₹{FREEFIRE_TOURNAMENTS.solo.winner}</span>
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <span className="text-muted-foreground">Runner-Up:</span>
-                          <span className="font-bold text-chart-2">₹{FREEFIRE_TOURNAMENTS.solo.runnerUp}</span>
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <span className="text-muted-foreground">Per Kill:</span>
-                          <span className="font-bold text-chart-3">₹{FREEFIRE_TOURNAMENTS.solo.perKill}</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Important Notice */}
-                    {FREEFIRE_TOURNAMENTS.solo.note && (
-                      <div className="p-4 bg-yellow-500/10 border-l-4 border-yellow-500 rounded-r-md">
-                        <div className="flex items-start gap-3">
-                          <AlertCircle className="w-5 h-5 text-yellow-500 flex-shrink-0 mt-0.5" />
-                          <p className="text-sm font-medium">{FREEFIRE_TOURNAMENTS.solo.note}</p>
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Registration Steps */}
+                  </CardHeader>
+                  
+                  <CardContent className="space-y-6 pb-6">
+                    {/* Registration Steps Preview */}
                     <div className="space-y-3">
-                      <h4 className="font-semibold flex items-center gap-2">
-                        <CheckCircle2 className="w-5 h-5 text-primary" />
-                        How to Register (3 Simple Steps)
-                      </h4>
-                      <div className="grid gap-2 text-sm">
-                        <div className="flex items-start gap-3 p-3 bg-muted/50 rounded-md">
-                          <div className="w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-xs flex-shrink-0">1</div>
-                          <div>
-                            <p className="font-medium">Pay Entry Fee (₹{FREEFIRE_TOURNAMENTS.solo.entryFee})</p>
-                            <p className="text-muted-foreground text-xs">Use the QR code shown in the form</p>
-                          </div>
+                      <div className="flex items-start gap-3 p-3 bg-muted/30 rounded-lg hover-elevate transition-all">
+                        <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0">
+                          <span className="text-sm font-bold text-primary">1</span>
                         </div>
-                        <div className="flex items-start gap-3 p-3 bg-muted/50 rounded-md">
-                          <div className="w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-xs flex-shrink-0">2</div>
-                          <div>
-                            <p className="font-medium">Fill Registration Form</p>
-                            <p className="text-muted-foreground text-xs">Enter your Free Fire UID, name, WhatsApp number, and upload payment screenshot</p>
-                          </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="font-semibold text-sm">Make Payment</div>
+                          <div className="text-xs text-muted-foreground">Pay ₹{FREEFIRE_TOURNAMENTS.solo.entryFee} via UPI QR code</div>
                         </div>
-                        <div className="flex items-start gap-3 p-3 bg-muted/50 rounded-md">
-                          <div className="w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-xs flex-shrink-0">3</div>
-                          <div>
-                            <p className="font-medium">Get Confirmation</p>
-                            <p className="text-muted-foreground text-xs">Receive room details on WhatsApp before tournament</p>
-                          </div>
+                        <CheckCircle2 className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+                      </div>
+                      
+                      <div className="flex items-start gap-3 p-3 bg-muted/30 rounded-lg hover-elevate transition-all">
+                        <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0">
+                          <span className="text-sm font-bold text-primary">2</span>
                         </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="font-semibold text-sm">Fill Form Details</div>
+                          <div className="text-xs text-muted-foreground">Free Fire ID, name & payment proof</div>
+                        </div>
+                        <CheckCircle2 className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+                      </div>
+                      
+                      <div className="flex items-start gap-3 p-3 bg-muted/30 rounded-lg hover-elevate transition-all">
+                        <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0">
+                          <span className="text-sm font-bold text-primary">3</span>
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="font-semibold text-sm">Get Confirmed</div>
+                          <div className="text-xs text-muted-foreground">Receive slot confirmation in 2-4 hours</div>
+                        </div>
+                        <CheckCircle2 className="w-4 h-4 text-muted-foreground flex-shrink-0" />
                       </div>
                     </div>
 
-                    {/* Main Registration Button */}
-                    <div className="pt-4">
-                      <Button 
-                        size="lg" 
-                        className="w-full h-16 text-lg font-bold" 
-                        asChild 
-                        data-testid="button-register-now"
+                    {/* Important Info */}
+                    <div className="bg-primary/10 border border-primary/20 rounded-lg p-4 space-y-2">
+                      <div className="flex items-start gap-2">
+                        <AlertCircle className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                        <p className="text-sm text-foreground/80">
+                          <strong className="text-foreground">Limited Slots:</strong> Only {FREEFIRE_TOURNAMENTS.solo.slots} players accepted. First come, first served.
+                        </p>
+                      </div>
+                      <div className="flex items-start gap-2">
+                        <Clock className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                        <p className="text-sm text-foreground/80">
+                          <strong className="text-foreground">Fast Process:</strong> Complete registration takes under 10 minutes
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Primary CTA */}
+                    <EnhancedMagneticButton
+                      variant="default"
+                      size="lg"
+                      className="w-full text-lg py-6"
+                      magneticStrength={0.3}
+                      enableGlow={true}
+                      onClick={scrollToRegistration}
+                      data-testid="button-start-registration"
+                    >
+                      <Trophy className="w-5 h-5 mr-2" />
+                      Start Registration
+                      <ArrowRight className="w-5 h-5 ml-2" />
+                    </EnhancedMagneticButton>
+
+                    {/* Secondary Actions */}
+                    <div className="grid grid-cols-2 gap-3 pt-2">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        asChild
+                        className="text-xs"
+                        data-testid="button-view-rules"
                       >
-                        <a href={FREEFIRE_TOURNAMENTS.solo.formUrl}>
-                          <Trophy className="w-6 h-6 mr-3" />
-                          Click Here to Register Now - Open Registration Form
-                          <ExternalLink className="w-5 h-5 ml-3" />
+                        <a href="#rules">
+                          <Shield className="w-3 h-3 mr-1" />
+                          View Rules
                         </a>
                       </Button>
-                      <p className="text-center text-xs text-muted-foreground mt-2">
-                        Complete all fields to secure your slot.
-                      </p>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        asChild
+                        className="text-xs"
+                        data-testid="button-view-prizes"
+                      >
+                        <a href="#prizes">
+                          <Award className="w-3 h-3 mr-1" />
+                          Prize Pool
+                        </a>
+                      </Button>
                     </div>
-                  </div>
-                </CardContent>
-                <CardFooter className="flex flex-col items-start gap-3 bg-muted/30">
-                  <div className="flex items-start gap-2">
-                    <Shield className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
-                    <p className="text-sm text-muted-foreground">
-                      Your information is secure and will only be used for tournament administration. We never share your data with third parties.
-                    </p>
-                  </div>
-                  <div className="flex items-start gap-2">
-                    <Zap className="w-5 h-5 text-chart-2 mt-0.5 flex-shrink-0" />
-                    <p className="text-sm text-muted-foreground">
-                      <strong>Quick Support:</strong> Contact admin on WhatsApp at {FREEFIRE_TOURNAMENTS.solo.entryFee === 20 ? "+917541024846" : "+91XXXXXXXXXX"} for any registration issues.
-                    </p>
-                  </div>
-                </CardFooter>
-              </Card>
+                  </CardContent>
+                </Card>
+              </motion.div>
             </div>
-          </motion.div>
-        </SectionWrapper>
+          </div>
+        </div>
 
-        {/* Tournament Stats - Display key tournament information with animated cards */}
+        {/* Tournament Stats Section - Animated stat cards */}
         <SectionWrapper variant="muted" data-testid="section-stats">
-          <div className="relative">
-            <FloatingOrbs count={2} />
-            <BlurFade delay={0.2} blur={10} direction="up">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={staggerContainer}
+            className="space-y-12"
+          >
+            <motion.div 
+              variants={staggerItem}
+              className="text-center space-y-4"
+            >
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold" data-testid="heading-stats">
+                Tournament Overview
+              </h2>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Everything you need to know about the tournament at a glance
+              </p>
+            </motion.div>
+
+            <motion.div 
+              variants={staggerContainer}
+              className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto"
+            >
+              <motion.div variants={staggerItem}>
                 <ProfessionalStatCard
                   icon={Ticket}
-                  value={FREEFIRE_TOURNAMENTS.solo.entryFee}
-                  label="Entry Fee"
-                  prefix="₹"
-                  glassmorphism
-                  data-testid="stat-entry-fee"
+                  title="Entry Fee"
+                  value={`₹${FREEFIRE_TOURNAMENTS.solo.entryFee}`}
+                  description="Per player registration fee"
+                  trend="Pocket-friendly"
+                  delay={0}
                 />
+              </motion.div>
+              
+              <motion.div variants={staggerItem}>
                 <ProfessionalStatCard
                   icon={Users}
-                  value={FREEFIRE_TOURNAMENTS.solo.slots}
-                  label="Total Slots"
-                  glassmorphism
+                  title="Total Slots"
+                  value={FREEFIRE_TOURNAMENTS.solo.slots.toString()}
+                  description="Players per tournament"
+                  trend="Limited availability"
                   delay={0.1}
-                  data-testid="stat-total-slots"
                 />
+              </motion.div>
+              
+              <motion.div variants={staggerItem}>
                 <ProfessionalStatCard
                   icon={Trophy}
-                  value={FREEFIRE_TOURNAMENTS.solo.winner}
-                  label="Winner Prize"
-                  prefix="₹"
-                  glassmorphism
+                  title="Winner Prize"
+                  value={`₹${FREEFIRE_TOURNAMENTS.solo.winner}`}
+                  description="1st place guaranteed"
+                  trend="+Booyah Bonus"
                   delay={0.2}
-                  data-testid="stat-winner-prize"
                 />
+              </motion.div>
+              
+              <motion.div variants={staggerItem}>
                 <ProfessionalStatCard
-                  icon={Coins}
-                  value={FREEFIRE_TOURNAMENTS.solo.perKill}
-                  label="Per Kill Reward"
-                  prefix="₹"
-                  glassmorphism
+                  icon={Target}
+                  title="Per Kill"
+                  value={`₹${FREEFIRE_TOURNAMENTS.solo.perKill}`}
+                  description="For each elimination"
+                  trend="Skill-based rewards"
                   delay={0.3}
-                  data-testid="stat-per-kill"
                 />
-              </div>
-            </BlurFade>
-          </div>
-        </SectionWrapper>
-
-        {/* Comprehensive Feature Highlight Card - Solo Tournament Benefits */}
-        <SectionWrapper variant="default" data-testid="section-feature-highlight">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <Card className="hover-elevate transition-all duration-300 overflow-hidden" data-testid="feature-solo-tournament">
-              <div className="grid md:grid-cols-2 gap-0">
-                {/* Image Section - Showcase tournament action */}
-                <div className="aspect-video md:aspect-auto overflow-hidden">
-                  <img
-                    src={heroImage}
-                    alt="Free Fire Max Solo Tournament Championship"
-                    className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
-                  />
-                </div>
-                
-                {/* Content Section - Highlight tournament benefits */}
-                <div className="p-6 md:p-8 flex flex-col justify-center">
-                  <div className="mb-4">
-                    <div className="flex items-center gap-2 mb-3">
-                      <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-                        <Trophy className="w-6 h-6 text-primary" />
-                      </div>
-                      <h3 className="text-2xl md:text-3xl font-bold">Solo Tournament Excellence</h3>
-                    </div>
-                    <p className="text-muted-foreground">
-                      Experience competitive Free Fire Max solo gameplay with guaranteed prizes and professional tournament management
-                    </p>
-                  </div>
-
-                  <div className="space-y-4 mb-6">
-                    <div className="flex items-start gap-3">
-                      <div className="w-10 h-10 rounded-full bg-green-500/10 flex items-center justify-center flex-shrink-0">
-                        <Trophy className="w-5 h-5 text-green-500" />
-                      </div>
-                      <div>
-                        <h4 className="font-semibold mb-1">Guaranteed Prize Pool</h4>
-                        <p className="text-sm text-muted-foreground">Winner: ₹350 | Runner-Up: ₹150 | Per Kill: ₹5 - Prizes distributed within 24-48 hours via UPI</p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-start gap-3">
-                      <div className="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center flex-shrink-0">
-                        <Shield className="w-5 h-5 text-blue-500" />
-                      </div>
-                      <div>
-                        <h4 className="font-semibold mb-1">Secure Registration Process</h4>
-                        <p className="text-sm text-muted-foreground">SSL encrypted payments with screenshot verification - Slot confirmation within 2-4 hours via WhatsApp</p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-start gap-3">
-                      <div className="w-10 h-10 rounded-full bg-purple-500/10 flex items-center justify-center flex-shrink-0">
-                        <Target className="w-5 h-5 text-purple-500" />
-                      </div>
-                      <div>
-                        <h4 className="font-semibold mb-1">Fair Play Guaranteed</h4>
-                        <p className="text-sm text-muted-foreground">Advanced anti-cheat monitoring with zero tolerance for hacks - Your skill determines your success</p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-start gap-3">
-                      <div className="w-10 h-10 rounded-full bg-orange-500/10 flex items-center justify-center flex-shrink-0">
-                        <Zap className="w-5 h-5 text-orange-500" />
-                      </div>
-                      <div>
-                        <h4 className="font-semibold mb-1">Professional Management</h4>
-                        <p className="text-sm text-muted-foreground">Experienced organizers, 24/7 WhatsApp support, and transparent operations from start to finish</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex flex-wrap gap-3">
-                    <Button onClick={scrollToRegistration} data-testid="button-register-feature">
-                      Register Now - ₹{FREEFIRE_TOURNAMENTS.solo.entryFee}
-                      <ArrowRight className="w-4 h-4 ml-2" />
-                    </Button>
-                    <Button variant="outline" data-testid="button-rules-feature">
-                      <a href="#rules" className="flex items-center">
-                        View Tournament Rules
-                        <ExternalLink className="w-4 h-4 ml-2" />
-                      </a>
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            </Card>
+              </motion.div>
+            </motion.div>
           </motion.div>
         </SectionWrapper>
 
-        {/* Prize Breakdown Section - Visual representation of prize distribution */}
-        <SectionWrapper variant="muted" data-testid="section-prize-breakdown">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="space-y-8"
-          >
-            <div className="text-center space-y-4">
-              <div className="flex items-center justify-center gap-2">
-                <Award className="w-8 h-8 text-primary" />
-                <h2 className="text-4xl font-bold" data-testid="heading-prize-breakdown">Prize Distribution</h2>
-              </div>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Transparent and guaranteed prize pool. Win big by securing top positions and eliminating opponents.
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
-              {/* Prize Pool Breakdown Pie Chart */}
-              <Card className="hover-elevate transition-all duration-300">
-                <CardHeader>
-                  <CardTitle>Prize Pool Distribution</CardTitle>
-                  <CardDescription>Total prize money allocation across categories</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <ChartContainer
-                    config={{
-                      winner: {
-                        label: "Winner",
-                        color: "hsl(var(--chart-1))",
-                      },
-                      runnerUp: {
-                        label: "Runner-Up",
-                        color: "hsl(var(--chart-2))",
-                      },
-                      perKillPool: {
-                        label: "Per Kill Pool",
-                        color: "hsl(var(--chart-3))",
-                      },
-                    }}
-                    className="h-64"
-                  >
-                    <ResponsiveContainer width="100%" height="100%">
-                      <PieChart>
-                        <Pie
-                          data={prizeBreakdownData}
-                          cx="50%"
-                          cy="50%"
-                          labelLine={false}
-                          label={({ name, percentage }) => `${name}: ${percentage}%`}
-                          outerRadius={80}
-                          fill="#8884d8"
-                          dataKey="value"
-                        >
-                          {prizeBreakdownData.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={entry.fill} />
-                          ))}
-                        </Pie>
-                        <ChartTooltip content={<ChartTooltipContent />} />
-                        <Legend />
-                      </PieChart>
-                    </ResponsiveContainer>
-                  </ChartContainer>
-                </CardContent>
-              </Card>
-
-              {/* Kill Rewards Table */}
-              <Card className="hover-elevate transition-all duration-300">
-                <CardHeader>
-                  <CardTitle>Per Kill Rewards</CardTitle>
-                  <CardDescription>Earn ₹{FREEFIRE_TOURNAMENTS.solo.perKill} for every elimination</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Kill Count</TableHead>
-                        <TableHead className="text-right">Reward</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {killRewardsData.map((row, index) => (
-                        <TableRow key={index} data-testid={`kill-reward-row-${index}`}>
-                          <TableCell className="font-medium">{row.kills} kills</TableCell>
-                          <TableCell className="text-right font-bold text-primary">{row.reward}</TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                  <div className="mt-4 p-4 bg-primary/5 rounded-md">
-                    <p className="text-sm text-center">
-                      <Star className="w-4 h-4 inline mr-1 text-primary" />
-                      Aggressive gameplay pays off! Maximize your earnings with high kills.
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          </motion.div>
-        </SectionWrapper>
-
-        {/* Tournament Schedule - Important dates and timeline */}
+        {/* Tournament Schedule - Timeline with dates */}
         <SectionWrapper id="schedule" data-testid="section-schedule">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="space-y-8"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={staggerContainer}
+            className="space-y-12"
           >
-            <div className="text-center space-y-4">
+            <motion.div 
+              variants={staggerItem}
+              className="text-center space-y-4"
+            >
               <div className="flex items-center justify-center gap-2">
                 <Calendar className="w-8 h-8 text-primary" />
-                <h2 className="text-4xl font-bold" data-testid="heading-schedule">Tournament Schedule</h2>
+                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold" data-testid="heading-schedule">
+                  Tournament Schedule
+                </h2>
               </div>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Mark your calendar with these important dates. Stay on track from registration to prize distribution.
+                Mark these important dates and times in your calendar
               </p>
-            </div>
+            </motion.div>
 
-            <div className="max-w-4xl mx-auto space-y-4">
-              {scheduleData.map((schedule, index) => (
+            <motion.div 
+              variants={staggerContainer}
+              className="max-w-4xl mx-auto space-y-4"
+            >
+              {scheduleData.map((item, index) => (
                 <motion.div
                   key={index}
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  variants={staggerItem}
                   data-testid={`schedule-item-${index}`}
                 >
                   <Card className="hover-elevate transition-all duration-300">
                     <CardContent className="p-6">
-                      <div className="flex items-start gap-4">
-                        <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                          <Calendar className="w-8 h-8 text-primary" />
-                        </div>
-                        <div className="flex-1">
-                          <div className="flex items-center justify-between gap-4 flex-wrap mb-2">
-                            <h3 className="font-bold text-lg">{schedule.stage}</h3>
+                      <div className="flex flex-col md:flex-row md:items-center gap-4">
+                        <div className="flex-1 space-y-2">
+                          <div className="flex items-center gap-3 flex-wrap">
+                            <h3 className="font-bold text-lg">{item.stage}</h3>
                             <Badge 
-                              variant={schedule.status === "Open" ? "default" : "secondary"}
-                              data-testid={`schedule-status-${index}`}
+                              variant={item.status === "Open" ? "default" : "outline"}
+                              className="flex-shrink-0"
                             >
-                              {schedule.status}
+                              {item.status}
                             </Badge>
                           </div>
-                          <div className="flex items-center gap-4 text-sm text-muted-foreground mb-2">
-                            <span className="flex items-center gap-1">
-                              <Calendar className="w-4 h-4" />
-                              {schedule.date}
-                            </span>
-                            <span className="flex items-center gap-1">
-                              <Clock className="w-4 h-4" />
-                              {schedule.time}
-                            </span>
+                          <p className="text-sm text-muted-foreground">{item.description}</p>
+                        </div>
+                        <div className="text-left md:text-right space-y-1 flex-shrink-0">
+                          <div className="font-semibold">{item.date}</div>
+                          <div className="text-sm text-muted-foreground flex items-center md:justify-end gap-1">
+                            <Clock className="w-3 h-3" />
+                            {item.time}
                           </div>
-                          <p className="text-muted-foreground">{schedule.description}</p>
                         </div>
                       </div>
                     </CardContent>
                   </Card>
                 </motion.div>
               ))}
-            </div>
+            </motion.div>
           </motion.div>
         </SectionWrapper>
 
-        {/* Payment Instructions - QR code and payment verification details */}
-        <SectionWrapper variant="muted" data-testid="section-payment">
-          <PaymentInstructions 
-            amount={FREEFIRE_TOURNAMENTS.solo.entryFee}
-          />
-        </SectionWrapper>
-
-        {/* Past Winners Showcase - Historical tournament champions */}
-        <SectionWrapper data-testid="section-past-winners">
+        {/* Prize Breakdown Section - Charts and tables */}
+        <SectionWrapper variant="muted" id="prizes" data-testid="section-prizes">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="space-y-8"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={staggerContainer}
+            className="space-y-12"
           >
-            <div className="text-center space-y-4">
+            <motion.div 
+              variants={staggerItem}
+              className="text-center space-y-4"
+            >
               <div className="flex items-center justify-center gap-2">
-                <Crown className="w-8 h-8 text-primary" />
-                <h2 className="text-4xl font-bold" data-testid="heading-past-winners">Hall of Champions</h2>
+                <Award className="w-8 h-8 text-primary" />
+                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold" data-testid="heading-prizes">
+                  Prize Distribution
+                </h2>
               </div>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Celebrating our past tournament winners. Will you be the next champion?
+                Transparent prize pool breakdown with position-based and performance-based rewards
               </p>
+            </motion.div>
+
+            <div className="grid lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
+              {/* Prize Breakdown Chart */}
+              <motion.div variants={staggerItem}>
+                <Card className="hover-elevate transition-all duration-300 h-full">
+                  <CardHeader>
+                    <CardTitle>Prize Pool Distribution</CardTitle>
+                    <CardDescription>How the total prize money is allocated</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="h-[300px]">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <PieChart>
+                          <Pie
+                            data={prizeBreakdownData}
+                            cx="50%"
+                            cy="50%"
+                            labelLine={false}
+                            label={({ name, percentage }) => `${name} ${percentage}%`}
+                            outerRadius={100}
+                            fill="#8884d8"
+                            dataKey="value"
+                          >
+                            {prizeBreakdownData.map((entry, index) => (
+                              <Cell key={`cell-${index}`} fill={entry.fill} />
+                            ))}
+                          </Pie>
+                          <Tooltip />
+                          <Legend />
+                        </PieChart>
+                      </ResponsiveContainer>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+
+              {/* Kill Rewards Table */}
+              <motion.div variants={staggerItem}>
+                <Card className="hover-elevate transition-all duration-300 h-full">
+                  <CardHeader>
+                    <CardTitle>Per Kill Rewards</CardTitle>
+                    <CardDescription>Earn more with every elimination</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Total Kills</TableHead>
+                          <TableHead className="text-right">Kill Bonus</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {killRewardsData.map((row, index) => (
+                          <TableRow key={index}>
+                            <TableCell className="font-semibold">{row.kills}</TableCell>
+                            <TableCell className="text-right font-bold text-primary">{row.reward}</TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                    <div className="mt-4 p-4 bg-primary/10 rounded-lg">
+                      <p className="text-sm text-center">
+                        <strong>Pro Tip:</strong> Aggressive gameplay pays off! Each kill adds ₹{FREEFIRE_TOURNAMENTS.solo.perKill} to your prize.
+                      </p>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
             </div>
 
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+            {/* Guaranteed Prizes Highlight */}
+            <motion.div 
+              variants={staggerItem}
+              className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl mx-auto"
+            >
+              <Card className="text-center hover-elevate transition-all duration-300 border-primary/30">
+                <CardContent className="p-6 space-y-3">
+                  <Crown className="w-12 h-12 mx-auto text-primary" />
+                  <div>
+                    <div className="text-3xl font-bold text-primary">₹{FREEFIRE_TOURNAMENTS.solo.winner}</div>
+                    <div className="text-sm text-muted-foreground mt-1">1st Place Winner</div>
+                  </div>
+                  <Badge variant="default" className="w-full justify-center">
+                    + Kill Bonus
+                  </Badge>
+                </CardContent>
+              </Card>
+
+              <Card className="text-center hover-elevate transition-all duration-300 border-chart-2/30">
+                <CardContent className="p-6 space-y-3">
+                  <Medal className="w-12 h-12 mx-auto text-chart-2" />
+                  <div>
+                    <div className="text-3xl font-bold text-chart-2">₹{FREEFIRE_TOURNAMENTS.solo.runnerUp}</div>
+                    <div className="text-sm text-muted-foreground mt-1">2nd Place Runner-Up</div>
+                  </div>
+                  <Badge variant="outline" className="w-full justify-center border-chart-2/50">
+                    + Kill Bonus
+                  </Badge>
+                </CardContent>
+              </Card>
+
+              <Card className="text-center hover-elevate transition-all duration-300 border-chart-3/30 sm:col-span-2 lg:col-span-1">
+                <CardContent className="p-6 space-y-3">
+                  <Target className="w-12 h-12 mx-auto text-chart-3" />
+                  <div>
+                    <div className="text-3xl font-bold text-chart-3">₹{FREEFIRE_TOURNAMENTS.solo.perKill}</div>
+                    <div className="text-sm text-muted-foreground mt-1">Per Kill Reward</div>
+                  </div>
+                  <Badge variant="outline" className="w-full justify-center border-chart-3/50">
+                    All Players
+                  </Badge>
+                </CardContent>
+              </Card>
+            </motion.div>
+          </motion.div>
+        </SectionWrapper>
+
+        {/* Payment Instructions Section */}
+        <SectionWrapper data-testid="section-payment">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={staggerContainer}
+            className="space-y-12"
+          >
+            <motion.div 
+              variants={staggerItem}
+              className="text-center space-y-4"
+            >
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold" data-testid="heading-payment">
+                Payment Instructions
+              </h2>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Follow these simple steps to complete your payment and registration
+              </p>
+            </motion.div>
+
+            <motion.div variants={staggerItem}>
+              <PaymentInstructions />
+            </motion.div>
+          </motion.div>
+        </SectionWrapper>
+
+        {/* Registration Form Section - MOVED HIGHER */}
+        <SectionWrapper variant="muted" id="registration" data-testid="section-registration">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={staggerContainer}
+            className="space-y-12"
+          >
+            <motion.div 
+              variants={staggerItem}
+              className="text-center space-y-4"
+            >
+              <div className="flex items-center justify-center gap-2">
+                <Trophy className="w-8 h-8 text-primary" />
+                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold" data-testid="heading-registration">
+                  Complete Your Registration
+                </h2>
+              </div>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Fill out the form below after making your payment. All details must be accurate for slot confirmation.
+              </p>
+            </motion.div>
+
+            <motion.div variants={staggerItem}>
+              <FormEmbed
+                formUrl={FREEFIRE_TOURNAMENTS.solo.formUrl}
+                embedUrl={FREEFIRE_TOURNAMENTS.solo.embedUrl}
+                title="Tournament Registration Form"
+                description="Complete all required fields. Your slot will be confirmed after payment verification."
+              />
+            </motion.div>
+          </motion.div>
+        </SectionWrapper>
+
+        {/* Past Winners Showcase */}
+        <SectionWrapper data-testid="section-past-winners">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={staggerContainer}
+            className="space-y-12"
+          >
+            <motion.div 
+              variants={staggerItem}
+              className="text-center space-y-4"
+            >
+              <div className="flex items-center justify-center gap-2">
+                <Crown className="w-8 h-8 text-primary" />
+                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold" data-testid="heading-past-winners">
+                  Hall of Champions
+                </h2>
+              </div>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Celebrate our past tournament winners and their incredible performances
+              </p>
+            </motion.div>
+
+            <motion.div 
+              variants={staggerContainer}
+              className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto"
+            >
               {pastWinners.map((winner, index) => (
                 <motion.div
                   key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  variants={staggerItem}
                   data-testid={`past-winner-${index}`}
                 >
-                  <Card className="hover-elevate transition-all duration-300 text-center">
+                  <Card className="hover-elevate transition-all duration-300 text-center group">
                     <CardContent className="p-6 space-y-4">
                       <div className="relative inline-block">
-                        <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-2">
+                        <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-2 group-hover:scale-110 transition-transform">
                           <span className="text-2xl font-bold text-primary">{winner.avatar}</span>
                         </div>
-                        <div className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-primary flex items-center justify-center">
+                        <div className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-primary flex items-center justify-center shadow-lg">
                           <Crown className="w-4 h-4 text-primary-foreground" />
                         </div>
                       </div>
@@ -1013,102 +1142,114 @@ export default function FreeFireSolo() {
                   </Card>
                 </motion.div>
               ))}
-            </div>
+            </motion.div>
           </motion.div>
         </SectionWrapper>
 
-        {/* Live Leaderboard Preview - Current tournament standings */}
+        {/* Live Leaderboard Preview */}
         <SectionWrapper variant="muted" data-testid="section-leaderboard">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="space-y-8"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={staggerContainer}
+            className="space-y-12"
           >
-            <div className="text-center space-y-4">
+            <motion.div 
+              variants={staggerItem}
+              className="text-center space-y-4"
+            >
               <div className="flex items-center justify-center gap-2">
                 <TrendingUp className="w-8 h-8 text-primary" />
-                <h2 className="text-4xl font-bold" data-testid="heading-leaderboard">Live Leaderboard Preview</h2>
+                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold" data-testid="heading-leaderboard">
+                  Live Leaderboard Preview
+                </h2>
               </div>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                See how the competition looks during tournaments. Rankings update in real-time based on points and eliminations.
+                See how the competition looks during tournaments. Rankings update in real-time.
               </p>
-            </div>
+            </motion.div>
 
-            <Card className="max-w-5xl mx-auto">
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <CardTitle>Current Standings</CardTitle>
-                    <CardDescription>Top 10 players - Sample data from previous tournament</CardDescription>
+            <motion.div variants={staggerItem}>
+              <Card className="max-w-5xl mx-auto hover-elevate transition-all duration-300">
+                <CardHeader>
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                    <div>
+                      <CardTitle>Current Standings</CardTitle>
+                      <CardDescription>Top 10 players - Sample data from previous tournament</CardDescription>
+                    </div>
+                    <Badge variant="outline" className="gap-2 self-start sm:self-auto">
+                      <div className="w-2 h-2 bg-primary rounded-full animate-pulse" />
+                      Live
+                    </Badge>
                   </div>
-                  <Badge variant="outline" className="gap-2">
-                    <div className="w-2 h-2 bg-primary rounded-full animate-pulse" />
-                    Live
-                  </Badge>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="overflow-x-auto">
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead className="w-20">Rank</TableHead>
-                        <TableHead>Player</TableHead>
-                        <TableHead className="text-center">Kills</TableHead>
-                        <TableHead className="text-center">Points</TableHead>
-                        <TableHead className="text-right">Current Prize</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {mockLeaderboard.map((player, index) => (
-                        <TableRow 
-                          key={index} 
-                          className={index < 2 ? "bg-primary/5" : ""}
-                          data-testid={`leaderboard-row-${index}`}
-                        >
-                          <TableCell className="font-bold">
-                            <div className="flex items-center gap-2">
-                              {index === 0 && <Crown className="w-4 h-4 text-primary" />}
-                              {index === 1 && <Medal className="w-4 h-4 text-chart-2" />}
-                              #{player.rank}
-                            </div>
-                          </TableCell>
-                          <TableCell className="font-semibold">{player.player}</TableCell>
-                          <TableCell className="text-center">
-                            <Badge variant="secondary">{player.kills}</Badge>
-                          </TableCell>
-                          <TableCell className="text-center font-semibold">{player.points}</TableCell>
-                          <TableCell className="text-right font-bold text-primary">{player.prize}</TableCell>
+                </CardHeader>
+                <CardContent>
+                  <div className="overflow-x-auto">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead className="w-20">Rank</TableHead>
+                          <TableHead>Player</TableHead>
+                          <TableHead className="text-center">Kills</TableHead>
+                          <TableHead className="text-center">Points</TableHead>
+                          <TableHead className="text-right">Current Prize</TableHead>
                         </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </div>
-              </CardContent>
-            </Card>
+                      </TableHeader>
+                      <TableBody>
+                        {mockLeaderboard.map((player, index) => (
+                          <TableRow 
+                            key={index} 
+                            className={index < 2 ? "bg-primary/5" : ""}
+                            data-testid={`leaderboard-row-${index}`}
+                          >
+                            <TableCell className="font-bold">
+                              <div className="flex items-center gap-2">
+                                {index === 0 && <Crown className="w-4 h-4 text-primary" />}
+                                {index === 1 && <Medal className="w-4 h-4 text-chart-2" />}
+                                #{player.rank}
+                              </div>
+                            </TableCell>
+                            <TableCell className="font-semibold">{player.player}</TableCell>
+                            <TableCell className="text-center">
+                              <Badge variant="secondary">{player.kills}</Badge>
+                            </TableCell>
+                            <TableCell className="text-center font-semibold">{player.points}</TableCell>
+                            <TableCell className="text-right font-bold text-primary">{player.prize}</TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
           </motion.div>
         </SectionWrapper>
 
-        {/* Registration Timeline - Step-by-step registration process */}
+        {/* Registration Timeline */}
         <SectionWrapper data-testid="section-timeline">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="space-y-8"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={staggerContainer}
+            className="space-y-12"
           >
-            <div className="text-center space-y-4">
+            <motion.div 
+              variants={staggerItem}
+              className="text-center space-y-4"
+            >
               <div className="flex items-center justify-center gap-2">
                 <Zap className="w-8 h-8 text-primary" />
-                <h2 className="text-4xl font-bold" data-testid="heading-timeline">Registration Process</h2>
+                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold" data-testid="heading-timeline">
+                  Registration Process
+                </h2>
               </div>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Simple 5-step process to secure your spot. From payment to tournament entry - we guide you every step of the way.
+                Simple 5-step process to secure your spot. We guide you every step of the way.
               </p>
-            </div>
+            </motion.div>
 
             <div className="max-w-4xl mx-auto">
               <div className="relative">
@@ -1122,7 +1263,7 @@ export default function FreeFireSolo() {
                   return (
                     <motion.div
                       key={index}
-                      initial={{ opacity: 0, x: isEven ? -20 : 20 }}
+                      initial={{ opacity: 0, x: isEven ? -30 : 30 }}
                       whileInView={{ opacity: 1, x: 0 }}
                       viewport={{ once: true }}
                       transition={{ duration: 0.5, delay: index * 0.1 }}
@@ -1132,16 +1273,16 @@ export default function FreeFireSolo() {
                       <div className={`md:flex items-center ${isEven ? 'md:flex-row' : 'md:flex-row-reverse'}`}>
                         {/* Content Card */}
                         <div className="md:w-5/12">
-                          <Card className="hover-elevate transition-all duration-300">
+                          <Card className="hover-elevate transition-all duration-300 group">
                             <CardContent className="p-6 space-y-3">
                               <div className="flex items-center gap-3">
-                                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center group-hover:scale-110 transition-transform">
                                   <Icon className="w-6 h-6 text-primary" />
                                 </div>
                                 <div>
                                   <h3 className="font-bold text-lg">{step.title}</h3>
-                                  <p className="text-sm text-muted-foreground">
-                                    <Clock className="w-3 h-3 inline mr-1" />
+                                  <p className="text-sm text-muted-foreground flex items-center gap-1">
+                                    <Clock className="w-3 h-3" />
                                     {step.time}
                                   </p>
                                 </div>
@@ -1155,7 +1296,7 @@ export default function FreeFireSolo() {
                         <div className="hidden md:flex md:w-2/12 justify-center">
                           <div className="relative w-6 h-6">
                             <div className="absolute inset-0 bg-primary rounded-full animate-ping opacity-20" />
-                            <div className="relative w-6 h-6 bg-primary rounded-full border-4 border-background flex items-center justify-center">
+                            <div className="relative w-6 h-6 bg-primary rounded-full border-4 border-background flex items-center justify-center shadow-lg">
                               <div className="w-2 h-2 bg-primary-foreground rounded-full" />
                             </div>
                           </div>
@@ -1172,422 +1313,404 @@ export default function FreeFireSolo() {
           </motion.div>
         </SectionWrapper>
 
-        {/* Tournament Rules Deep Dive - Comprehensive rules with tabs and accordions */}
+        {/* Tournament Rules Deep Dive */}
         <SectionWrapper variant="muted" id="rules" data-testid="section-rules">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="space-y-8"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={staggerContainer}
+            className="space-y-12"
           >
-            <div className="text-center space-y-4">
+            <motion.div 
+              variants={staggerItem}
+              className="text-center space-y-4"
+            >
               <div className="flex items-center justify-center gap-2">
                 <Shield className="w-8 h-8 text-primary" />
-                <h2 className="text-4xl font-bold" data-testid="heading-rules">Complete Tournament Rules</h2>
+                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold" data-testid="heading-rules">
+                  Complete Tournament Rules
+                </h2>
               </div>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Read all rules carefully before registering. Fair play and sportsmanship ensure the best experience for everyone.
+                Read all rules carefully before registering. Fair play ensures the best experience for everyone.
               </p>
-            </div>
+            </motion.div>
 
-            <Tabs defaultValue="all" className="max-w-4xl mx-auto">
-              <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 lg:grid-cols-7">
-                <TabsTrigger value="all" data-testid="tab-all-rules">All Rules</TabsTrigger>
-                <TabsTrigger value="registration" data-testid="tab-registration">Registration</TabsTrigger>
-                <TabsTrigger value="payment" data-testid="tab-payment">Payment</TabsTrigger>
-                <TabsTrigger value="gameplay" data-testid="tab-gameplay">Gameplay</TabsTrigger>
-                <TabsTrigger value="prizes" data-testid="tab-prizes">Prizes</TabsTrigger>
-                <TabsTrigger value="fairplay" data-testid="tab-fairplay">Fair Play</TabsTrigger>
-                <TabsTrigger value="support" data-testid="tab-support">Support</TabsTrigger>
-              </TabsList>
+            <motion.div variants={staggerItem}>
+              <Tabs defaultValue="all" className="max-w-4xl mx-auto">
+                <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-1">
+                  <TabsTrigger value="all" data-testid="tab-all-rules">All Rules</TabsTrigger>
+                  <TabsTrigger value="registration" data-testid="tab-registration">Registration</TabsTrigger>
+                  <TabsTrigger value="payment" data-testid="tab-payment">Payment</TabsTrigger>
+                  <TabsTrigger value="gameplay" data-testid="tab-gameplay">Gameplay</TabsTrigger>
+                  <TabsTrigger value="prizes" data-testid="tab-prizes">Prizes</TabsTrigger>
+                  <TabsTrigger value="fairplay" data-testid="tab-fairplay">Fair Play</TabsTrigger>
+                  <TabsTrigger value="support" data-testid="tab-support">Support</TabsTrigger>
+                </TabsList>
 
-              <TabsContent value="all" className="mt-6">
-                <RulesAccordion rules={detailedRules} />
-              </TabsContent>
+                <TabsContent value="all" className="mt-6">
+                  <RulesAccordion rules={detailedRules} />
+                </TabsContent>
 
-              <TabsContent value="registration" className="mt-6">
-                <RulesAccordion rules={[detailedRules[0]]} />
-              </TabsContent>
+                <TabsContent value="registration" className="mt-6">
+                  <RulesAccordion rules={[detailedRules[0]]} />
+                </TabsContent>
 
-              <TabsContent value="payment" className="mt-6">
-                <RulesAccordion rules={[detailedRules[1]]} />
-              </TabsContent>
+                <TabsContent value="payment" className="mt-6">
+                  <RulesAccordion rules={[detailedRules[1]]} />
+                </TabsContent>
 
-              <TabsContent value="gameplay" className="mt-6">
-                <RulesAccordion rules={[detailedRules[2]]} />
-              </TabsContent>
+                <TabsContent value="gameplay" className="mt-6">
+                  <RulesAccordion rules={[detailedRules[2]]} />
+                </TabsContent>
 
-              <TabsContent value="prizes" className="mt-6">
-                <RulesAccordion rules={[detailedRules[3]]} />
-              </TabsContent>
+                <TabsContent value="prizes" className="mt-6">
+                  <RulesAccordion rules={[detailedRules[3]]} />
+                </TabsContent>
 
-              <TabsContent value="fairplay" className="mt-6">
-                <RulesAccordion rules={[detailedRules[4], detailedRules[5]]} />
-              </TabsContent>
+                <TabsContent value="fairplay" className="mt-6">
+                  <RulesAccordion rules={[detailedRules[4], detailedRules[5]]} />
+                </TabsContent>
 
-              <TabsContent value="support" className="mt-6">
-                <RulesAccordion rules={[detailedRules[6]]} />
-              </TabsContent>
-            </Tabs>
+                <TabsContent value="support" className="mt-6">
+                  <RulesAccordion rules={[detailedRules[6]]} />
+                </TabsContent>
+              </Tabs>
+            </motion.div>
           </motion.div>
         </SectionWrapper>
 
-        {/* Technical Requirements - Device, internet, and software specifications */}
+        {/* Technical Requirements */}
         <SectionWrapper data-testid="section-technical">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="space-y-8"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={staggerContainer}
+            className="space-y-12"
           >
-            <div className="text-center space-y-4">
+            <motion.div 
+              variants={staggerItem}
+              className="text-center space-y-4"
+            >
               <div className="flex items-center justify-center gap-2">
                 <Smartphone className="w-8 h-8 text-primary" />
-                <h2 className="text-4xl font-bold" data-testid="heading-technical">Technical Requirements</h2>
+                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold" data-testid="heading-technical">
+                  Technical Requirements
+                </h2>
               </div>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Ensure your device and connection meet these requirements for smooth, lag-free tournament experience.
+                Ensure your device and connection meet these requirements for smooth gameplay
               </p>
-            </div>
+            </motion.div>
 
-            <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+            <motion.div 
+              variants={staggerContainer}
+              className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto"
+            >
               {/* Device Requirements Card */}
-              <Card className="hover-elevate transition-all duration-300">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Smartphone className="w-5 h-5 text-primary" />
-                    Device Specs
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div>
-                    <p className="text-sm font-semibold text-muted-foreground mb-2">Minimum Requirements</p>
-                    <ul className="space-y-2 text-sm">
-                      <li className="flex items-start gap-2">
-                        <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-                        <span>3GB RAM</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-                        <span>Snapdragon 625 / Helio G70</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-                        <span>Android 5.0 or higher</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-                        <span>2GB free storage</span>
-                      </li>
-                    </ul>
-                  </div>
-                  <Separator />
-                  <div>
-                    <p className="text-sm font-semibold text-muted-foreground mb-2">Recommended</p>
-                    <ul className="space-y-2 text-sm">
-                      <li className="flex items-start gap-2">
-                        <Star className="w-4 h-4 text-chart-2 mt-0.5 flex-shrink-0" />
-                        <span>4GB+ RAM</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <Star className="w-4 h-4 text-chart-2 mt-0.5 flex-shrink-0" />
-                        <span>Snapdragon 660 or better</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <Star className="w-4 h-4 text-chart-2 mt-0.5 flex-shrink-0" />
-                        <span>90Hz display (advantage)</span>
-                      </li>
-                    </ul>
-                  </div>
-                </CardContent>
-              </Card>
+              <motion.div variants={staggerItem}>
+                <Card className="hover-elevate transition-all duration-300 h-full">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Smartphone className="w-5 h-5 text-primary" />
+                      Device Specs
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div>
+                      <p className="text-sm font-semibold text-muted-foreground mb-2">Minimum Requirements</p>
+                      <ul className="space-y-2 text-sm">
+                        <li className="flex items-start gap-2">
+                          <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                          <span>3GB RAM</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                          <span>Snapdragon 625 / Helio G70</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                          <span>Android 5.0 or higher</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                          <span>2GB free storage</span>
+                        </li>
+                      </ul>
+                    </div>
+                    <Separator />
+                    <div>
+                      <p className="text-sm font-semibold text-muted-foreground mb-2">Recommended</p>
+                      <ul className="space-y-2 text-sm">
+                        <li className="flex items-start gap-2">
+                          <Star className="w-4 h-4 text-chart-2 mt-0.5 flex-shrink-0" />
+                          <span>4GB+ RAM</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <Star className="w-4 h-4 text-chart-2 mt-0.5 flex-shrink-0" />
+                          <span>Snapdragon 660 or better</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <Star className="w-4 h-4 text-chart-2 mt-0.5 flex-shrink-0" />
+                          <span>90Hz display (advantage)</span>
+                        </li>
+                      </ul>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
 
               {/* Internet Requirements Card */}
-              <Card className="hover-elevate transition-all duration-300">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Wifi className="w-5 h-5 text-primary" />
-                    Internet Speed
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div>
-                    <p className="text-sm font-semibold text-muted-foreground mb-2">Minimum Requirements</p>
-                    <ul className="space-y-2 text-sm">
-                      <li className="flex items-start gap-2">
-                        <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-                        <span>8 Mbps download</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-                        <span>4 Mbps upload</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-                        <span>Ping under 80ms</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-                        <span>Stable connection</span>
-                      </li>
-                    </ul>
-                  </div>
-                  <Separator />
-                  <div>
-                    <p className="text-sm font-semibold text-muted-foreground mb-2">Recommended</p>
-                    <ul className="space-y-2 text-sm">
-                      <li className="flex items-start gap-2">
-                        <Star className="w-4 h-4 text-chart-2 mt-0.5 flex-shrink-0" />
-                        <span>20+ Mbps speed</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <Star className="w-4 h-4 text-chart-2 mt-0.5 flex-shrink-0" />
-                        <span>Ping under 40ms</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <Star className="w-4 h-4 text-chart-2 mt-0.5 flex-shrink-0" />
-                        <span>WiFi preferred over mobile data</span>
-                      </li>
-                    </ul>
-                  </div>
-                </CardContent>
-              </Card>
+              <motion.div variants={staggerItem}>
+                <Card className="hover-elevate transition-all duration-300 h-full">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Wifi className="w-5 h-5 text-primary" />
+                      Internet Speed
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div>
+                      <p className="text-sm font-semibold text-muted-foreground mb-2">Minimum Requirements</p>
+                      <ul className="space-y-2 text-sm">
+                        <li className="flex items-start gap-2">
+                          <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                          <span>8 Mbps download</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                          <span>4 Mbps upload</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                          <span>Ping under 80ms</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                          <span>Stable connection</span>
+                        </li>
+                      </ul>
+                    </div>
+                    <Separator />
+                    <div>
+                      <p className="text-sm font-semibold text-muted-foreground mb-2">Recommended</p>
+                      <ul className="space-y-2 text-sm">
+                        <li className="flex items-start gap-2">
+                          <Star className="w-4 h-4 text-chart-2 mt-0.5 flex-shrink-0" />
+                          <span>20+ Mbps speed</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <Star className="w-4 h-4 text-chart-2 mt-0.5 flex-shrink-0" />
+                          <span>Ping under 40ms</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <Star className="w-4 h-4 text-chart-2 mt-0.5 flex-shrink-0" />
+                          <span>WiFi preferred over mobile data</span>
+                        </li>
+                      </ul>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
 
               {/* Software Requirements Card */}
-              <Card className="hover-elevate transition-all duration-300">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Play className="w-5 h-5 text-primary" />
-                    Software
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div>
-                    <p className="text-sm font-semibold text-muted-foreground mb-2">Required</p>
-                    <ul className="space-y-2 text-sm">
-                      <li className="flex items-start gap-2">
-                        <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-                        <span>Latest Free Fire Max version</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-                        <span>WhatsApp installed</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-                        <span>UPI app for prizes</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-                        <span>No VPN or proxy</span>
-                      </li>
-                    </ul>
-                  </div>
-                  <Separator />
-                  <div>
-                    <p className="text-sm font-semibold text-muted-foreground mb-2">Tips</p>
-                    <ul className="space-y-2 text-sm">
-                      <li className="flex items-start gap-2">
-                        <Star className="w-4 h-4 text-chart-2 mt-0.5 flex-shrink-0" />
-                        <span>Close background apps</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <Star className="w-4 h-4 text-chart-2 mt-0.5 flex-shrink-0" />
-                        <span>Charge device fully</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <Star className="w-4 h-4 text-chart-2 mt-0.5 flex-shrink-0" />
-                        <span>Clear game cache before match</span>
-                      </li>
-                    </ul>
-                  </div>
+              <motion.div variants={staggerItem}>
+                <Card className="hover-elevate transition-all duration-300 h-full md:col-span-2 lg:col-span-1">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Play className="w-5 h-5 text-primary" />
+                      Software
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div>
+                      <p className="text-sm font-semibold text-muted-foreground mb-2">Required</p>
+                      <ul className="space-y-2 text-sm">
+                        <li className="flex items-start gap-2">
+                          <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                          <span>Latest Free Fire Max version</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                          <span>WhatsApp installed</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                          <span>UPI app for prizes</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                          <span>No VPN or proxy</span>
+                        </li>
+                      </ul>
+                    </div>
+                    <Separator />
+                    <div>
+                      <p className="text-sm font-semibold text-muted-foreground mb-2">Tips</p>
+                      <ul className="space-y-2 text-sm">
+                        <li className="flex items-start gap-2">
+                          <Star className="w-4 h-4 text-chart-2 mt-0.5 flex-shrink-0" />
+                          <span>Close background apps</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <Star className="w-4 h-4 text-chart-2 mt-0.5 flex-shrink-0" />
+                          <span>Charge device fully</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <Star className="w-4 h-4 text-chart-2 mt-0.5 flex-shrink-0" />
+                          <span>Clear game cache before match</span>
+                        </li>
+                      </ul>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            </motion.div>
+
+            <motion.div variants={staggerItem}>
+              <Card className="bg-primary/5 border-primary/20 max-w-4xl mx-auto">
+                <CardContent className="p-6">
+                  <p className="text-center text-sm">
+                    <strong>Pro Tip:</strong> Test your connection speed at{" "}
+                    <a 
+                      href="https://fast.com" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="text-primary hover:underline"
+                    >
+                      fast.com
+                    </a>
+                    {" "}and ensure all requirements are met before tournament day to avoid any issues.
+                  </p>
                 </CardContent>
               </Card>
-            </div>
-
-            <Card className="bg-primary/5 border-primary/20 max-w-4xl mx-auto">
-              <CardContent className="p-6">
-                <p className="text-center text-sm">
-                  <strong>Pro Tip:</strong> Test your connection speed at{" "}
-                  <a 
-                    href="https://fast.com" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="text-primary hover:underline"
-                  >
-                    fast.com
-                  </a>
-                  {" "}and ensure all requirements are met before tournament day to avoid any issues.
-                </p>
-              </CardContent>
-            </Card>
+            </motion.div>
           </motion.div>
         </SectionWrapper>
 
-        {/* Enhanced FAQ Section - Frequently asked questions */}
+        {/* Enhanced FAQ Section */}
         <SectionWrapper variant="muted" data-testid="section-faq">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="space-y-8"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={staggerContainer}
+            className="space-y-12"
           >
-            <div className="text-center space-y-4">
-              <h2 className="text-4xl font-bold" data-testid="heading-faq">Frequently Asked Questions</h2>
+            <motion.div 
+              variants={staggerItem}
+              className="text-center space-y-4"
+            >
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold" data-testid="heading-faq">
+                Frequently Asked Questions
+              </h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Find answers to common questions about registration, gameplay, prizes, and more.
+                Find answers to common questions about registration, gameplay, prizes, and more
               </p>
-            </div>
+            </motion.div>
 
-            <Accordion type="single" collapsible className="max-w-4xl mx-auto">
-              {faqs.map((faq, index) => (
-                <AccordionItem key={index} value={`faq-${index}`} data-testid={`faq-item-${index}`}>
-                  <AccordionTrigger className="text-left hover:no-underline">
-                    <span className="font-semibold">{faq.question}</span>
-                  </AccordionTrigger>
-                  <AccordionContent className="text-muted-foreground leading-relaxed">
-                    {faq.answer}
-                  </AccordionContent>
-                </AccordionItem>
-              ))}
-            </Accordion>
+            <motion.div variants={staggerItem}>
+              <Accordion type="single" collapsible className="max-w-4xl mx-auto">
+                {faqs.map((faq, index) => (
+                  <AccordionItem key={index} value={`faq-${index}`} data-testid={`faq-item-${index}`}>
+                    <AccordionTrigger className="text-left hover:no-underline">
+                      <span className="font-semibold">{faq.question}</span>
+                    </AccordionTrigger>
+                    <AccordionContent className="text-muted-foreground leading-relaxed">
+                      {faq.answer}
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
+            </motion.div>
           </motion.div>
         </SectionWrapper>
 
-        {/* Player Testimonials - Reviews from tournament participants */}
+        {/* Player Testimonials */}
         <SectionWrapper data-testid="section-testimonials">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="space-y-8"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={staggerContainer}
+            className="space-y-12"
           >
-            <div className="text-center space-y-4">
-              <h2 className="text-4xl font-bold" data-testid="heading-testimonials">What Players Say</h2>
+            <motion.div 
+              variants={staggerItem}
+              className="text-center space-y-4"
+            >
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold" data-testid="heading-testimonials">
+                What Players Say
+              </h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Hear from our community of competitive Free Fire Max players who have experienced GameArena tournaments.
+                Real experiences from our tournament participants and winners
               </p>
-            </div>
+            </motion.div>
 
-            <ModernTestimonials testimonials={testimonials} autoPlay autoPlayInterval={6000} />
+            <motion.div variants={staggerItem}>
+              <ModernTestimonials testimonials={testimonials} />
+            </motion.div>
           </motion.div>
         </SectionWrapper>
 
-        {/* Video Strategy Guide - Gameplay tips and strategies */}
-        <SectionWrapper variant="muted" data-testid="section-video-guide">
+        {/* Image Gallery */}
+        <SectionWrapper variant="muted" data-testid="section-gallery">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="space-y-8"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={staggerContainer}
+            className="space-y-12"
           >
-            <div className="text-center space-y-4">
-              <div className="flex items-center justify-center gap-2">
-                <Play className="w-8 h-8 text-primary" />
-                <h2 className="text-4xl font-bold" data-testid="heading-video-guide">Free Fire Max Solo Strategy Guide</h2>
-              </div>
+            <motion.div 
+              variants={staggerItem}
+              className="text-center space-y-4"
+            >
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold" data-testid="heading-gallery">
+                Tournament Gallery
+              </h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Master Free Fire Max solo gameplay with our comprehensive strategy guide. Learn character selection, positioning, combat tactics, and survival skills.
+                Experience the action from past Free Fire Max solo tournaments
               </p>
-            </div>
+            </motion.div>
 
-            <Card className="max-w-4xl mx-auto overflow-hidden">
-              <div className="aspect-video">
-                <iframe
-                  width="100%"
-                  height="100%"
-                  src="https://www.youtube.com/embed/dQw4w9WgXcQ"
-                  title="Free Fire Max Solo Tournament Strategy Guide"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                  className="border-0"
-                  data-testid="video-strategy-guide"
-                />
-              </div>
-              <CardContent className="p-6">
-                <h3 className="font-bold text-lg mb-2">Pro Tips for Free Fire Max Solo Success</h3>
-                <ul className="space-y-2 text-sm text-muted-foreground">
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-                    <span><strong>Character Selection:</strong> Choose characters with survival skills like DJ Alok, Chrono, or Skyler for solo matches</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-                    <span><strong>Landing Strategy:</strong> Drop in medium-loot areas to avoid early conflicts while getting decent gear</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-                    <span><strong>Combat Tips:</strong> Master headshot accuracy, use gloo walls strategically, and always carry grenades</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-                    <span><strong>Zone Management:</strong> Play zone edges, use vehicles wisely, and position yourself with cover advantage</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-                    <span><strong>Final Circle:</strong> Prioritize high ground, use pets effectively, and save healing items for endgame</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-                    <span><strong>Weapon Loadout:</strong> Prefer AR + Sniper or AR + SMG combo for versatility in different situations</span>
-                  </li>
-                </ul>
-              </CardContent>
-            </Card>
+            <motion.div variants={staggerItem}>
+              <MediaLightbox
+                items={[
+                  { src: tournamentImage1, alt: "Free Fire hero battle scene", caption: "Intense Free Fire battle action" },
+                  { src: tournamentImage2, alt: "Free Fire combat firefight", caption: "Close-quarters combat" },
+                  { src: tournamentImage3, alt: "Free Fire victory celebration", caption: "Booyah victory moment" },
+                  { src: esportsImage1, alt: "Free Fire tournament competitive scene", caption: "Tournament competition" },
+                  { src: esportsImage2, alt: "Free Fire weapon showcase", caption: "Premium weapon loadout" },
+                  { src: gamingImage1, alt: "Free Fire character lineup", caption: "Character selection" },
+                  { src: gamingImage2, alt: "Free Fire championship trophy", caption: "Championship glory" },
+                ]}
+              />
+            </motion.div>
           </motion.div>
         </SectionWrapper>
 
-        {/* Image Gallery - Tournament action shots and highlights */}
-        <SectionWrapper data-testid="section-gallery">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="space-y-8"
-          >
-            <div className="text-center space-y-4">
-              <h2 className="text-4xl font-bold" data-testid="heading-gallery">Tournament Gallery</h2>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Relive the intense moments from our past Free Fire Max solo tournaments. Action, strategy, and victory!
-              </p>
-            </div>
-
-            <MediaLightbox
-              items={[
-                { src: tournamentImage1, alt: "Free Fire Max hero battle scene", caption: "Intense combat action" },
-                { src: tournamentImage2, alt: "Free Fire Max combat firefight", caption: "Strategic positioning" },
-                { src: tournamentImage3, alt: "Free Fire Max victory celebration", caption: "Victory royale moment" },
-                { src: esportsImage1, alt: "Free Fire Max tournament competitive scene", caption: "Tournament highlights" },
-                { src: esportsImage2, alt: "Free Fire Max weapon showcase", caption: "Arsenal mastery" },
-                { src: gamingImage1, alt: "Free Fire Max character lineup", caption: "Character selection" },
-                { src: gamingImage2, alt: "Free Fire Max championship trophy", caption: "Hall of champions" },
-              ]}
-            />
-          </motion.div>
-        </SectionWrapper>
-
-        {/* CTA Band - Final call to action before footer */}
+        {/* Final CTA Band - Encourage registration */}
         <CTABand
-          title="Ready to Become a Free Fire Max Champion?"
-          description="Join thousands of competitive players in our professionally managed tournaments. Register now and prove your skills!"
+          title="Ready to Compete?"
+          description="Join thousands of Free Fire warriors in India's most competitive solo tournaments. Register now and prove your skills!"
           buttons={[
             {
-              label: "Register for Solo Tournament",
+              label: "Register for Tournament",
               onClick: scrollToRegistration,
+              icon: Trophy,
               variant: "default",
             },
             {
-              label: "View All Tournaments",
-              href: "/#tournaments",
+              label: "View Rules",
+              href: "#rules",
+              icon: Shield,
               variant: "outline",
             },
           ]}
+          variant="gradient"
         />
       </main>
 

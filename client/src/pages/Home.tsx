@@ -209,8 +209,10 @@ export default function Home() {
             <div className="relative h-full flex items-center justify-center px-4 sm:px-6 lg:px-8">
               <div className="max-w-6xl mx-auto text-center">
                 <BlurFade blur={8} direction="up" delay={0.1}>
-                  <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-4 md:mb-6 leading-tight">
-                    Ghar Baithe BGMI Tournaments Khelo Aur Prizes Jeeto!
+                  <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-4 md:mb-6 leading-tight">
+                    <span className="bg-gradient-to-r from-white via-blue-100 to-purple-100 bg-clip-text text-transparent animate-gradient">
+                      Ghar Baithe BGMI Tournaments Khelo Aur Prizes Jeeto!
+                    </span>
                   </h1>
                 </BlurFade>
                 <BlurFade blur={8} direction="up" delay={0.3}>
