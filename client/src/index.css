@@ -1145,21 +1145,83 @@
     animation: fade-in-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   }
 
-  /* Improved Responsiveness - Mobile first approach */
-  @media (max-width: 768px) {
-    /* Reduce animation intensity on mobile for performance */
+  /* Enhanced Mobile-First Responsive Design - Inspired by Stripe and modern sites */
+  
+  /* Mobile devices (320px - 480px) - Focus on single column, larger tap targets */
+  @media (max-width: 480px) {
+    /* Ensure proper spacing on small screens */
+    .container {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+    
+    /* Larger text for better readability on small screens */
+    h1 { font-size: 1.875rem; line-height: 2.25rem; }
+    h2 { font-size: 1.5rem; line-height: 2rem; }
+    h3 { font-size: 1.25rem; line-height: 1.75rem; }
+    
+    /* Reduce animation intensity for performance */
     .parallax-slow,
     .parallax-medium,
     .parallax-fast {
       transition: none;
     }
-
-    .interactive-card:hover {
-      transform: translateY(-4px);
+    
+    /* Simplify hover effects on mobile */
+    .card-hover-lift:hover {
+      transform: translateY(-2px);
     }
-
+    
+    /* Make buttons easier to tap */
+    button, a[role="button"], .button {
+      min-height: 44px;
+      min-width: 44px;
+    }
+  }
+  
+  /* Tablet devices (481px - 768px) - Two-column layouts, moderate spacing */
+  @media (min-width: 481px) and (max-width: 768px) {
+    .container {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+    
+    /* Optimize grid layouts for tablets */
+    .grid-cols-1 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  
+  /* Desktop and larger (769px+) - Full animations and effects */
+  @media (min-width: 769px) {
+    /* Enhanced hover states for desktop */
+    .interactive-card:hover {
+      transform: translateY(-8px);
+    }
+    
     .magnetic-glow:hover {
-      transform: translateY(-1px) scale(1.01);
+      transform: translateY(-2px) scale(1.02);
+    }
+  }
+  
+  /* Laptop and small desktop (769px - 1024px) */
+  @media (min-width: 769px) and (max-width: 1024px) {
+    .container {
+      max-width: 960px;
+    }
+  }
+  
+  /* Large desktop (1025px - 1440px) */
+  @media (min-width: 1025px) and (max-width: 1440px) {
+    .container {
+      max-width: 1200px;
+    }
+  }
+  
+  /* Extra large screens (1441px+) */
+  @media (min-width: 1441px) {
+    .container {
+      max-width: 1400px;
     }
   }
 
@@ -1170,7 +1232,7 @@
     }
   }
 
-  /* Respect user's motion preferences */
+  /* Respect user's motion preferences - Accessibility first */
   @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
@@ -1179,6 +1241,210 @@
       animation-iteration-count: 1 !important;
       transition-duration: 0.01ms !important;
     }
+  }
+  
+  /* Modern Intersection Observer Animations - Inspired by Stripe */
+  @keyframes slide-in-from-bottom {
+    from {
+      opacity: 0;
+      transform: translateY(80px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes slide-in-from-left {
+    from {
+      opacity: 0;
+      transform: translateX(-80px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  @keyframes slide-in-from-right {
+    from {
+      opacity: 0;
+      transform: translateX(80px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  @keyframes zoom-in {
+    from {
+      opacity: 0;
+      transform: scale(0.85);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  
+  @keyframes blur-reveal {
+    from {
+      opacity: 0;
+      filter: blur(12px);
+    }
+    to {
+      opacity: 1;
+      filter: blur(0px);
+    }
+  }
+  
+  /* Animation Utility Classes - Apply to elements */
+  .animate-slide-bottom {
+    animation: slide-in-from-bottom 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  
+  .animate-slide-left {
+    animation: slide-in-from-left 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  
+  .animate-slide-right {
+    animation: slide-in-from-right 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  
+  .animate-zoom-in {
+    animation: zoom-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  
+  .animate-blur-reveal {
+    animation: blur-reveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  
+  /* Stagger Animation Delays - For sequential reveals */
+  .animate-delay-100 { animation-delay: 100ms; }
+  .animate-delay-200 { animation-delay: 200ms; }
+  .animate-delay-300 { animation-delay: 300ms; }
+  .animate-delay-400 { animation-delay: 400ms; }
+  .animate-delay-500 { animation-delay: 500ms; }
+  .animate-delay-600 { animation-delay: 600ms; }
+  .animate-delay-700 { animation-delay: 700ms; }
+  .animate-delay-800 { animation-delay: 800ms; }
+  
+  /* Modern Text Gradient - Inspired by Cursor and modern landing pages */
+  .text-gradient-modern {
+    background: linear-gradient(
+      135deg,
+      hsl(var(--primary)) 0%,
+      hsl(var(--chart-2)) 50%,
+      hsl(var(--chart-3)) 100%
+    );
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradient-shift 6s ease infinite;
+  }
+  
+  /* Smooth Border Reveal Animation */
+  @keyframes border-draw {
+    from {
+      stroke-dashoffset: 1000;
+    }
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+  
+  /* Loading Bar Animation - Modern progress indicator */
+  @keyframes loading-bar {
+    0% {
+      transform: scaleX(0);
+      transform-origin: left;
+    }
+    50% {
+      transform: scaleX(1);
+      transform-origin: left;
+    }
+    51% {
+      transform: scaleX(1);
+      transform-origin: right;
+    }
+    100% {
+      transform: scaleX(0);
+      transform-origin: right;
+    }
+  }
+  
+  .loading-bar {
+    animation: loading-bar 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  }
+  
+  /* Modern Card Glow Effect - Inspired by premium gaming sites */
+  .card-glow-effect {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .card-glow-effect::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    background: linear-gradient(
+      45deg,
+      transparent 0%,
+      hsl(var(--primary) / 0.2) 50%,
+      transparent 100%
+    );
+    border-radius: inherit;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: -1;
+    animation: rotate-gradient 8s linear infinite;
+  }
+  
+  .card-glow-effect:hover::before {
+    opacity: 1;
+  }
+  
+  /* Perspective Hover - 3D tilt effect inspired by modern interactive cards */
+  .perspective-hover {
+    transform-style: preserve-3d;
+    transition: transform 0.4s cubic-bezier(0.03, 0.98, 0.52, 0.99);
+  }
+  
+  .perspective-hover:hover {
+    transform: perspective(1000px) rotateX(3deg) rotateY(-3deg) translateZ(10px);
+  }
+  
+  /* Smooth Expand on Click - Modern accordion animation */
+  @keyframes expand-down {
+    from {
+      max-height: 0;
+      opacity: 0;
+    }
+    to {
+      max-height: 500px;
+      opacity: 1;
+    }
+  }
+  
+  .expand-animate {
+    animation: expand-down 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  
+  /* Typing Cursor Animation - For dynamic text effects */
+  @keyframes blink-cursor {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+  }
+  
+  .typing-cursor {
+    display: inline-block;
+    width: 2px;
+    height: 1em;
+    background: hsl(var(--primary));
+    animation: blink-cursor 1s step-end infinite;
+    margin-left: 2px;
   }
 
   /* .no-default-hover-elevate/no-default-active-elevate is an escape hatch so consumers of

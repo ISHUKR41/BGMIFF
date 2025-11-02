@@ -366,6 +366,160 @@ export default function FreeFireDuo() {
           minHeight="600px"
         />
 
+        {/* Registration Form - User-friendly registration with prominent button */}
+        <SectionWrapper id="registration" variant="muted" data-testid="section-registration">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="space-y-8 animate-slide-bottom"
+          >
+            <div className="text-center space-y-4">
+              <div className="flex items-center justify-center gap-2">
+                <Trophy className="w-8 h-8 text-primary" />
+                <h2 className="text-4xl font-bold" data-testid="heading-registration">Register Now</h2>
+              </div>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Complete the registration form to secure your duo team spot in the tournament. Make sure all details are accurate.
+              </p>
+            </div>
+
+            <div className="max-w-4xl mx-auto">
+              <Card className="hover-elevate transition-all duration-300">
+                <CardHeader>
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <CardTitle className="text-2xl">Free Fire Max Duo Tournament Registration</CardTitle>
+                      <CardDescription className="mt-2">
+                        {FREEFIRE_TOURNAMENTS.duo.description}
+                      </CardDescription>
+                    </div>
+                    <Badge variant="default" className="flex-shrink-0">
+                      <Users className="w-3 h-3 mr-1" />
+                      Duo
+                    </Badge>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-6">
+                    {/* Tournament Summary Stats */}
+                    <div className="grid sm:grid-cols-3 gap-4">
+                      <div className="flex items-center gap-2 p-4 bg-primary/5 rounded-lg border border-primary/10">
+                        <Ticket className="w-6 h-6 text-primary flex-shrink-0" />
+                        <div>
+                          <p className="text-xs text-muted-foreground font-medium">Entry Fee</p>
+                          <p className="font-bold text-lg">₹{FREEFIRE_TOURNAMENTS.duo.entryFee}</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2 p-4 bg-primary/5 rounded-lg border border-primary/10">
+                        <Users className="w-6 h-6 text-primary flex-shrink-0" />
+                        <div>
+                          <p className="text-xs text-muted-foreground font-medium">Total Slots</p>
+                          <p className="font-bold text-lg">{FREEFIRE_TOURNAMENTS.duo.slots} Teams</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2 p-4 bg-primary/5 rounded-lg border border-primary/10">
+                        <Trophy className="w-6 h-6 text-primary flex-shrink-0" />
+                        <div>
+                          <p className="text-xs text-muted-foreground font-medium">Winner Prize</p>
+                          <p className="font-bold text-lg">₹{FREEFIRE_TOURNAMENTS.duo.winner}</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Prize Breakdown */}
+                    <div className="p-4 bg-gradient-to-r from-primary/10 to-chart-2/10 rounded-lg border border-primary/20">
+                      <div className="flex items-center gap-2 mb-3">
+                        <Award className="w-5 h-5 text-primary" />
+                        <h4 className="font-semibold text-base">Prize Distribution</h4>
+                      </div>
+                      <div className="grid sm:grid-cols-3 gap-3 text-sm">
+                        <div className="flex items-center justify-between">
+                          <span className="text-muted-foreground">Winner:</span>
+                          <span className="font-bold text-primary">₹{FREEFIRE_TOURNAMENTS.duo.winner}</span>
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <span className="text-muted-foreground">Runner-Up:</span>
+                          <span className="font-bold text-chart-2">₹{FREEFIRE_TOURNAMENTS.duo.runnerUp}</span>
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <span className="text-muted-foreground">Per Kill:</span>
+                          <span className="font-bold text-chart-3">₹{FREEFIRE_TOURNAMENTS.duo.perKill}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Registration Steps */}
+                    <div className="space-y-3">
+                      <h4 className="font-semibold flex items-center gap-2">
+                        <CheckCircle2 className="w-5 h-5 text-primary" />
+                        How to Register (3 Simple Steps)
+                      </h4>
+                      <div className="grid gap-2 text-sm">
+                        <div className="flex items-start gap-3 p-3 bg-muted/50 rounded-md">
+                          <div className="w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-xs flex-shrink-0">1</div>
+                          <div>
+                            <p className="font-medium">Pay Entry Fee (₹{FREEFIRE_TOURNAMENTS.duo.entryFee})</p>
+                            <p className="text-muted-foreground text-xs">Use the QR code shown in the form</p>
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-3 p-3 bg-muted/50 rounded-md">
+                          <div className="w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-xs flex-shrink-0">2</div>
+                          <div>
+                            <p className="font-medium">Fill Registration Form</p>
+                            <p className="text-muted-foreground text-xs">Enter both players' Free Fire UIDs, names, WhatsApp number, and upload payment screenshot</p>
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-3 p-3 bg-muted/50 rounded-md">
+                          <div className="w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-xs flex-shrink-0">3</div>
+                          <div>
+                            <p className="font-medium">Get Confirmation</p>
+                            <p className="text-muted-foreground text-xs">Receive room details on WhatsApp before tournament</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Main Registration Button */}
+                    <div className="pt-4">
+                      <Button 
+                        size="lg" 
+                        className="w-full h-16 text-lg font-bold" 
+                        asChild 
+                        data-testid="button-register-now"
+                      >
+                        <a href={FREEFIRE_TOURNAMENTS.duo.formUrl}>
+                          <Trophy className="w-6 h-6 mr-3" />
+                          Click Here to Register Now - Open Duo Registration Form
+                          <ExternalLink className="w-5 h-5 ml-3" />
+                        </a>
+                      </Button>
+                      <p className="text-center text-xs text-muted-foreground mt-2">
+                        Complete all fields to secure your duo team slot.
+                      </p>
+                    </div>
+                  </div>
+                </CardContent>
+                <CardFooter className="flex flex-col items-start gap-3 bg-muted/30">
+                  <div className="flex items-start gap-2">
+                    <Shield className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
+                    <p className="text-sm text-muted-foreground">
+                      Your information is secure and will only be used for tournament administration. We never share your data with third parties.
+                    </p>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <Zap className="w-5 h-5 text-chart-2 mt-0.5 flex-shrink-0" />
+                    <p className="text-sm text-muted-foreground">
+                      <strong>Quick Support:</strong> Contact admin on WhatsApp at +917541024846 for any registration issues.
+                    </p>
+                  </div>
+                </CardFooter>
+              </Card>
+            </div>
+          </motion.div>
+        </SectionWrapper>
+
         {/* Stats Section - Key tournament metrics displayed as animated cards */}
         <SectionWrapper variant="muted" data-testid="section-stats">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -492,170 +646,6 @@ export default function FreeFireDuo() {
                 </div>
               </div>
             </Card>
-          </motion.div>
-        </SectionWrapper>
-
-        {/* Registration Form - User-friendly registration with prominent button */}
-        <SectionWrapper id="registration" variant="muted" data-testid="section-registration">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="space-y-8"
-          >
-            <div className="text-center space-y-4">
-              <div className="flex items-center justify-center gap-2">
-                <Trophy className="w-8 h-8 text-primary" />
-                <h2 className="text-4xl font-bold" data-testid="heading-registration">Register Now</h2>
-              </div>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Complete the registration form to secure your duo team spot in the tournament. Make sure all details are accurate.
-              </p>
-            </div>
-
-            <div className="max-w-4xl mx-auto">
-              <Card className="hover-elevate transition-all duration-300">
-                <CardHeader>
-                  <div className="flex items-start justify-between gap-4">
-                    <div>
-                      <CardTitle className="text-2xl">Free Fire Max Duo Tournament Registration</CardTitle>
-                      <CardDescription className="mt-2">
-                        {FREEFIRE_TOURNAMENTS.duo.description}
-                      </CardDescription>
-                    </div>
-                    <Badge variant="default" className="flex-shrink-0">
-                      <Users className="w-3 h-3 mr-1" />
-                      Duo
-                    </Badge>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-6">
-                    {/* Tournament Summary Stats */}
-                    <div className="grid sm:grid-cols-3 gap-4">
-                      <div className="flex items-center gap-2 p-4 bg-primary/5 rounded-lg border border-primary/10">
-                        <Ticket className="w-6 h-6 text-primary flex-shrink-0" />
-                        <div>
-                          <p className="text-xs text-muted-foreground font-medium">Entry Fee</p>
-                          <p className="font-bold text-lg">₹{FREEFIRE_TOURNAMENTS.duo.entryFee}</p>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-2 p-4 bg-primary/5 rounded-lg border border-primary/10">
-                        <Users className="w-6 h-6 text-primary flex-shrink-0" />
-                        <div>
-                          <p className="text-xs text-muted-foreground font-medium">Total Slots</p>
-                          <p className="font-bold text-lg">{FREEFIRE_TOURNAMENTS.duo.slots} Teams</p>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-2 p-4 bg-primary/5 rounded-lg border border-primary/10">
-                        <Trophy className="w-6 h-6 text-primary flex-shrink-0" />
-                        <div>
-                          <p className="text-xs text-muted-foreground font-medium">Winner Prize</p>
-                          <p className="font-bold text-lg">₹{FREEFIRE_TOURNAMENTS.duo.winner}</p>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Prize Breakdown */}
-                    <div className="p-4 bg-gradient-to-r from-primary/10 to-chart-2/10 rounded-lg border border-primary/20">
-                      <div className="flex items-center gap-2 mb-3">
-                        <Award className="w-5 h-5 text-primary" />
-                        <h4 className="font-semibold text-base">Prize Distribution</h4>
-                      </div>
-                      <div className="grid sm:grid-cols-3 gap-3 text-sm">
-                        <div className="flex items-center justify-between">
-                          <span className="text-muted-foreground">Winner:</span>
-                          <span className="font-bold text-primary">₹{FREEFIRE_TOURNAMENTS.duo.winner}</span>
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <span className="text-muted-foreground">Runner-Up:</span>
-                          <span className="font-bold text-chart-2">₹{FREEFIRE_TOURNAMENTS.duo.runnerUp}</span>
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <span className="text-muted-foreground">Per Kill:</span>
-                          <span className="font-bold text-chart-3">₹{FREEFIRE_TOURNAMENTS.duo.perKill}</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Important Notice */}
-                    {FREEFIRE_TOURNAMENTS.duo.note && (
-                      <div className="p-4 bg-yellow-500/10 border-l-4 border-yellow-500 rounded-r-md">
-                        <div className="flex items-start gap-3">
-                          <AlertCircle className="w-5 h-5 text-yellow-500 flex-shrink-0 mt-0.5" />
-                          <p className="text-sm font-medium">{FREEFIRE_TOURNAMENTS.duo.note}</p>
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Registration Steps */}
-                    <div className="space-y-3">
-                      <h4 className="font-semibold flex items-center gap-2">
-                        <CheckCircle2 className="w-5 h-5 text-primary" />
-                        How to Register (3 Simple Steps)
-                      </h4>
-                      <div className="grid gap-2 text-sm">
-                        <div className="flex items-start gap-3 p-3 bg-muted/50 rounded-md">
-                          <div className="w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-xs flex-shrink-0">1</div>
-                          <div>
-                            <p className="font-medium">Pay Entry Fee (₹{FREEFIRE_TOURNAMENTS.duo.entryFee})</p>
-                            <p className="text-muted-foreground text-xs">Use the QR code shown in the form</p>
-                          </div>
-                        </div>
-                        <div className="flex items-start gap-3 p-3 bg-muted/50 rounded-md">
-                          <div className="w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-xs flex-shrink-0">2</div>
-                          <div>
-                            <p className="font-medium">Fill Registration Form</p>
-                            <p className="text-muted-foreground text-xs">Enter both players' Free Fire UIDs, names, WhatsApp number, and upload payment screenshot</p>
-                          </div>
-                        </div>
-                        <div className="flex items-start gap-3 p-3 bg-muted/50 rounded-md">
-                          <div className="w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-xs flex-shrink-0">3</div>
-                          <div>
-                            <p className="font-medium">Get Confirmation</p>
-                            <p className="text-muted-foreground text-xs">Receive room details on WhatsApp before tournament</p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Main Registration Button */}
-                    <div className="pt-4">
-                      <Button 
-                        size="lg" 
-                        className="w-full h-16 text-lg font-bold" 
-                        asChild 
-                        data-testid="button-register-now"
-                      >
-                        <a href={FREEFIRE_TOURNAMENTS.duo.formUrl} target="_blank" rel="noopener noreferrer">
-                          <Trophy className="w-6 h-6 mr-3" />
-                          Click Here to Register Now - Open Registration Form
-                          <ExternalLink className="w-5 h-5 ml-3" />
-                        </a>
-                      </Button>
-                      <p className="text-center text-xs text-muted-foreground mt-2">
-                        Form will open in a new tab. Complete all fields to secure your team slot.
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-                <CardFooter className="flex flex-col items-start gap-3 bg-muted/30">
-                  <div className="flex items-start gap-2">
-                    <Shield className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
-                    <p className="text-sm text-muted-foreground">
-                      Your information is secure and will only be used for tournament administration. We never share your data with third parties.
-                    </p>
-                  </div>
-                  <div className="flex items-start gap-2">
-                    <Zap className="w-5 h-5 text-chart-2 mt-0.5 flex-shrink-0" />
-                    <p className="text-sm text-muted-foreground">
-                      <strong>Quick Support:</strong> Contact admin on WhatsApp at +917541024846 for any registration issues.
-                    </p>
-                  </div>
-                </CardFooter>
-              </Card>
-            </div>
           </motion.div>
         </SectionWrapper>
 

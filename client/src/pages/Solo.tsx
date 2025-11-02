@@ -530,37 +530,61 @@ export default function Solo() {
             </div>
             
             <BentoGrid className="max-w-6xl mx-auto">
-              <BentoCard
-                title="Guaranteed Prize Pool"
-                description="Winner: ₹350 | Runner-Up: ₹250 | Per Kill: ₹9 - Prizes distributed within 24-48 hours via UPI"
-                icon={<Trophy className="w-6 h-6" />}
-                gradient="from-green-500/20 to-emerald-500/20"
-                className="md:col-span-1"
-              />
+              <BentoCard className="md:col-span-1" colSpan={1}>
+                <CardHeader>
+                  <div className="flex items-center gap-3">
+                    <div className="p-3 rounded-lg bg-green-500/10">
+                      <Trophy className="w-6 h-6 text-green-500" />
+                    </div>
+                    <div>
+                      <CardTitle className="text-lg">Guaranteed Prize Pool</CardTitle>
+                      <CardDescription>Winner: ₹350 | Runner-Up: ₹250 | Per Kill: ₹9 - Prizes distributed within 24-48 hours via UPI</CardDescription>
+                    </div>
+                  </div>
+                </CardHeader>
+              </BentoCard>
               
-              <BentoCard
-                title="Secure Registration"
-                description="SSL encrypted payments with screenshot verification - Slot confirmation within 2-4 hours via WhatsApp"
-                icon={<Shield className="w-6 h-6" />}
-                gradient="from-blue-500/20 to-cyan-500/20"
-                className="md:col-span-1"
-              />
+              <BentoCard className="md:col-span-1" colSpan={1} delay={0.1}>
+                <CardHeader>
+                  <div className="flex items-center gap-3">
+                    <div className="p-3 rounded-lg bg-blue-500/10">
+                      <Shield className="w-6 h-6 text-blue-500" />
+                    </div>
+                    <div>
+                      <CardTitle className="text-lg">Secure Registration</CardTitle>
+                      <CardDescription>SSL encrypted payments with screenshot verification - Slot confirmation within 2-4 hours via WhatsApp</CardDescription>
+                    </div>
+                  </div>
+                </CardHeader>
+              </BentoCard>
               
-              <BentoCard
-                title="Fair Play Guaranteed"
-                description="Advanced anti-cheat monitoring with zero tolerance for hacks - Your skill determines your success"
-                icon={<Target className="w-6 h-6" />}
-                gradient="from-purple-500/20 to-pink-500/20"
-                className="md:col-span-1"
-              />
+              <BentoCard className="md:col-span-1" colSpan={1} delay={0.2}>
+                <CardHeader>
+                  <div className="flex items-center gap-3">
+                    <div className="p-3 rounded-lg bg-purple-500/10">
+                      <Target className="w-6 h-6 text-purple-500" />
+                    </div>
+                    <div>
+                      <CardTitle className="text-lg">Fair Play Guaranteed</CardTitle>
+                      <CardDescription>Advanced anti-cheat monitoring with zero tolerance for hacks - Your skill determines your success</CardDescription>
+                    </div>
+                  </div>
+                </CardHeader>
+              </BentoCard>
               
-              <BentoCard
-                title="Professional Management"
-                description="Experienced organizers, 24/7 WhatsApp support, and transparent operations from start to finish"
-                icon={<Zap className="w-6 h-6" />}
-                gradient="from-orange-500/20 to-amber-500/20"
-                className="md:col-span-1"
-              />
+              <BentoCard className="md:col-span-1" colSpan={1} delay={0.3}>
+                <CardHeader>
+                  <div className="flex items-center gap-3">
+                    <div className="p-3 rounded-lg bg-orange-500/10">
+                      <Zap className="w-6 h-6 text-orange-500" />
+                    </div>
+                    <div>
+                      <CardTitle className="text-lg">Professional Management</CardTitle>
+                      <CardDescription>Experienced organizers, 24/7 WhatsApp support, and transparent operations from start to finish</CardDescription>
+                    </div>
+                  </div>
+                </CardHeader>
+              </BentoCard>
             </BentoGrid>
 
             <div className="flex flex-wrap justify-center gap-3 mt-8">
