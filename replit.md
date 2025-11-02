@@ -4,7 +4,7 @@
 
 GameArena is a professional tournament registration platform designed to facilitate esports competition organization for both BGMI (Battlegrounds Mobile India) and Free Fire Max. The platform enables tournament organizers to manage Solo, Duo, and Squad tournaments through integrated Google Forms for registration, with a focus on payment verification and professional presentation.
 
-The application serves as a modern, responsive front-end for displaying tournament information, rules, prize pools, and embedding Google Forms for participant registration. It emphasizes a clean, corporate aesthetic rather than gaming-inspired visuals, following design principles inspired by Linear's minimalist professionalism.
+The application serves as a modern, responsive, **user-friendly** front-end for displaying tournament information, rules, prize pools, and embedding Google Forms for participant registration. The home page has been redesigned with a **non-technical user-first approach**, using simple, conversational language (mix of Hindi and English) and clear visual hierarchy to make it accessible to users of all ages and technical backgrounds.
 
 **Supported Games:**
 - BGMI: Solo, Duo, and Squad tournaments
@@ -13,6 +13,16 @@ The application serves as a modern, responsive front-end for displaying tourname
 ## User Preferences
 
 Preferred communication style: Simple, everyday language.
+
+**Recent Updates (November 2025)**:
+- Home page completely redesigned for non-technical users
+- Tournament listings moved to top of page (position 2, right after hero)
+- Added "What is GameArena?" explainer section in simple Hindi/English
+- Simplified registration process from 6 detailed steps to 4 visual steps
+- Added comprehensive prize comparison table
+- Reduced feature sections from 8+ scattered cards to 4 key benefits
+- All FAQs and key sections use conversational Hindi/English mix for better understanding
+- Fully tested and responsive across all device sizes (mobile, tablet, desktop)
 
 ## System Architecture
 
