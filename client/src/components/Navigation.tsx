@@ -55,6 +55,7 @@ import { useState, useEffect } from "react";
 import { useTheme } from "next-themes";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { slideInRight, fadeSlideUp } from "@/lib/motion";
 
 // Tournament menu items with metadata for navigation mega-menu
 // Includes both BGMI and Free Fire Max tournaments
@@ -143,17 +144,24 @@ export default function Navigation() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);  // Mobile hamburger menu toggle
   const [searchOpen, setSearchOpen] = useState(false);          // Command palette search dialog
   const [scrolled, setScrolled] = useState(false);              // Scroll state for header styling
+  const [scrollProgress, setScrollProgress] = useState(0);      // Scroll progress for indicator bar
   
   // Theme management (dark/light mode)
   const { theme, setTheme } = useTheme();
 
   /**
    * Monitor scroll position to add shadow/backdrop blur to header
+   * and calculate scroll progress for the progress indicator
    * Triggers visual change when user scrolls past 10px
    */
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 10);
+      
+      // Calculate scroll progress percentage for progress indicator
+      const windowHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const scrolled = (window.scrollY / windowHeight) * 100;
+      setScrollProgress(scrolled);
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -195,14 +203,25 @@ export default function Navigation() {
 
   return (
     <>
+      {/* Main Navigation Bar with Glassmorphic Effect */}
       <nav
         className={cn(
-          "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
+          "fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-out",
           scrolled
-            ? "bg-background/80 backdrop-blur-lg border-b border-border shadow-sm"
-            : "bg-background/80 backdrop-blur-lg border-b border-transparent"
+            ? "glass-effect shadow-lg"
+            : "bg-background/60 backdrop-blur-md border-b border-border/50"
         )}
       >
+        {/* Scroll Progress Indicator */}
+        <motion.div
+          className="absolute top-0 left-0 h-1 bg-gradient-to-r from-primary via-chart-2 to-chart-1 origin-left"
+          style={{ width: `${scrollProgress}%` }}
+          initial={{ scaleX: 0 }}
+          animate={{ scaleX: 1 }}
+          transition={{ duration: 0.3, ease: "easeOut" }}
+          data-testid="scroll-progress-indicator"
+        />
+        
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <button
@@ -214,6 +233,7 @@ export default function Navigation() {
               <span className="text-xl font-bold">GameArena</span>
             </button>
 
+            {/* Desktop Navigation Menu with Active State Indicators */}
             <div className="hidden md:flex items-center gap-1">
               <NavigationMenu>
                 <NavigationMenuList>
@@ -221,20 +241,31 @@ export default function Navigation() {
                     <button
                       onClick={() => handleNavigation("/")}
                       className={cn(
-                        "group inline-flex h-9 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors hover-elevate active-elevate-2 bg-transparent border-0",
-                        location === "/" && "bg-secondary"
+                        "group relative inline-flex h-9 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-all duration-300 hover-elevate active-elevate-2 bg-transparent border-0",
+                        location === "/" && "text-primary"
                       )}
                       data-testid="link-nav-home"
                     >
-                      <Home className="w-4 h-4 mr-2" />
-                      Home
+                      <Home className="w-4 h-4 mr-2 transition-transform group-hover:scale-110" />
+                      <span>Home</span>
+                      {/* Active State Underline Indicator */}
+                      {location === "/" && (
+                        <motion.div
+                          className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary rounded-full"
+                          layoutId="activeNav"
+                          transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                        />
+                      )}
                     </button>
                   </NavigationMenuItem>
 
                   <NavigationMenuItem>
-                    <NavigationMenuTrigger data-testid="button-tournaments-menu">
-                      <Trophy className="w-4 h-4 mr-2" />
-                      Tournaments
+                    <NavigationMenuTrigger 
+                      className="group"
+                      data-testid="button-tournaments-menu"
+                    >
+                      <Trophy className="w-4 h-4 mr-2 transition-transform group-hover:scale-110" />
+                      <span>Tournaments</span>
                     </NavigationMenuTrigger>
                     <NavigationMenuContent>
                       <div className="grid gap-3 p-6 md:w-[500px] lg:w-[600px]" data-testid="mega-menu-tournaments">
@@ -249,11 +280,16 @@ export default function Navigation() {
                                 data-testid={`tournament-card-${tournament.name.toLowerCase()}`}
                               >
                                 <CardHeader className="flex flex-row items-center gap-4 space-y-0 pb-2">
-                                  <div className={cn("w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center", tournament.color)}>
+                                  {/* Icon with enhanced hover animation */}
+                                  <motion.div 
+                                    className={cn("w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center", tournament.color)}
+                                    whileHover={{ scale: 1.1, rotate: 5 }}
+                                    transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                                  >
                                     <Icon className="w-5 h-5" />
-                                  </div>
+                                  </motion.div>
                                   <div className="flex-1">
-                                    <CardTitle className="text-base group-hover:text-primary transition-colors">
+                                    <CardTitle className="text-base group-hover:text-primary transition-colors duration-300">
                                       {tournament.name} Tournament
                                     </CardTitle>
                                     <CardDescription className="text-sm">
@@ -291,13 +327,21 @@ export default function Navigation() {
                     <button
                       onClick={() => handleNavigation("/contact")}
                       className={cn(
-                        "group inline-flex h-9 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors hover-elevate active-elevate-2 bg-transparent border-0",
-                        location === "/contact" && "bg-secondary"
+                        "group relative inline-flex h-9 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-all duration-300 hover-elevate active-elevate-2 bg-transparent border-0",
+                        location === "/contact" && "text-primary"
                       )}
                       data-testid="link-nav-contact"
                     >
-                      <Mail className="w-4 h-4 mr-2" />
-                      Contact
+                      <Mail className="w-4 h-4 mr-2 transition-transform group-hover:scale-110" />
+                      <span>Contact</span>
+                      {/* Active State Underline Indicator */}
+                      {location === "/contact" && (
+                        <motion.div
+                          className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary rounded-full"
+                          layoutId="activeNav"
+                          transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                        />
+                      )}
                     </button>
                   </NavigationMenuItem>
                 </NavigationMenuList>
@@ -338,6 +382,7 @@ export default function Navigation() {
                 <Search className="w-5 h-5" />
               </Button>
 
+              {/* Mobile Menu with Slide-in Animation */}
               <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
                 <SheetTrigger asChild>
                   <Button
@@ -356,47 +401,72 @@ export default function Navigation() {
                     </SheetTitle>
                   </SheetHeader>
 
-                  <div className="mt-8 space-y-4">
-                    <div className="space-y-2">
-                      {pages.map((page) => {
+                  {/* Mobile Menu Content with Staggered Animation */}
+                  <motion.div 
+                    className="mt-8 space-y-4"
+                    initial="hidden"
+                    animate="visible"
+                    variants={{
+                      hidden: { opacity: 0 },
+                      visible: {
+                        opacity: 1,
+                        transition: {
+                          staggerChildren: 0.07,
+                          delayChildren: 0.1
+                        }
+                      }
+                    }}
+                  >
+                    <motion.div 
+                      className="space-y-2"
+                      variants={slideInRight}
+                    >
+                      {pages.map((page, index) => {
                         const Icon = page.icon;
                         return (
-                          <Button
+                          <motion.div
                             key={page.path}
-                            variant={location === page.path ? "secondary" : "ghost"}
-                            className="w-full justify-start"
-                            onClick={() => handleNavigation(page.path)}
-                            data-testid={`link-mobile-${page.name.toLowerCase()}`}
+                            variants={slideInRight}
+                            transition={{ delay: index * 0.05 }}
                           >
-                            <Icon className="w-4 h-4 mr-2" />
-                            {page.name}
-                          </Button>
+                            <Button
+                              variant={location === page.path ? "secondary" : "ghost"}
+                              className="w-full justify-start group"
+                              onClick={() => handleNavigation(page.path)}
+                              data-testid={`link-mobile-${page.name.toLowerCase()}`}
+                            >
+                              <Icon className="w-4 h-4 mr-2 transition-transform group-hover:scale-110" />
+                              {page.name}
+                            </Button>
+                          </motion.div>
                         );
                       })}
-                    </div>
+                    </motion.div>
 
                     <Separator />
 
-                    <div className="space-y-2">
+                    <motion.div 
+                      className="space-y-2"
+                      variants={slideInRight}
+                    >
                       <div className="px-3 py-2 text-sm font-semibold text-muted-foreground">
                         Tournaments
                       </div>
-                      {tournaments.map((tournament) => {
+                      {tournaments.map((tournament, index) => {
                         const Icon = tournament.icon;
                         return (
                           <motion.div
                             key={tournament.path}
-                            initial={{ opacity: 0, x: -20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ duration: 0.3 }}
+                            variants={slideInRight}
+                            transition={{ delay: index * 0.05 }}
                           >
                             <Button
                               variant={location === tournament.path ? "secondary" : "ghost"}
-                              className="w-full justify-start"
+                              className="w-full justify-start group hover-elevate"
                               onClick={() => handleNavigation(tournament.path)}
                               data-testid={`link-mobile-${tournament.name.toLowerCase()}`}
                             >
-                              <Icon className={cn("w-4 h-4 mr-2", tournament.color)} />
+                              <Icon className={cn("w-4 h-4 mr-2 transition-transform group-hover:scale-110", tournament.color)} />
                               <div className="flex-1 text-left">
                                 <div className="font-medium">{tournament.name}</div>
                                 <div className="text-xs text-muted-foreground">
@@ -407,11 +477,15 @@ export default function Navigation() {
                           </motion.div>
                         );
                       })}
-                    </div>
+                    </motion.div>
 
                     <Separator />
 
-                    <div className="flex items-center justify-between px-3 py-2">
+                    {/* Theme Toggle with Slide-in Animation */}
+                    <motion.div 
+                      className="flex items-center justify-between px-3 py-2"
+                      variants={slideInRight}
+                    >
                       <span className="text-sm font-medium">Theme</span>
                       <Button
                         variant="outline"
@@ -431,8 +505,8 @@ export default function Navigation() {
                           </>
                         )}
                       </Button>
-                    </div>
-                  </div>
+                    </motion.div>
+                  </motion.div>
                 </SheetContent>
               </Sheet>
             </div>

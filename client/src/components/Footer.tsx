@@ -20,6 +20,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { motion } from "framer-motion";
 import { CONTACT_INFO, SOCIAL_LINKS, COMPANY_INFO } from "@/../../shared/config";
 import {
   Trophy,
@@ -62,6 +63,7 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
+import { fadeSlideUp, staggerContainer, staggerItem } from "@/lib/motion";
 
 // Newsletter form validation schema - requires valid email format
 const newsletterSchema = z.object({
@@ -97,19 +99,31 @@ export default function Footer() {
 
   return (
     <footer className="border-t border-border bg-card">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Newsletter Section */}
-        <div className="mb-12 pb-12 border-b border-border">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-            <div>
-              <h3 className="text-2xl font-bold mb-2" data-testid="text-newsletter-title">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        {/* Newsletter Section with Enhanced Visual Hierarchy and Fade-in Animations */}
+        <motion.div 
+          className="mb-16 pb-16 border-b border-border"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
+          variants={fadeSlideUp}
+        >
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <motion.div
+              variants={fadeSlideUp}
+              transition={{ delay: 0.1 }}
+            >
+              <h3 className="text-3xl font-bold mb-3 bg-gradient-to-r from-foreground to-primary bg-clip-text text-transparent" data-testid="text-newsletter-title">
                 Stay Updated
               </h3>
-              <p className="text-sm text-muted-foreground" data-testid="text-newsletter-description">
-                Subscribe to our newsletter for tournament updates, exclusive offers, and gaming tips.
+              <p className="text-base text-muted-foreground leading-relaxed" data-testid="text-newsletter-description">
+                Subscribe to our newsletter for tournament updates, exclusive offers, and gaming tips delivered directly to your inbox.
               </p>
-            </div>
-            <div>
+            </motion.div>
+            <motion.div
+              variants={fadeSlideUp}
+              transition={{ delay: 0.2 }}
+            >
               <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col sm:flex-row gap-3">
                   <FormField
@@ -119,10 +133,10 @@ export default function Footer() {
                       <FormItem className="flex-1">
                         <FormControl>
                           <Input
-                            placeholder="Enter your email"
+                            placeholder="Enter your email address"
                             {...field}
                             data-testid="input-newsletter-email"
-                            className="h-10"
+                            className="h-12 px-4 text-base"
                           />
                         </FormControl>
                         <FormMessage />
@@ -131,7 +145,8 @@ export default function Footer() {
                   />
                   <Button
                     type="submit"
-                    className="h-10"
+                    size="lg"
+                    className="h-12 px-8"
                     data-testid="button-subscribe-newsletter"
                   >
                     Subscribe
@@ -139,17 +154,23 @@ export default function Footer() {
                 </form>
               </Form>
               {subscribeSuccess && (
-                <p className="text-sm text-primary mt-2 flex items-center gap-2" data-testid="text-subscribe-success">
+                <motion.p 
+                  className="text-sm text-primary mt-3 flex items-center gap-2" 
+                  data-testid="text-subscribe-success"
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3 }}
+                >
                   <CheckCircle2 className="w-4 h-4" />
                   Successfully subscribed!
-                </p>
+                </motion.p>
               )}
-              <p className="text-xs text-muted-foreground mt-2" data-testid="text-privacy-note">
+              <p className="text-sm text-muted-foreground mt-3" data-testid="text-privacy-note">
                 We respect your privacy. Unsubscribe at any time.
               </p>
-            </div>
+            </motion.div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Main Footer Content */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 mb-12">
@@ -375,74 +396,111 @@ export default function Footer() {
 
         <Separator className="my-8" />
 
-        {/* Social Media Links */}
-        <div className="mb-8">
-          <h4 className="text-sm font-semibold text-center mb-4" data-testid="heading-social-media">
+        {/* Social Media Links with Hover Glow Effects */}
+        <motion.div 
+          className="mb-12"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.5 }}
+          variants={staggerContainer}
+        >
+          <motion.h4 
+            className="text-sm font-semibold text-center mb-6" 
+            data-testid="heading-social-media"
+            variants={staggerItem}
+          >
             Follow Us
-          </h4>
-          <div className="flex justify-center gap-4">
-            <a
+          </motion.h4>
+          <motion.div 
+            className="flex justify-center gap-6"
+            variants={staggerContainer}
+          >
+            {/* YouTube Link with Glow Effect */}
+            <motion.a
               href={SOCIAL_LINKS.youtube}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-muted-foreground hover:text-primary transition-colors"
+              className="glow-on-hover text-muted-foreground hover:text-primary transition-all duration-300 p-3 rounded-lg border border-transparent"
               data-testid="link-social-youtube"
               aria-label="YouTube"
+              variants={staggerItem}
+              whileHover={{ scale: 1.15, y: -4 }}
+              whileTap={{ scale: 0.95 }}
             >
-              <SiYoutube className="w-6 h-6" />
-            </a>
-            <a
+              <SiYoutube className="w-7 h-7" />
+            </motion.a>
+            {/* Instagram Link with Glow Effect */}
+            <motion.a
               href={SOCIAL_LINKS.instagram}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-muted-foreground hover:text-primary transition-colors"
+              className="glow-on-hover text-muted-foreground hover:text-primary transition-all duration-300 p-3 rounded-lg border border-transparent"
               data-testid="link-social-instagram"
               aria-label="Instagram"
+              variants={staggerItem}
+              whileHover={{ scale: 1.15, y: -4 }}
+              whileTap={{ scale: 0.95 }}
             >
-              <SiInstagram className="w-6 h-6" />
-            </a>
-            <a
+              <SiInstagram className="w-7 h-7" />
+            </motion.a>
+            {/* Twitter/X Link with Glow Effect */}
+            <motion.a
               href={SOCIAL_LINKS.twitter}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-muted-foreground hover:text-primary transition-colors"
+              className="glow-on-hover text-muted-foreground hover:text-primary transition-all duration-300 p-3 rounded-lg border border-transparent"
               data-testid="link-social-twitter"
               aria-label="Twitter"
+              variants={staggerItem}
+              whileHover={{ scale: 1.15, y: -4 }}
+              whileTap={{ scale: 0.95 }}
             >
-              <SiX className="w-6 h-6" />
-            </a>
-            <a
+              <SiX className="w-7 h-7" />
+            </motion.a>
+            {/* Facebook Link with Glow Effect */}
+            <motion.a
               href={SOCIAL_LINKS.facebook}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-muted-foreground hover:text-primary transition-colors"
+              className="glow-on-hover text-muted-foreground hover:text-primary transition-all duration-300 p-3 rounded-lg border border-transparent"
               data-testid="link-social-facebook"
               aria-label="Facebook"
+              variants={staggerItem}
+              whileHover={{ scale: 1.15, y: -4 }}
+              whileTap={{ scale: 0.95 }}
             >
-              <SiFacebook className="w-6 h-6" />
-            </a>
-            <a
+              <SiFacebook className="w-7 h-7" />
+            </motion.a>
+            {/* Discord Link with Glow Effect */}
+            <motion.a
               href={SOCIAL_LINKS.discord}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-muted-foreground hover:text-primary transition-colors"
+              className="glow-on-hover text-muted-foreground hover:text-primary transition-all duration-300 p-3 rounded-lg border border-transparent"
               data-testid="link-social-discord"
               aria-label="Discord"
+              variants={staggerItem}
+              whileHover={{ scale: 1.15, y: -4 }}
+              whileTap={{ scale: 0.95 }}
             >
-              <SiDiscord className="w-6 h-6" />
-            </a>
-            <a
+              <SiDiscord className="w-7 h-7" />
+            </motion.a>
+            {/* Telegram Link with Glow Effect */}
+            <motion.a
               href={SOCIAL_LINKS.telegram}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-muted-foreground hover:text-primary transition-colors"
+              className="glow-on-hover text-muted-foreground hover:text-primary transition-all duration-300 p-3 rounded-lg border border-transparent"
               data-testid="link-social-telegram"
               aria-label="Telegram"
+              variants={staggerItem}
+              whileHover={{ scale: 1.15, y: -4 }}
+              whileTap={{ scale: 0.95 }}
             >
-              <SiTelegram className="w-6 h-6" />
-            </a>
-          </div>
-        </div>
+              <SiTelegram className="w-7 h-7" />
+            </motion.a>
+          </motion.div>
+        </motion.div>
 
         {/* Legal Links & Copyright */}
         <div className="border-t border-border pt-8">

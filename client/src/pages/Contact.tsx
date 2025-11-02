@@ -32,6 +32,7 @@
  */
 
 import { motion } from "framer-motion";
+import { useInView } from "react-intersection-observer";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -78,6 +79,10 @@ import {
   Loader2,
   Info,
   HelpCircle,
+  Shield,
+  Lock,
+  Zap,
+  Award,
 } from "lucide-react";
 import { SiInstagram, SiFacebook, SiX, SiLinkedin, SiWhatsapp } from "react-icons/si";
 import { useToast } from "@/hooks/use-toast";
@@ -86,6 +91,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useState } from "react";
 import { CONTACT_INFO, SOCIAL_LINKS } from "@/../../shared/config";
+import { fadeSlideUp, staggerContainer, staggerItem } from "@/lib/motion";
 
 /**
  * Contact form validation schema using Zod
@@ -189,15 +195,22 @@ export default function Contact() {
     setIsSubmitting(false);
   };
 
+  // Scroll-triggered animation hooks for different sections
+  const [headerRef, headerInView] = useInView({ triggerOnce: true, threshold: 0.1 });
+  const [trustRef, trustInView] = useInView({ triggerOnce: true, threshold: 0.1 });
+  const [supportRef, supportInView] = useInView({ triggerOnce: true, threshold: 0.1 });
+
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
       
+      {/* Hero Header with Fade-in Animation */}
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="pt-24 pb-16"
+        ref={headerRef}
+        initial="hidden"
+        animate={headerInView ? "visible" : "hidden"}
+        variants={fadeSlideUp}
+        className="pt-24 pb-12"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
@@ -205,84 +218,198 @@ export default function Contact() {
               <MessageCircle className="w-3 h-3 mr-1" />
               Get in Touch
             </Badge>
-            <h1 className="text-4xl sm:text-5xl font-bold mb-4" data-testid="heading-contact">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6" data-testid="heading-contact">
               Contact GameArena
             </h1>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto" data-testid="text-description">
+            <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed" data-testid="text-description">
               Have questions about tournaments, payments, or need support? We're here to help you 24/7.
             </p>
           </div>
 
-          <div className="grid lg:grid-cols-3 gap-8 mb-16">
-            <Card className="hover-elevate" data-testid="card-whatsapp">
-              <CardHeader>
-                <div className="w-12 h-12 bg-green-500/10 rounded-lg flex items-center justify-center mb-4">
-                  <SiWhatsapp className="w-6 h-6 text-green-500" />
-                </div>
-                <CardTitle>WhatsApp</CardTitle>
-                <CardDescription>24/7 Instant Support</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <a
-                  href={`https://wa.me/${CONTACT_INFO.whatsapp.replace('+', '')}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-primary hover:underline"
-                  data-testid="link-whatsapp"
-                >
-                  {CONTACT_INFO.whatsapp}
-                  <ExternalLink className="w-4 h-4" />
-                </a>
-                <p className="text-sm text-muted-foreground mt-3">
-                  Fastest response for urgent queries, payment issues, and tournament support
-                </p>
-              </CardContent>
-            </Card>
+          {/* Trust Panels - Company Credibility Indicators */}
+          <motion.div
+            ref={trustRef}
+            initial="hidden"
+            animate={trustInView ? "visible" : "hidden"}
+            variants={staggerContainer}
+            className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 mb-16"
+          >
+            <motion.div variants={staggerItem}>
+              <Card className="hover-elevate text-center">
+                <CardContent className="pt-6 pb-6">
+                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-3">
+                    <Shield className="w-6 h-6 text-primary" />
+                  </div>
+                  <h3 className="font-semibold mb-1">Secure Payments</h3>
+                  <p className="text-xs sm:text-sm text-muted-foreground">SSL Encrypted</p>
+                </CardContent>
+              </Card>
+            </motion.div>
 
-            <Card className="hover-elevate" data-testid="card-phone">
-              <CardHeader>
-                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-                  <Phone className="w-6 h-6 text-primary" />
-                </div>
-                <CardTitle>Phone</CardTitle>
-                <CardDescription>Call Us Anytime</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <a
-                  href={`tel:${CONTACT_INFO.phone}`}
-                  className="flex items-center gap-2 text-primary hover:underline"
-                  data-testid="link-phone"
-                >
-                  {CONTACT_INFO.phone}
-                </a>
-                <p className="text-sm text-muted-foreground mt-3">
-                  Direct phone support for immediate assistance and queries
-                </p>
-              </CardContent>
-            </Card>
+            <motion.div variants={staggerItem}>
+              <Card className="hover-elevate text-center">
+                <CardContent className="pt-6 pb-6">
+                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-3">
+                    <Award className="w-6 h-6 text-primary" />
+                  </div>
+                  <h3 className="font-semibold mb-1">Verified Platform</h3>
+                  <p className="text-xs sm:text-sm text-muted-foreground">Trusted by 5000+</p>
+                </CardContent>
+              </Card>
+            </motion.div>
 
-            <Card className="hover-elevate" data-testid="card-email">
-              <CardHeader>
-                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-                  <Mail className="w-6 h-6 text-primary" />
-                </div>
-                <CardTitle>Email</CardTitle>
-                <CardDescription>Detailed Inquiries</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <a
-                  href={`mailto:${CONTACT_INFO.email}`}
-                  className="flex items-center gap-2 text-primary hover:underline break-all"
-                  data-testid="link-email"
-                >
-                  {CONTACT_INFO.email}
-                </a>
-                <p className="text-sm text-muted-foreground mt-3">
-                  For detailed queries, documentation, and official correspondence
-                </p>
-              </CardContent>
-            </Card>
-          </div>
+            <motion.div variants={staggerItem}>
+              <Card className="hover-elevate text-center">
+                <CardContent className="pt-6 pb-6">
+                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-3">
+                    <Zap className="w-6 h-6 text-primary" />
+                  </div>
+                  <h3 className="font-semibold mb-1">Fast Response</h3>
+                  <p className="text-xs sm:text-sm text-muted-foreground">Under 30 mins</p>
+                </CardContent>
+              </Card>
+            </motion.div>
+
+            <motion.div variants={staggerItem}>
+              <Card className="hover-elevate text-center">
+                <CardContent className="pt-6 pb-6">
+                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-3">
+                    <Lock className="w-6 h-6 text-primary" />
+                  </div>
+                  <h3 className="font-semibold mb-1">Data Protected</h3>
+                  <p className="text-xs sm:text-sm text-muted-foreground">Privacy First</p>
+                </CardContent>
+              </Card>
+            </motion.div>
+          </motion.div>
+
+          {/* Enhanced Support Cards with Glow Effects and Animations */}
+          <motion.div
+            ref={supportRef}
+            initial="hidden"
+            animate={supportInView ? "visible" : "hidden"}
+            variants={staggerContainer}
+            className="grid md:grid-cols-3 gap-6 sm:gap-8 mb-16"
+          >
+            {/* WhatsApp Card with Glow Effect */}
+            <motion.div variants={staggerItem}>
+              <Card className="hover-elevate glow-on-hover h-full group transition-all duration-300" data-testid="card-whatsapp">
+                <CardHeader className="space-y-4">
+                  <div className="w-14 h-14 bg-green-500/10 rounded-xl flex items-center justify-center group-hover:bg-green-500/20 transition-colors">
+                    <SiWhatsapp className="w-7 h-7 text-green-500" />
+                  </div>
+                  <div>
+                    <CardTitle className="text-xl mb-2">WhatsApp</CardTitle>
+                    <CardDescription className="text-base">24/7 Instant Support</CardDescription>
+                  </div>
+                  <Badge variant="secondary" className="w-fit">
+                    <Clock className="w-3 h-3 mr-1" />
+                    Available Now
+                  </Badge>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <a
+                    href={`https://wa.me/${CONTACT_INFO.whatsapp.replace('+', '')}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 text-primary hover:underline font-medium text-lg"
+                    data-testid="link-whatsapp"
+                  >
+                    {CONTACT_INFO.whatsapp}
+                    <ExternalLink className="w-4 h-4" />
+                  </a>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    Fastest response for urgent queries, payment issues, and tournament support
+                  </p>
+                  <Button asChild className="w-full" size="lg">
+                    <a
+                      href={`https://wa.me/${CONTACT_INFO.whatsapp.replace('+', '')}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <MessageSquare className="w-4 h-4 mr-2" />
+                      Chat on WhatsApp
+                    </a>
+                  </Button>
+                </CardContent>
+              </Card>
+            </motion.div>
+
+            {/* Phone Card with Glow Effect */}
+            <motion.div variants={staggerItem}>
+              <Card className="hover-elevate glow-on-hover h-full group transition-all duration-300" data-testid="card-phone">
+                <CardHeader className="space-y-4">
+                  <div className="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                    <Phone className="w-7 h-7 text-primary" />
+                  </div>
+                  <div>
+                    <CardTitle className="text-xl mb-2">Phone</CardTitle>
+                    <CardDescription className="text-base">Call Us Anytime</CardDescription>
+                  </div>
+                  <Badge variant="secondary" className="w-fit">
+                    <Clock className="w-3 h-3 mr-1" />
+                    9 AM - 9 PM
+                  </Badge>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <a
+                    href={`tel:${CONTACT_INFO.phone}`}
+                    className="flex items-center gap-2 text-primary hover:underline font-medium text-lg"
+                    data-testid="link-phone"
+                  >
+                    {CONTACT_INFO.phone}
+                  </a>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    Direct phone support for immediate assistance and queries
+                  </p>
+                  <Button asChild className="w-full" size="lg" variant="outline">
+                    <a href={`tel:${CONTACT_INFO.phone}`}>
+                      <Phone className="w-4 h-4 mr-2" />
+                      Call Now
+                    </a>
+                  </Button>
+                </CardContent>
+              </Card>
+            </motion.div>
+
+            {/* Email Card with Glow Effect */}
+            <motion.div variants={staggerItem}>
+              <Card className="hover-elevate glow-on-hover h-full group transition-all duration-300" data-testid="card-email">
+                <CardHeader className="space-y-4">
+                  <div className="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                    <Mail className="w-7 h-7 text-primary" />
+                  </div>
+                  <div>
+                    <CardTitle className="text-xl mb-2">Email</CardTitle>
+                    <CardDescription className="text-base">Detailed Inquiries</CardDescription>
+                  </div>
+                  <Badge variant="secondary" className="w-fit">
+                    <Clock className="w-3 h-3 mr-1" />
+                    24h Response
+                  </Badge>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <a
+                    href={`mailto:${CONTACT_INFO.email}`}
+                    className="flex items-center gap-2 text-primary hover:underline font-medium text-sm break-all"
+                    data-testid="link-email"
+                  >
+                    {CONTACT_INFO.email}
+                    <ExternalLink className="w-4 h-4 flex-shrink-0" />
+                  </a>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    For detailed queries, documentation, and official correspondence
+                  </p>
+                  <Button asChild className="w-full" size="lg" variant="outline">
+                    <a href={`mailto:${CONTACT_INFO.email}`}>
+                      <Mail className="w-4 h-4 mr-2" />
+                      Send Email
+                    </a>
+                  </Button>
+                </CardContent>
+              </Card>
+            </motion.div>
+          </motion.div>
 
           <Card className="mb-16" data-testid="card-map">
             <CardHeader>

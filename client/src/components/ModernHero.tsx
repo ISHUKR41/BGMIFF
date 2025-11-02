@@ -15,7 +15,8 @@
  * consistent, professional hero sections with page-specific content.
  */
 
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Breadcrumb,
@@ -26,6 +27,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { LucideIcon } from "lucide-react";
+import { fadeSlideUp, scaleUp } from "@/lib/motion";
 
 // CTA Button configuration for hero actions
 interface CTAButton {
@@ -66,39 +68,67 @@ export default function ModernHero({
   minHeight = "500px",
   className = "",
 }: ModernHeroProps) {
+  // Reference for parallax scroll effects
+  const heroRef = useRef<HTMLDivElement>(null);
+  
+  // Track scroll position for parallax effect
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"]
+  });
+  
+  // Transform scroll progress to parallax movement (slower than scroll)
+  const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
+  const overlayOpacity2 = useTransform(scrollYProgress, [0, 1], [overlayOpacity, overlayOpacity + 0.2]);
+  
   return (
     <div
+      ref={heroRef}
       className={`relative overflow-hidden ${className}`}
       style={{ minHeight }}
       data-testid="hero-section"
     >
-      {/* Background Media */}
+      {/* Background Media with Parallax Effect */}
       {backgroundVideo && (
-        <video
+        <motion.video
           autoPlay
           loop
           muted
           playsInline
           className="absolute inset-0 w-full h-full object-cover"
+          style={{ y: backgroundY }}
           data-testid="hero-background-video"
         >
           <source src={backgroundVideo} type="video/mp4" />
-        </video>
+        </motion.video>
       )}
       
       {backgroundImage && !backgroundVideo && (
-        <div
+        <motion.div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: `url(${backgroundImage})` }}
+          style={{ 
+            backgroundImage: `url(${backgroundImage})`,
+            y: backgroundY 
+          }}
           data-testid="hero-background-image"
         />
       )}
 
-      {/* Gradient Overlay */}
-      <div
-        className="absolute inset-0 bg-gradient-to-b from-background/90 via-background/80 to-background/95"
-        style={{ opacity: overlayOpacity }}
+      {/* Enhanced Gradient Overlay using CSS Variables */}
+      <motion.div
+        className="absolute inset-0"
+        style={{ 
+          background: "var(--gradient-dark)",
+          opacity: overlayOpacity2
+        }}
         data-testid="hero-overlay"
+      />
+      
+      {/* Gradient Glow Effect */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{ background: "var(--gradient-glow)" }}
+        data-testid="hero-glow"
       />
 
       {/* Content */}
@@ -138,72 +168,91 @@ export default function ModernHero({
           </motion.div>
         )}
 
-        {/* Main Content */}
-        <div className="max-w-4xl mx-auto text-center space-y-8">
+        {/* Main Content with Enhanced Typography */}
+        <div className="max-w-4xl mx-auto text-center space-y-10">
+          {/* Hero Title with Gradient Text Effect */}
           <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight"
+            initial="hidden"
+            animate="visible"
+            variants={fadeSlideUp}
+            transition={{ duration: 0.8, delay: 0.1 }}
+            className="text-4xl md:text-5xl lg:text-7xl font-bold tracking-tight gradient-text"
             data-testid="hero-title"
           >
             {title}
           </motion.h1>
 
+          {/* Hero Description with Enhanced Readability */}
           {description && (
             <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto"
+              initial="hidden"
+              animate="visible"
+              variants={fadeSlideUp}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="text-lg md:text-xl lg:text-2xl text-foreground/90 max-w-3xl mx-auto leading-relaxed"
               data-testid="hero-description"
             >
               {description}
             </motion.p>
           )}
 
-          {/* CTA Buttons */}
+          {/* CTA Buttons with Enhanced Hover Effects */}
           {ctaButtons.length > 0 && (
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="flex flex-wrap items-center justify-center gap-4"
+              initial="hidden"
+              animate="visible"
+              variants={scaleUp}
+              transition={{ duration: 0.8, delay: 0.3 }}
+              className="flex flex-wrap items-center justify-center gap-4 pt-4"
               data-testid="hero-cta-buttons"
             >
               {ctaButtons.map((button, index) => {
                 const Icon = button.icon;
                 const ButtonContent = (
                   <>
-                    {Icon && <Icon className="w-4 h-4" />}
+                    {Icon && <Icon className="w-5 h-5" />}
                     <span>{button.label}</span>
                   </>
                 );
 
                 if (button.href) {
                   return (
-                    <Button
+                    <motion.div
                       key={index}
-                      variant={button.variant || "default"}
-                      size="lg"
-                      asChild
-                      data-testid={`hero-cta-${index}`}
+                      whileHover={{ scale: 1.05, y: -2 }}
+                      whileTap={{ scale: 0.98 }}
+                      transition={{ type: "spring", stiffness: 400, damping: 17 }}
                     >
-                      <a href={button.href}>{ButtonContent}</a>
-                    </Button>
+                      <Button
+                        variant={button.variant || "default"}
+                        size="lg"
+                        className="text-base px-8 py-6 shadow-lg hover:shadow-xl transition-shadow"
+                        asChild
+                        data-testid={`hero-cta-${index}`}
+                      >
+                        <a href={button.href}>{ButtonContent}</a>
+                      </Button>
+                    </motion.div>
                   );
                 }
 
                 return (
-                  <Button
+                  <motion.div
                     key={index}
-                    variant={button.variant || "default"}
-                    size="lg"
-                    onClick={button.onClick}
-                    data-testid={`hero-cta-${index}`}
+                    whileHover={{ scale: 1.05, y: -2 }}
+                    whileTap={{ scale: 0.98 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 17 }}
                   >
-                    {ButtonContent}
-                  </Button>
+                    <Button
+                      variant={button.variant || "default"}
+                      size="lg"
+                      className="text-base px-8 py-6 shadow-lg hover:shadow-xl transition-shadow"
+                      onClick={button.onClick}
+                      data-testid={`hero-cta-${index}`}
+                    >
+                      {ButtonContent}
+                    </Button>
+                  </motion.div>
                 );
               })}
             </motion.div>

@@ -41,6 +41,7 @@ import {
 } from "lucide-react";
 import { Link } from "wouter";
 import { TOURNAMENTS, FREEFIRE_TOURNAMENTS } from "@shared/config";
+import { fadeSlideUp, staggerContainer, staggerItem } from "@/lib/motion";
 
 import heroImage from "@assets/generated_images/BGMI_hero_battle_scene_ad290420.png";
 
@@ -179,7 +180,7 @@ export default function Home() {
       <Navigation />
       
       <main className="flex-1 pt-16">
-        {/* Hero Section with Clear Message */}
+        {/* Hero Section with Enhanced Animations */}
         <ModernHero
           title="Ghar Baithe BGMI Tournaments Khelo Aur Prizes Jeeto!"
           description="India ka sabse trusted gaming platform. Mobile se registration karo, game khelo, aur asli paise jeeto. 10,000+ players already playing!"
@@ -205,248 +206,244 @@ export default function Home() {
           minHeight="600px"
         />
 
-        {/* What is GameArena - Simple Explainer for Non-Tech Users */}
+        {/* What is GameArena - Simple Explainer with Staggered Cards */}
         <SectionWrapper variant="muted" data-testid="section-what-is-gamearena">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-12"
+            variants={fadeSlideUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            className="text-center mb-16"
           >
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-4">
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-primary/20 to-primary/5 mb-6">
               <Gamepad2 className="w-8 h-8 text-primary" />
             </div>
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4">GameArena Kya Hai?</h2>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6">GameArena Kya Hai?</h2>
             <p className="text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">
               Ek simple platform jahan aap <strong>BGMI aur Free Fire Max tournaments</strong> mein participate karke <strong>asli paise</strong> jeet sakte ho. 
               Bas apne phone se register karo, game khelo, aur prizes ghar baithe receive karo!
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-            >
-              <Card className="text-center h-full hover-elevate transition-all duration-300" data-testid="explainer-step-1">
-                <CardContent className="pt-8 pb-8">
-                  <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-4">
-                    <Smartphone className="w-8 h-8 text-primary" />
+          {/* Staggered Animation for Step Cards */}
+          <motion.div
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto"
+          >
+            <motion.div variants={staggerItem}>
+              <Card className="text-center h-full hover-elevate transition-all duration-300 group" data-testid="explainer-step-1">
+                <CardContent className="pt-10 pb-10 px-6">
+                  <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-500/20 via-blue-500/10 to-transparent mb-6 group-hover:scale-110 transition-transform duration-300">
+                    <Smartphone className="w-10 h-10 text-blue-500" />
                   </div>
-                  <h3 className="text-xl font-bold mb-3">1. Mobile Se Register Karo</h3>
-                  <p className="text-muted-foreground">
+                  <h3 className="text-xl font-bold mb-4">1. Mobile Se Register Karo</h3>
+                  <p className="text-muted-foreground leading-relaxed">
                     Apne phone se tournament choose karo aur ₹20 se start karo. Google Pay, PhonePe, Paytm - sab chalega!
                   </p>
                 </CardContent>
               </Card>
             </motion.div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-            >
-              <Card className="text-center h-full hover-elevate transition-all duration-300" data-testid="explainer-step-2">
-                <CardContent className="pt-8 pb-8">
-                  <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-4">
-                    <Target className="w-8 h-8 text-primary" />
+            <motion.div variants={staggerItem}>
+              <Card className="text-center h-full hover-elevate transition-all duration-300 group" data-testid="explainer-step-2">
+                <CardContent className="pt-10 pb-10 px-6">
+                  <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-purple-500/20 via-purple-500/10 to-transparent mb-6 group-hover:scale-110 transition-transform duration-300">
+                    <Target className="w-10 h-10 text-purple-500" />
                   </div>
-                  <h3 className="text-xl font-bold mb-3">2. Game Khelo</h3>
-                  <p className="text-muted-foreground">
+                  <h3 className="text-xl font-bold mb-4">2. Game Khelo</h3>
+                  <p className="text-muted-foreground leading-relaxed">
                     Tournament time pe room ID milega WhatsApp pe. Join karo aur apna best game khelo!
                   </p>
                 </CardContent>
               </Card>
             </motion.div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-            >
-              <Card className="text-center h-full hover-elevate transition-all duration-300" data-testid="explainer-step-3">
-                <CardContent className="pt-8 pb-8">
-                  <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-4">
-                    <Gift className="w-8 h-8 text-primary" />
+            <motion.div variants={staggerItem}>
+              <Card className="text-center h-full hover-elevate transition-all duration-300 group" data-testid="explainer-step-3">
+                <CardContent className="pt-10 pb-10 px-6">
+                  <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-amber-500/20 via-amber-500/10 to-transparent mb-6 group-hover:scale-110 transition-transform duration-300">
+                    <Gift className="w-10 h-10 text-amber-500" />
                   </div>
-                  <h3 className="text-xl font-bold mb-3">3. Prize Jeeto!</h3>
-                  <p className="text-muted-foreground">
+                  <h3 className="text-xl font-bold mb-4">3. Prize Jeeto!</h3>
+                  <p className="text-muted-foreground leading-relaxed">
                     Winner, runner-up, ya har kill pe paisa! 24-48 ghante mein prize aapke account mein.
                   </p>
                 </CardContent>
               </Card>
             </motion.div>
-          </div>
+          </motion.div>
         </SectionWrapper>
 
-        {/* TOURNAMENTS SECTION - MOVED TO TOP! */}
+        {/* Tournaments Section with Stagger Animation */}
         <SectionWrapper variant="default" id="tournaments" data-testid="section-tournaments">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-12"
+            variants={fadeSlideUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            className="text-center mb-16"
           >
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-4">
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-primary/20 to-primary/5 mb-6">
               <Trophy className="w-8 h-8 text-primary" />
             </div>
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4">Available Tournaments</h2>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6">Available Tournaments</h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               Apna favorite game aur mode choose karo. Solo, Duo, ya Squad - sabke liye tournaments hain!
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {tournaments.map((tournament, index) => (
+          {/* Tournament Cards Grid with Stagger Effect */}
+          <motion.div
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.1 }}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+          >
+            {tournaments.map((tournament) => (
               <motion.div
                 key={tournament.mode + tournament.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
+                variants={staggerItem}
               >
                 <TournamentCard {...tournament} />
               </motion.div>
             ))}
-          </div>
+          </motion.div>
 
-          {/* Simple Prize Comparison */}
+          {/* Prize Comparison Table with Smooth Reveal */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.6 }}
-            className="mt-12"
+            variants={fadeSlideUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            className="mt-16"
           >
-            <Card className="overflow-hidden" data-testid="prize-comparison">
-              <CardHeader className="bg-muted/50 text-center">
-                <CardTitle className="text-2xl">Prize Money Kitni Milegi?</CardTitle>
-                <CardDescription>Har tournament mein winners ko guaranteed prizes</CardDescription>
+            <Card className="overflow-hidden hover-elevate transition-all duration-300" data-testid="prize-comparison">
+              <CardHeader className="bg-muted/50 text-center pb-8">
+                <CardTitle className="text-2xl sm:text-3xl mb-2">Prize Money Kitni Milegi?</CardTitle>
+                <CardDescription className="text-base">Har tournament mein winners ko guaranteed prizes</CardDescription>
               </CardHeader>
               <CardContent className="p-0">
                 <div className="overflow-x-auto">
                   <table className="w-full">
                     <thead className="bg-muted/30">
                       <tr>
-                        <th className="px-4 py-4 text-left font-semibold">Mode</th>
-                        <th className="px-4 py-4 text-center font-semibold">Entry Fee</th>
-                        <th className="px-4 py-4 text-center font-semibold">Winner Prize</th>
-                        <th className="px-4 py-4 text-center font-semibold">Runner-Up</th>
-                        <th className="px-4 py-4 text-center font-semibold">Per Kill</th>
+                        <th className="px-6 py-5 text-left font-semibold">Mode</th>
+                        <th className="px-6 py-5 text-center font-semibold">Entry Fee</th>
+                        <th className="px-6 py-5 text-center font-semibold">Winner Prize</th>
+                        <th className="px-6 py-5 text-center font-semibold">Runner-Up</th>
+                        <th className="px-6 py-5 text-center font-semibold">Per Kill</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y">
                       <tr className="hover-elevate">
-                        <td className="px-4 py-4">
+                        <td className="px-6 py-5">
                           <div className="font-semibold">BGMI Solo</div>
                           <div className="text-sm text-muted-foreground">100 Players</div>
                         </td>
-                        <td className="px-4 py-4 text-center">
+                        <td className="px-6 py-5 text-center">
                           <Badge variant="secondary">₹20</Badge>
                         </td>
-                        <td className="px-4 py-4 text-center">
+                        <td className="px-6 py-5 text-center">
                           <span className="font-bold text-primary text-lg">₹350</span>
                         </td>
-                        <td className="px-4 py-4 text-center">
+                        <td className="px-6 py-5 text-center">
                           <span className="font-semibold">₹250</span>
                         </td>
-                        <td className="px-4 py-4 text-center">
+                        <td className="px-6 py-5 text-center">
                           <span className="text-muted-foreground">₹9</span>
                         </td>
                       </tr>
                       <tr className="hover-elevate">
-                        <td className="px-4 py-4">
+                        <td className="px-6 py-5">
                           <div className="font-semibold">BGMI Duo</div>
                           <div className="text-sm text-muted-foreground">50 Teams</div>
                         </td>
-                        <td className="px-4 py-4 text-center">
+                        <td className="px-6 py-5 text-center">
                           <Badge variant="secondary">₹40</Badge>
                         </td>
-                        <td className="px-4 py-4 text-center">
+                        <td className="px-6 py-5 text-center">
                           <span className="font-bold text-primary text-lg">₹350</span>
                         </td>
-                        <td className="px-4 py-4 text-center">
+                        <td className="px-6 py-5 text-center">
                           <span className="font-semibold">₹250</span>
                         </td>
-                        <td className="px-4 py-4 text-center">
+                        <td className="px-6 py-5 text-center">
                           <span className="text-muted-foreground">₹9</span>
                         </td>
                       </tr>
                       <tr className="hover-elevate">
-                        <td className="px-4 py-4">
+                        <td className="px-6 py-5">
                           <div className="font-semibold">BGMI Squad</div>
                           <div className="text-sm text-muted-foreground">25 Squads</div>
                         </td>
-                        <td className="px-4 py-4 text-center">
+                        <td className="px-6 py-5 text-center">
                           <Badge variant="secondary">₹80</Badge>
                         </td>
-                        <td className="px-4 py-4 text-center">
+                        <td className="px-6 py-5 text-center">
                           <span className="font-bold text-primary text-lg">₹350</span>
                         </td>
-                        <td className="px-4 py-4 text-center">
+                        <td className="px-6 py-5 text-center">
                           <span className="font-semibold">₹250</span>
                         </td>
-                        <td className="px-4 py-4 text-center">
+                        <td className="px-6 py-5 text-center">
                           <span className="text-muted-foreground">₹9</span>
                         </td>
                       </tr>
                       <tr className="hover-elevate">
-                        <td className="px-4 py-4">
+                        <td className="px-6 py-5">
                           <div className="font-semibold">Free Fire Solo</div>
                           <div className="text-sm text-muted-foreground">50 Players</div>
                         </td>
-                        <td className="px-4 py-4 text-center">
+                        <td className="px-6 py-5 text-center">
                           <Badge variant="secondary">₹20</Badge>
                         </td>
-                        <td className="px-4 py-4 text-center">
+                        <td className="px-6 py-5 text-center">
                           <span className="font-bold text-primary text-lg">₹200</span>
                         </td>
-                        <td className="px-4 py-4 text-center">
+                        <td className="px-6 py-5 text-center">
                           <span className="font-semibold">₹150</span>
                         </td>
-                        <td className="px-4 py-4 text-center">
+                        <td className="px-6 py-5 text-center">
                           <span className="text-muted-foreground">₹8</span>
                         </td>
                       </tr>
                       <tr className="hover-elevate">
-                        <td className="px-4 py-4">
+                        <td className="px-6 py-5">
                           <div className="font-semibold">Free Fire Duo</div>
                           <div className="text-sm text-muted-foreground">24 Teams</div>
                         </td>
-                        <td className="px-4 py-4 text-center">
+                        <td className="px-6 py-5 text-center">
                           <Badge variant="secondary">₹40</Badge>
                         </td>
-                        <td className="px-4 py-4 text-center">
+                        <td className="px-6 py-5 text-center">
                           <span className="font-bold text-primary text-lg">₹200</span>
                         </td>
-                        <td className="px-4 py-4 text-center">
+                        <td className="px-6 py-5 text-center">
                           <span className="font-semibold">₹150</span>
                         </td>
-                        <td className="px-4 py-4 text-center">
+                        <td className="px-6 py-5 text-center">
                           <span className="text-muted-foreground">₹8</span>
                         </td>
                       </tr>
                       <tr className="hover-elevate">
-                        <td className="px-4 py-4">
+                        <td className="px-6 py-5">
                           <div className="font-semibold">Free Fire Squad</div>
                           <div className="text-sm text-muted-foreground">12 Squads</div>
                         </td>
-                        <td className="px-4 py-4 text-center">
+                        <td className="px-6 py-5 text-center">
                           <Badge variant="secondary">₹80</Badge>
                         </td>
-                        <td className="px-4 py-4 text-center">
+                        <td className="px-6 py-5 text-center">
                           <span className="font-bold text-primary text-lg">₹200</span>
                         </td>
-                        <td className="px-4 py-4 text-center">
+                        <td className="px-6 py-5 text-center">
                           <span className="font-semibold">₹150</span>
                         </td>
-                        <td className="px-4 py-4 text-center">
+                        <td className="px-6 py-5 text-center">
                           <span className="text-muted-foreground">₹8</span>
                         </td>
                       </tr>
@@ -458,67 +455,78 @@ export default function Home() {
           </motion.div>
         </SectionWrapper>
 
-        {/* Simple How to Join - 4 Easy Steps */}
+        {/* How to Join - 4 Easy Steps with Enhanced Animations */}
         <SectionWrapper variant="muted" id="how-to-join" data-testid="section-how-to-join">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-12"
+            variants={fadeSlideUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            className="text-center mb-16"
           >
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-4">
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-primary/20 to-primary/5 mb-6">
               <Award className="w-8 h-8 text-primary" />
             </div>
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4">Kaise Join Karein? (4 Simple Steps)</h2>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6">Kaise Join Karein? (4 Simple Steps)</h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               Bilkul aasan hai! Ye steps follow karo aur tournament mein participate karo
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {/* Steps Grid with Stagger Animation */}
+          <motion.div
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.1 }}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
+          >
             {[
               {
                 step: 1,
                 icon: Trophy,
                 title: "Tournament Choose Karo",
                 description: "Solo, Duo, ya Squad - jo pasand ho wo select karo. BGMI ya Free Fire Max dono available hain.",
+                gradient: "from-blue-500/20 via-blue-500/10 to-transparent",
+                iconColor: "text-blue-500",
               },
               {
                 step: 2,
                 icon: CreditCard,
                 title: "Payment Karo",
                 description: "Google Pay, PhonePe, ya Paytm se entry fee pay karo. Screenshot save kar lena!",
+                gradient: "from-green-500/20 via-green-500/10 to-transparent",
+                iconColor: "text-green-500",
               },
               {
                 step: 3,
                 icon: FileText,
                 title: "Form Fill Karo",
                 description: "Apna name, game ID, aur payment screenshot upload karo. WhatsApp number dena mat bhulna!",
+                gradient: "from-purple-500/20 via-purple-500/10 to-transparent",
+                iconColor: "text-purple-500",
               },
               {
                 step: 4,
                 icon: MessageCircle,
                 title: "Confirmation Wait Karo",
                 description: "2-4 ghante mein WhatsApp pe confirmation aayega. Game time se pehle room ID milega!",
+                gradient: "from-amber-500/20 via-amber-500/10 to-transparent",
+                iconColor: "text-amber-500",
               },
-            ].map((item, index) => (
-              <motion.div
-                key={item.step}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-              >
-                <Card className="text-center h-full hover-elevate transition-all duration-300" data-testid={`how-to-step-${item.step}`}>
-                  <CardContent className="pt-8 pb-8">
-                    <div className="relative inline-flex items-center justify-center w-20 h-20 rounded-full bg-primary/10 mb-4">
-                      <item.icon className="w-10 h-10 text-primary" />
-                      <div className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-sm">
+            ].map((item) => (
+              <motion.div key={item.step} variants={staggerItem}>
+                <Card className="text-center h-full hover-elevate transition-all duration-300 group" data-testid={`how-to-step-${item.step}`}>
+                  <CardContent className="pt-10 pb-10 px-6">
+                    <div className="relative inline-flex items-center justify-center mb-6">
+                      <div className={`w-24 h-24 rounded-2xl bg-gradient-to-br ${item.gradient} flex items-center justify-center group-hover:scale-110 transition-transform duration-300`}>
+                        <item.icon className={`w-12 h-12 ${item.iconColor}`} />
+                      </div>
+                      <div className="absolute -top-3 -right-3 w-10 h-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-lg shadow-lg">
                         {item.step}
                       </div>
                     </div>
-                    <h3 className="text-xl font-bold mb-3">{item.title}</h3>
+                    <h3 className="text-xl font-bold mb-4">{item.title}</h3>
                     <p className="text-muted-foreground leading-relaxed">
                       {item.description}
                     </p>
@@ -526,17 +534,17 @@ export default function Home() {
                 </Card>
               </motion.div>
             ))}
-          </div>
+          </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.5 }}
-            className="mt-8 text-center"
+            variants={fadeSlideUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            className="mt-12 text-center"
           >
             <Link href="#tournaments">
-              <Button size="lg" className="text-lg px-8" data-testid="button-start-registration">
+              <Button size="lg" className="text-lg px-10 py-6" data-testid="button-start-registration">
                 Ab Registration Shuru Karo
                 <ArrowRight className="w-5 h-5 ml-2" />
               </Button>
@@ -544,115 +552,139 @@ export default function Home() {
           </motion.div>
         </SectionWrapper>
 
-        {/* Trust Indicators - Stats */}
+        {/* Trust Indicators - Stats with Enhanced Spacing */}
         <SectionWrapper variant="default" data-testid="section-trust-stats">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-12"
+            variants={fadeSlideUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            className="text-center mb-16"
           >
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4">Kyun Trust Karein GameArena Ko?</h2>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6">Kyun Trust Karein GameArena Ko?</h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               Numbers jhooth nahi bolte - dekho kitne log hamare saath khel rahe hain!
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <ProfessionalStatCard
-              icon={Users}
-              value={10000}
-              label="Active Players"
-              suffix="+"
-              delay={0}
-              data-testid="stat-players"
-            />
-            <ProfessionalStatCard
-              icon={Trophy}
-              value={150}
-              label="Tournaments Complete"
-              suffix="+"
-              delay={0.1}
-              data-testid="stat-tournaments"
-            />
-            <ProfessionalStatCard
-              icon={DollarSign}
-              value={500000}
-              label="Total Prizes Distributed"
-              prefix="₹"
-              delay={0.2}
-              data-testid="stat-prizes"
-            />
-            <ProfessionalStatCard
-              icon={Star}
-              value={4.9}
-              label="Player Rating"
-              suffix="/5"
-              decimals={1}
-              delay={0.3}
-              data-testid="stat-rating"
-            />
-          </div>
+          {/* Stats Grid with Stagger Animation */}
+          <motion.div
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
+          >
+            <motion.div variants={staggerItem}>
+              <ProfessionalStatCard
+                icon={Users}
+                value={10000}
+                label="Active Players"
+                suffix="+"
+                delay={0}
+                data-testid="stat-players"
+              />
+            </motion.div>
+            <motion.div variants={staggerItem}>
+              <ProfessionalStatCard
+                icon={Trophy}
+                value={150}
+                label="Tournaments Complete"
+                suffix="+"
+                delay={0}
+                data-testid="stat-tournaments"
+              />
+            </motion.div>
+            <motion.div variants={staggerItem}>
+              <ProfessionalStatCard
+                icon={DollarSign}
+                value={500000}
+                label="Total Prizes Distributed"
+                prefix="₹"
+                delay={0}
+                data-testid="stat-prizes"
+              />
+            </motion.div>
+            <motion.div variants={staggerItem}>
+              <ProfessionalStatCard
+                icon={Star}
+                value={4.9}
+                label="Player Rating"
+                suffix="/5"
+                decimals={1}
+                delay={0}
+                data-testid="stat-rating"
+              />
+            </motion.div>
+          </motion.div>
         </SectionWrapper>
 
-        {/* Why Choose Us - 4 Key Benefits Only */}
+        {/* Why Choose Us - Enhanced Feature Cards with Gradient Icons */}
         <SectionWrapper variant="muted" data-testid="section-benefits">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-12"
+            variants={fadeSlideUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            className="text-center mb-16"
           >
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4">GameArena Kyun Choose Karein?</h2>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6">GameArena Kyun Choose Karein?</h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               Hamari khas baatein jo hame sabse alag banati hain
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Benefits Grid with Stagger and Glow Effects */}
+          <motion.div
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.1 }}
+            className="grid grid-cols-1 md:grid-cols-2 gap-8"
+          >
             {[
               {
                 icon: Shield,
                 title: "100% Safe & Secure",
                 description: "Har payment verified hoti hai. Koi fraud nahi, sab legitimate. 10,000+ players hampe trust karte hain.",
-                color: "text-green-500",
+                gradient: "from-green-500/20 via-green-500/10 to-transparent",
+                iconColor: "text-green-500",
+                glowColor: "group-hover:shadow-[0_0_30px_rgba(34,197,94,0.3)]",
               },
               {
                 icon: Zap,
                 title: "Fast Prize Payment",
                 description: "Jeetne ke baad 24-48 ghante mein prize direct aapke UPI pe. No delays, no excuses - guaranteed!",
-                color: "text-blue-500",
+                gradient: "from-blue-500/20 via-blue-500/10 to-transparent",
+                iconColor: "text-blue-500",
+                glowColor: "group-hover:shadow-[0_0_30px_rgba(59,130,246,0.3)]",
               },
               {
                 icon: MessageCircle,
                 title: "24/7 WhatsApp Support",
                 description: "Koi bhi problem ho, WhatsApp pe message karo. 5 minute mein reply milega. Hindi mein baat kar sakte ho!",
-                color: "text-purple-500",
+                gradient: "from-purple-500/20 via-purple-500/10 to-transparent",
+                iconColor: "text-purple-500",
+                glowColor: "group-hover:shadow-[0_0_30px_rgba(168,85,247,0.3)]",
               },
               {
                 icon: Trophy,
                 title: "Fair Gameplay",
                 description: "Cheating allowed nahi hai. Har tournament fair hota hai. Aapki skill se jeetoge, kisi trick se nahi!",
-                color: "text-orange-500",
+                gradient: "from-amber-500/20 via-amber-500/10 to-transparent",
+                iconColor: "text-amber-500",
+                glowColor: "group-hover:shadow-[0_0_30px_rgba(245,158,11,0.3)]",
               },
             ].map((benefit, index) => (
-              <motion.div
-                key={benefit.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-              >
-                <Card className="hover-elevate transition-all duration-300 h-full" data-testid={`benefit-${index}`}>
-                  <CardHeader>
-                    <div className="flex items-start gap-4">
-                      <div className={`w-14 h-14 rounded-lg bg-muted flex items-center justify-center flex-shrink-0 ${benefit.color}`}>
-                        <benefit.icon className="w-7 h-7" />
+              <motion.div key={benefit.title} variants={staggerItem}>
+                <Card className={`hover-elevate transition-all duration-300 h-full group ${benefit.glowColor}`} data-testid={`benefit-${index}`}>
+                  <CardHeader className="pb-6">
+                    <div className="flex items-start gap-6">
+                      <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${benefit.gradient} flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300`}>
+                        <benefit.icon className={`w-8 h-8 ${benefit.iconColor}`} />
                       </div>
                       <div className="flex-1">
-                        <CardTitle className="text-xl mb-2">{benefit.title}</CardTitle>
+                        <CardTitle className="text-2xl mb-3">{benefit.title}</CardTitle>
                         <CardDescription className="text-base leading-relaxed">
                           {benefit.description}
                         </CardDescription>
@@ -662,141 +694,163 @@ export default function Home() {
                 </Card>
               </motion.div>
             ))}
-          </div>
+          </motion.div>
         </SectionWrapper>
 
-        {/* Testimonials - Social Proof */}
+        {/* Testimonials - Enhanced with Smooth Entrance */}
         <SectionWrapper variant="default" data-testid="section-testimonials">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-12"
+            variants={fadeSlideUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            className="text-center mb-16"
           >
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-4">
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-primary/20 to-primary/5 mb-6">
               <Star className="w-8 h-8 text-primary" />
             </div>
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4">Players Kya Kehte Hain?</h2>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6">Players Kya Kehte Hain?</h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               Hamare real players ki honest reviews padho
             </p>
           </motion.div>
 
-          <ModernTestimonials testimonials={testimonials} />
+          <motion.div
+            variants={fadeSlideUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+          >
+            <ModernTestimonials testimonials={testimonials} />
+          </motion.div>
         </SectionWrapper>
 
-        {/* FAQ Section */}
+        {/* FAQ Section with Enhanced Animations */}
         <SectionWrapper variant="muted" data-testid="section-faq">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-12"
+            variants={fadeSlideUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            className="text-center mb-16"
           >
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4">Common Questions (FAQ)</h2>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6">Common Questions (FAQ)</h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               Aapke sawal, hamare jawab - sab kuch clear aur simple
             </p>
           </motion.div>
 
           <div className="max-w-3xl mx-auto">
-            <Accordion type="single" collapsible className="space-y-4">
-              {faqs.map((faq, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 10 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: index * 0.05 }}
-                >
-                  <AccordionItem 
-                    value={`item-${index}`} 
-                    className="border rounded-lg px-6 bg-card hover-elevate transition-all duration-300"
-                    data-testid={`faq-item-${index}`}
-                  >
-                    <AccordionTrigger className="text-left text-lg font-semibold hover:no-underline py-5">
-                      {faq.question}
-                    </AccordionTrigger>
-                    <AccordionContent className="text-base text-muted-foreground leading-relaxed pb-5">
-                      {faq.answer}
-                    </AccordionContent>
-                  </AccordionItem>
-                </motion.div>
-              ))}
-            </Accordion>
+            {/* Staggered FAQ Items */}
+            <motion.div
+              variants={staggerContainer}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.1 }}
+            >
+              <Accordion type="single" collapsible className="space-y-4">
+                {faqs.map((faq, index) => (
+                  <motion.div key={index} variants={staggerItem}>
+                    <AccordionItem 
+                      value={`item-${index}`} 
+                      className="border rounded-xl px-6 bg-card hover-elevate transition-all duration-300"
+                      data-testid={`faq-item-${index}`}
+                    >
+                      <AccordionTrigger className="text-left text-lg font-semibold hover:no-underline py-6">
+                        {faq.question}
+                      </AccordionTrigger>
+                      <AccordionContent className="text-base text-muted-foreground leading-relaxed pb-6">
+                        {faq.answer}
+                      </AccordionContent>
+                    </AccordionItem>
+                  </motion.div>
+                ))}
+              </Accordion>
+            </motion.div>
           </div>
         </SectionWrapper>
 
-        {/* Contact Quick Links */}
+        {/* Contact Quick Links with Enhanced Icons */}
         <SectionWrapper variant="default" data-testid="section-quick-contact">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-12"
+            variants={fadeSlideUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            className="text-center mb-16"
           >
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4">Abhi Bhi Koi Doubt Hai?</h2>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6">Abhi Bhi Koi Doubt Hai?</h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               Hum yahan hain help karne ke liye - contact karo kisi bhi tarah se!
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-            <Card className="text-center hover-elevate transition-all duration-300" data-testid="contact-whatsapp">
-              <CardContent className="pt-8 pb-8">
-                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-green-500/10 mb-4">
-                  <MessageCircle className="w-8 h-8 text-green-500" />
-                </div>
-                <h3 className="text-xl font-bold mb-2">WhatsApp Chat</h3>
-                <p className="text-muted-foreground mb-4">24/7 Available</p>
-                <Button variant="outline" className="w-full" asChild data-testid="button-whatsapp">
-                  <a 
-                    href="https://wa.me/917541024846" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                  >
-                    Message Karo
-                    <ArrowRight className="w-4 h-4 ml-2" />
-                  </a>
-                </Button>
-              </CardContent>
-            </Card>
-
-            <Card className="text-center hover-elevate transition-all duration-300" data-testid="contact-phone">
-              <CardContent className="pt-8 pb-8">
-                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-500/10 mb-4">
-                  <PhoneCall className="w-8 h-8 text-blue-500" />
-                </div>
-                <h3 className="text-xl font-bold mb-2">Phone Call</h3>
-                <p className="text-muted-foreground mb-4">10 AM - 8 PM</p>
-                <Button variant="outline" className="w-full" asChild data-testid="button-phone">
-                  <a href="tel:+917541024846">
-                    Call Karo
-                    <ArrowRight className="w-4 h-4 ml-2" />
-                  </a>
-                </Button>
-              </CardContent>
-            </Card>
-
-            <Card className="text-center hover-elevate transition-all duration-300" data-testid="contact-email">
-              <CardContent className="pt-8 pb-8">
-                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-purple-500/10 mb-4">
-                  <Mail className="w-8 h-8 text-purple-500" />
-                </div>
-                <h3 className="text-xl font-bold mb-2">Email Us</h3>
-                <p className="text-muted-foreground mb-4">24 hour reply</p>
-                <Link href="/contact">
-                  <Button variant="outline" className="w-full" data-testid="button-contact-page">
-                    Email Bhejo
-                    <ArrowRight className="w-4 h-4 ml-2" />
+          {/* Contact Cards with Stagger Animation */}
+          <motion.div
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto"
+          >
+            <motion.div variants={staggerItem}>
+              <Card className="text-center hover-elevate transition-all duration-300 group hover:shadow-[0_0_30px_rgba(34,197,94,0.2)]" data-testid="contact-whatsapp">
+                <CardContent className="pt-10 pb-10 px-6">
+                  <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-green-500/20 via-green-500/10 to-transparent mb-6 group-hover:scale-110 transition-transform duration-300">
+                    <MessageCircle className="w-10 h-10 text-green-500" />
+                  </div>
+                  <h3 className="text-xl font-bold mb-2">WhatsApp Chat</h3>
+                  <p className="text-muted-foreground mb-6">24/7 Available</p>
+                  <Button variant="outline" className="w-full" asChild data-testid="button-whatsapp">
+                    <a 
+                      href="https://wa.me/917541024846" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                    >
+                      Message Karo
+                      <ArrowRight className="w-4 h-4 ml-2" />
+                    </a>
                   </Button>
-                </Link>
-              </CardContent>
-            </Card>
-          </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+
+            <motion.div variants={staggerItem}>
+              <Card className="text-center hover-elevate transition-all duration-300 group hover:shadow-[0_0_30px_rgba(59,130,246,0.2)]" data-testid="contact-phone">
+                <CardContent className="pt-10 pb-10 px-6">
+                  <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-500/20 via-blue-500/10 to-transparent mb-6 group-hover:scale-110 transition-transform duration-300">
+                    <PhoneCall className="w-10 h-10 text-blue-500" />
+                  </div>
+                  <h3 className="text-xl font-bold mb-2">Phone Call</h3>
+                  <p className="text-muted-foreground mb-6">10 AM - 8 PM</p>
+                  <Button variant="outline" className="w-full" asChild data-testid="button-phone">
+                    <a href="tel:+917541024846">
+                      Call Karo
+                      <ArrowRight className="w-4 h-4 ml-2" />
+                    </a>
+                  </Button>
+                </CardContent>
+              </Card>
+            </motion.div>
+
+            <motion.div variants={staggerItem}>
+              <Card className="text-center hover-elevate transition-all duration-300 group hover:shadow-[0_0_30px_rgba(168,85,247,0.2)]" data-testid="contact-email">
+                <CardContent className="pt-10 pb-10 px-6">
+                  <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-purple-500/20 via-purple-500/10 to-transparent mb-6 group-hover:scale-110 transition-transform duration-300">
+                    <Mail className="w-10 h-10 text-purple-500" />
+                  </div>
+                  <h3 className="text-xl font-bold mb-2">Email Us</h3>
+                  <p className="text-muted-foreground mb-6">24 hour reply</p>
+                  <Link href="/contact">
+                    <Button variant="outline" className="w-full" data-testid="button-contact-page">
+                      Email Bhejo
+                      <ArrowRight className="w-4 h-4 ml-2" />
+                    </Button>
+                  </Link>
+                </CardContent>
+              </Card>
+            </motion.div>
+          </motion.div>
         </SectionWrapper>
 
         {/* Final CTA */}

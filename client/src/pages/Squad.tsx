@@ -27,6 +27,7 @@ import { motion } from "framer-motion";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import ModernHero from "@/components/ModernHero";
+import StickyCTA from "@/components/StickyCTA";
 import SectionWrapper from "@/components/SectionWrapper";
 import ProfessionalStatCard from "@/components/ProfessionalStatCard";
 import MediaLightbox from "@/components/MediaLightbox";
@@ -35,7 +36,9 @@ import CTABand from "@/components/CTABand";
 import RulesAccordion from "@/components/RulesAccordion";
 import PaymentInstructions from "@/components/PaymentInstructions";
 import VideoSection from "@/components/VideoSection";
+import FormEmbed from "@/components/FormEmbed";
 import { TOURNAMENTS } from "@/../../shared/config";
+import { fadeSlideUp, staggerContainer, staggerItem, scaleUp } from "@/lib/motion";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -402,6 +405,13 @@ export default function Squad() {
   return (
     <div className="min-h-screen flex flex-col">
       <Navigation />
+      
+      {/* Sticky CTA bar - appears when scrolling past hero */}
+      <StickyCTA 
+        tournamentName={TOURNAMENTS.squad.title}
+        entryFee={TOURNAMENTS.squad.entryFee}
+        onRegisterClick={scrollToRegistration}
+      />
       
       <main className="flex-1 pt-16">
         {/* Modern Hero Section */}
