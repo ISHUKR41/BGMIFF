@@ -35,6 +35,10 @@ import CTABand from "@/components/CTABand";
 import RulesAccordion from "@/components/RulesAccordion";
 import PaymentInstructions from "@/components/PaymentInstructions";
 import FormEmbed from "@/components/FormEmbed";
+import FloatingOrbs from "@/components/FloatingOrbs";
+import BlurFade from "@/components/BlurFade";
+import { BentoGrid, BentoCard } from "@/components/BentoGrid";
+import EnhancedMagneticButton from "@/components/EnhancedMagneticButton";
 import { TOURNAMENTS } from "@/../../shared/config";
 import { fadeSlideUp, staggerContainer, staggerItem, scaleUp } from "@/lib/motion";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
@@ -370,72 +374,80 @@ export default function Duo() {
           minHeight="600px"
         />
 
-        {/* Stats Section */}
-        <SectionWrapper variant="muted" data-testid="section-stats">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <ProfessionalStatCard
-              icon={Ticket}
-              value={TOURNAMENTS.duo.entryFee}
-              label="Entry Fee per Team"
-              prefix="₹"
-              data-testid="stat-entry-fee"
-            />
-            <ProfessionalStatCard
-              icon={Users}
-              value={TOURNAMENTS.duo.slots}
-              label="Total Team Slots"
-              data-testid="stat-total-teams"
-            />
-            <ProfessionalStatCard
-              icon={Trophy}
-              value={TOURNAMENTS.duo.winner}
-              label="Winner Prize"
-              prefix="₹"
-              glassmorphism
-              data-testid="stat-winner-prize"
-            />
-            <ProfessionalStatCard
-              icon={Coins}
-              value={TOURNAMENTS.duo.perKill}
-              label="Per Kill Reward"
-              prefix="₹"
-              data-testid="stat-per-kill"
-            />
+        {/* Stats Section with FloatingOrbs */}
+        <SectionWrapper variant="muted" data-testid="section-stats" className="relative overflow-hidden">
+          <FloatingOrbs count={3} />
+          <div className="relative z-10">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+              <BlurFade delay={0.1} duration={0.6}>
+                <ProfessionalStatCard
+                  icon={Ticket}
+                  value={TOURNAMENTS.duo.entryFee}
+                  label="Entry Fee per Team"
+                  prefix="₹"
+                  data-testid="stat-entry-fee"
+                />
+              </BlurFade>
+              <BlurFade delay={0.2} duration={0.6}>
+                <ProfessionalStatCard
+                  icon={Users}
+                  value={TOURNAMENTS.duo.slots}
+                  label="Total Team Slots"
+                  data-testid="stat-total-teams"
+                />
+              </BlurFade>
+              <BlurFade delay={0.3} duration={0.6}>
+                <ProfessionalStatCard
+                  icon={Trophy}
+                  value={TOURNAMENTS.duo.winner}
+                  label="Winner Prize"
+                  prefix="₹"
+                  glassmorphism
+                  data-testid="stat-winner-prize"
+                />
+              </BlurFade>
+              <BlurFade delay={0.4} duration={0.6}>
+                <ProfessionalStatCard
+                  icon={Coins}
+                  value={TOURNAMENTS.duo.perKill}
+                  label="Per Kill Reward"
+                  prefix="₹"
+                  data-testid="stat-per-kill"
+                />
+              </BlurFade>
+            </div>
           </div>
         </SectionWrapper>
 
         {/* Comprehensive Feature Highlight Card - Duo Tournament Benefits */}
-        <SectionWrapper variant="default" data-testid="section-feature-highlight">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <Card className="hover-elevate transition-all duration-300 overflow-hidden" data-testid="feature-duo-tournament">
-              <div className="grid md:grid-cols-2 gap-0">
-                {/* Image Section */}
-                <div className="aspect-video md:aspect-auto overflow-hidden">
-                  <img
-                    src={teamStrategyImage}
-                    alt="BGMI Duo Tournament Team Strategy"
-                    className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
-                  />
-                </div>
-                
-                {/* Content Section */}
-                <div className="p-6 md:p-8 flex flex-col justify-center">
-                  <div className="mb-4">
-                    <div className="flex items-center gap-2 mb-3">
-                      <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-                        <Users className="w-6 h-6 text-primary" />
-                      </div>
-                      <h3 className="text-2xl md:text-3xl font-bold">Duo Tournament Excellence</h3>
-                    </div>
-                    <p className="text-muted-foreground">
-                      Team up with your partner for competitive duo BGMI gameplay with guaranteed prizes and professional management
-                    </p>
+        <SectionWrapper variant="default" data-testid="section-feature-highlight" className="relative overflow-hidden">
+          <FloatingOrbs count={2} />
+          <div className="relative z-10">
+            <BlurFade delay={0.2} duration={0.8}>
+              <Card className="hover-elevate transition-all duration-300 overflow-hidden" data-testid="feature-duo-tournament">
+                <div className="grid md:grid-cols-2 gap-0">
+                  {/* Image Section */}
+                  <div className="aspect-video md:aspect-auto overflow-hidden">
+                    <img
+                      src={teamStrategyImage}
+                      alt="BGMI Duo Tournament Team Strategy"
+                      className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
+                    />
                   </div>
+                  
+                  {/* Content Section */}
+                  <div className="p-4 md:p-6 lg:p-8 flex flex-col justify-center">
+                    <div className="mb-4">
+                      <div className="flex items-center gap-2 mb-3">
+                        <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                          <Users className="w-5 h-5 md:w-6 md:h-6 text-primary" />
+                        </div>
+                        <h3 className="text-xl md:text-2xl lg:text-3xl font-bold">Duo Tournament Excellence</h3>
+                      </div>
+                      <p className="text-sm md:text-base text-muted-foreground">
+                        Team up with your partner for competitive duo BGMI gameplay with guaranteed prizes and professional management
+                      </p>
+                    </div>
 
                   <div className="space-y-4 mb-6">
                     <div className="flex items-start gap-3">
@@ -480,31 +492,44 @@ export default function Duo() {
                   </div>
 
                   <div className="flex flex-wrap gap-3">
-                    <Button onClick={scrollToRegistration} data-testid="button-register-duo-feature">
+                    <EnhancedMagneticButton 
+                      onClick={scrollToRegistration} 
+                      magneticStrength={0.3}
+                      enableGlow={true}
+                      data-testid="button-register-duo-feature"
+                    >
                       Register Your Team - ₹{TOURNAMENTS.duo.entryFee}
                       <ArrowRight className="w-4 h-4 ml-2" />
-                    </Button>
-                    <Button variant="outline" data-testid="button-rules-duo-feature">
+                    </EnhancedMagneticButton>
+                    <EnhancedMagneticButton 
+                      variant="outline" 
+                      magneticStrength={0.3}
+                      enableGlow={true}
+                      asChild
+                      data-testid="button-rules-duo-feature"
+                    >
                       <a href="#rules" className="flex items-center">
                         View Duo Rules
                         <ExternalLink className="w-4 h-4 ml-2" />
                       </a>
-                    </Button>
+                    </EnhancedMagneticButton>
                   </div>
                 </div>
               </div>
             </Card>
-          </motion.div>
+          </BlurFade>
+          </div>
         </SectionWrapper>
 
         {/* Registration Form - Moved Higher for Easy Access */}
         <SectionWrapper id="registration" variant="muted" data-testid="section-registration">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
+          <BlurFade delay={0.2} duration={0.8} blur={8}>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
             <div className="text-center mb-12">
               <Badge variant="secondary" className="mb-4">
                 <UserPlus className="w-4 h-4 mr-2" />
@@ -614,16 +639,20 @@ export default function Duo() {
               </Card>
             </div>
           </motion.div>
+          </BlurFade>
         </SectionWrapper>
 
         {/* Tournament Schedule Section */}
-        <SectionWrapper data-testid="section-schedule">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
+        <SectionWrapper data-testid="section-schedule" className="relative overflow-hidden">
+          <FloatingOrbs count={2} />
+          <div className="relative z-10">
+            <BlurFade delay={0.2} duration={0.8} blur={8}>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+              >
             <div className="text-center mb-12">
               <Badge variant="secondary" className="mb-4">
                 <Calendar className="w-4 h-4 mr-2" />
@@ -725,28 +754,33 @@ export default function Duo() {
               </CardContent>
             </Card>
           </motion.div>
+            </BlurFade>
+          </div>
         </SectionWrapper>
 
         {/* Prize Breakdown Visualization */}
-        <SectionWrapper variant="muted" data-testid="section-prize-breakdown">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <div className="text-center mb-12">
-              <Badge variant="secondary" className="mb-4">
-                <Award className="w-4 h-4 mr-2" />
-                Prize Structure
-              </Badge>
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                Detailed Prize Breakdown
-              </h2>
-              <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-                Transparent and rewarding prize distribution. Win big for placements and earn per-kill rewards!
-              </p>
-            </div>
+        <SectionWrapper variant="muted" data-testid="section-prize-breakdown" className="relative overflow-hidden">
+          <FloatingOrbs count={2} />
+          <div className="relative z-10">
+            <BlurFade delay={0.2} duration={0.8} blur={8}>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+              >
+                <div className="text-center mb-12">
+                  <Badge variant="secondary" className="mb-4">
+                    <Award className="w-4 h-4 mr-2" />
+                    Prize Structure
+                  </Badge>
+                  <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                    Detailed Prize Breakdown
+                  </h2>
+                  <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+                    Transparent and rewarding prize distribution. Win big for placements and earn per-kill rewards!
+                  </p>
+                </div>
 
             <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto mb-8">
               <Card className="hover-elevate transition-all duration-300 border-2 border-primary/50" data-testid="prize-winner">
@@ -881,17 +915,20 @@ export default function Duo() {
                 </p>
               </CardContent>
             </Card>
-          </motion.div>
+              </motion.div>
+            </BlurFade>
+          </div>
         </SectionWrapper>
 
         {/* Registration Timeline */}
         <SectionWrapper data-testid="section-timeline">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
+          <BlurFade delay={0.2} duration={0.8} blur={8}>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
             <div className="text-center mb-12">
               <Badge variant="secondary" className="mb-4">
                 <CheckCircle2 className="w-4 h-4 mr-2" />
@@ -975,17 +1012,19 @@ export default function Duo() {
                 </motion.div>
               ))}
             </div>
-          </motion.div>
+            </motion.div>
+          </BlurFade>
         </SectionWrapper>
 
         {/* Past Winners Showcase */}
         <SectionWrapper variant="muted" data-testid="section-past-winners">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
+          <BlurFade delay={0.2} duration={0.8} blur={8}>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
             <div className="text-center mb-12">
               <Badge variant="secondary" className="mb-4">
                 <Star className="w-4 h-4 mr-2" />
@@ -1055,16 +1094,18 @@ export default function Duo() {
               ))}
             </div>
           </motion.div>
+          </BlurFade>
         </SectionWrapper>
 
         {/* Team Coordination Tips */}
         <SectionWrapper data-testid="section-coordination-tips">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
+          <BlurFade delay={0.2} duration={0.8} blur={8}>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
             <div className="text-center mb-12">
               <Badge variant="secondary" className="mb-4">
                 <Zap className="w-4 h-4 mr-2" />
@@ -1243,16 +1284,18 @@ export default function Duo() {
               </TabsContent>
             </Tabs>
           </motion.div>
+          </BlurFade>
         </SectionWrapper>
 
         {/* Live Leaderboard Preview */}
         <SectionWrapper variant="muted" data-testid="section-leaderboard">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
+          <BlurFade delay={0.2} duration={0.8} blur={8}>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
             <div className="text-center mb-12">
               <Badge variant="secondary" className="mb-4">
                 <TrendingUp className="w-4 h-4 mr-2" />
@@ -1330,16 +1373,18 @@ export default function Duo() {
               </CardContent>
             </Card>
           </motion.div>
+          </BlurFade>
         </SectionWrapper>
 
         {/* Enhanced FAQ Section */}
         <SectionWrapper data-testid="section-faq">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
+          <BlurFade delay={0.2} duration={0.8} blur={8}>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
             <div className="text-center mb-12">
               <Badge variant="secondary" className="mb-4">
                 <Shield className="w-4 h-4 mr-2" />
@@ -1384,41 +1429,45 @@ export default function Duo() {
               ))}
             </div>
           </motion.div>
+          </BlurFade>
         </SectionWrapper>
 
         {/* Team Testimonials */}
         <SectionWrapper variant="muted" data-testid="section-testimonials">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <div className="text-center mb-12">
-              <Badge variant="secondary" className="mb-4">
-                <Star className="w-4 h-4 mr-2" />
-                Community Voices
-              </Badge>
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                What Duo Teams Are Saying
-              </h2>
-              <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-                Hear from successful duo teams about their tournament experiences
-              </p>
-            </div>
+          <BlurFade delay={0.2} duration={0.8} blur={8}>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
+              <div className="text-center mb-12">
+                <Badge variant="secondary" className="mb-4">
+                  <Star className="w-4 h-4 mr-2" />
+                  Community Voices
+                </Badge>
+                <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                  What Duo Teams Are Saying
+                </h2>
+                <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+                  Hear from successful duo teams about their tournament experiences
+                </p>
+              </div>
 
-            <ModernTestimonials testimonials={testimonials} autoPlay={true} autoPlayInterval={6000} />
-          </motion.div>
+              <ModernTestimonials testimonials={testimonials} autoPlay={true} autoPlayInterval={6000} />
+            </motion.div>
+          </BlurFade>
         </SectionWrapper>
 
         {/* Tournament Rules Deep Dive */}
         <SectionWrapper data-testid="section-rules">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
+          <BlurFade delay={0.2} duration={0.8} blur={8}>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
             <div className="text-center mb-12">
               <Badge variant="secondary" className="mb-4">
                 <Shield className="w-4 h-4 mr-2" />
@@ -1435,17 +1484,19 @@ export default function Duo() {
             <div className="max-w-4xl mx-auto">
               <RulesAccordion rules={rules} />
             </div>
-          </motion.div>
+            </motion.div>
+          </BlurFade>
         </SectionWrapper>
 
         {/* Payment Instructions */}
         <SectionWrapper variant="muted" data-testid="section-payment">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
+          <BlurFade delay={0.2} duration={0.8} blur={8}>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
             <div className="text-center mb-12">
               <Badge variant="secondary" className="mb-4">
                 <CreditCard className="w-4 h-4 mr-2" />
@@ -1462,17 +1513,19 @@ export default function Duo() {
             <div className="max-w-4xl mx-auto">
               <PaymentInstructions amount={40} />
             </div>
-          </motion.div>
+            </motion.div>
+          </BlurFade>
         </SectionWrapper>
 
         {/* Video Strategy Guide */}
         <SectionWrapper data-testid="section-video-guide">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
+          <BlurFade delay={0.2} duration={0.8} blur={8}>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
             <div className="text-center mb-12">
               <Badge variant="secondary" className="mb-4">
                 <PlayCircle className="w-4 h-4 mr-2" />
@@ -1524,17 +1577,19 @@ export default function Duo() {
                 ))}
               </div>
             </div>
-          </motion.div>
+            </motion.div>
+          </BlurFade>
         </SectionWrapper>
 
         {/* Media Gallery */}
         <SectionWrapper variant="muted" data-testid="section-gallery">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
+          <BlurFade delay={0.2} duration={0.8} blur={8}>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
             <div className="text-center mb-12">
               <Badge variant="secondary" className="mb-4">
                 <Trophy className="w-4 h-4 mr-2" />
@@ -1564,7 +1619,8 @@ export default function Duo() {
               ]}
               columns={{ sm: 1, md: 2, lg: 3 }}
             />
-          </motion.div>
+            </motion.div>
+          </BlurFade>
         </SectionWrapper>
 
         {/* CTA Band */}

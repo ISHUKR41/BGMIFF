@@ -16,6 +16,7 @@
  */
 
 import { Button } from "@/components/ui/button";
+import EnhancedMagneticButton from "@/components/EnhancedMagneticButton";
 import { motion } from "framer-motion";
 import { LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -113,7 +114,7 @@ export default function CTABand({
             )}
           </div>
 
-          {/* Buttons */}
+          {/* Buttons with Enhanced Magnetic Effects */}
           <div className="flex flex-wrap items-center justify-center gap-4">
             {buttons.map((button, index) => {
               const ButtonIcon = button.icon;
@@ -135,28 +136,32 @@ export default function CTABand({
 
               if (button.href) {
                 return (
-                  <Button
+                  <EnhancedMagneticButton
                     key={index}
                     variant={buttonVariant as any}
                     size="lg"
+                    magneticStrength={0.3}
+                    enableGlow={true}
                     asChild
                     data-testid={dataTestId ? `${dataTestId}-button-${index}` : `cta-button-${index}`}
                   >
                     <a href={button.href}>{ButtonContent}</a>
-                  </Button>
+                  </EnhancedMagneticButton>
                 );
               }
 
               return (
-                <Button
+                <EnhancedMagneticButton
                   key={index}
                   variant={buttonVariant as any}
                   size="lg"
+                  magneticStrength={0.3}
+                  enableGlow={true}
                   onClick={button.onClick}
                   data-testid={dataTestId ? `${dataTestId}-button-${index}` : `cta-button-${index}`}
                 >
                   {ButtonContent}
-                </Button>
+                </EnhancedMagneticButton>
               );
             })}
           </div>

@@ -37,6 +37,10 @@ import MediaLightbox from "@/components/MediaLightbox";
 import ModernTestimonials from "@/components/ModernTestimonials";
 import CTABand from "@/components/CTABand";
 import FormEmbed from "@/components/FormEmbed";
+import FloatingOrbs from "@/components/FloatingOrbs";
+import BlurFade from "@/components/BlurFade";
+import { BentoGrid, BentoCard } from "@/components/BentoGrid";
+import EnhancedMagneticButton from "@/components/EnhancedMagneticButton";
 import { FREEFIRE_TOURNAMENTS } from "@shared/config";
 import { fadeSlideUp, staggerContainer, staggerItem, scaleUp } from "@/lib/motion";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
@@ -443,70 +447,78 @@ export default function FreeFireSolo() {
       
       <main className="flex-1 pt-16">
         {/* Hero Section with ModernHero - Tournament banner with striking visuals */}
-        <ModernHero
-          title="Free Fire Max Solo Tournament"
-          description="Compete individually in India's most exciting Free Fire Max solo battle royale tournament. 50 players enter, only one claims victory. Test your skills, win amazing prizes, and prove you're the ultimate Free Fire warrior."
-          backgroundImage={heroImage}
-          breadcrumbs={[
-            { label: "Home", href: "/" },
-            { label: "Tournaments", href: "/#tournaments" },
-            { label: "Free Fire Solo" },
-          ]}
-          ctaButtons={[
-            { 
-              label: "Register Now", 
-              onClick: scrollToRegistration,
-              variant: "default",
-              icon: Trophy 
-            },
-            { 
-              label: "View Schedule", 
-              href: "#schedule",
-              variant: "outline",
-              icon: Calendar 
-            },
-          ]}
-          overlayOpacity={0.8}
-          minHeight="600px"
-        />
+        <div className="relative">
+          <FloatingOrbs count={3} />
+          <ModernHero
+            title="Free Fire Max Solo Tournament"
+            description="Compete individually in India's most exciting Free Fire Max solo battle royale tournament. 50 players enter, only one claims victory. Test your skills, win amazing prizes, and prove you're the ultimate Free Fire warrior."
+            backgroundImage={heroImage}
+            breadcrumbs={[
+              { label: "Home", href: "/" },
+              { label: "Tournaments", href: "/#tournaments" },
+              { label: "Free Fire Solo" },
+            ]}
+            ctaButtons={[
+              { 
+                label: "Register Now", 
+                onClick: scrollToRegistration,
+                variant: "default",
+                icon: Trophy 
+              },
+              { 
+                label: "View Schedule", 
+                href: "#schedule",
+                variant: "outline",
+                icon: Calendar 
+              },
+            ]}
+            overlayOpacity={0.8}
+            minHeight="600px"
+          />
+        </div>
 
         {/* Tournament Stats - Display key tournament information with animated cards */}
         <SectionWrapper variant="muted" data-testid="section-stats">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <ProfessionalStatCard
-              icon={Ticket}
-              value={FREEFIRE_TOURNAMENTS.solo.entryFee}
-              label="Entry Fee"
-              prefix="₹"
-              glassmorphism
-              data-testid="stat-entry-fee"
-            />
-            <ProfessionalStatCard
-              icon={Users}
-              value={FREEFIRE_TOURNAMENTS.solo.slots}
-              label="Total Slots"
-              glassmorphism
-              delay={0.1}
-              data-testid="stat-total-slots"
-            />
-            <ProfessionalStatCard
-              icon={Trophy}
-              value={FREEFIRE_TOURNAMENTS.solo.winner}
-              label="Winner Prize"
-              prefix="₹"
-              glassmorphism
-              delay={0.2}
-              data-testid="stat-winner-prize"
-            />
-            <ProfessionalStatCard
-              icon={Coins}
-              value={FREEFIRE_TOURNAMENTS.solo.perKill}
-              label="Per Kill Reward"
-              prefix="₹"
-              glassmorphism
-              delay={0.3}
-              data-testid="stat-per-kill"
-            />
+          <div className="relative">
+            <FloatingOrbs count={2} />
+            <BlurFade delay={0.2} blur={10} direction="up">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+                <ProfessionalStatCard
+                  icon={Ticket}
+                  value={FREEFIRE_TOURNAMENTS.solo.entryFee}
+                  label="Entry Fee"
+                  prefix="₹"
+                  glassmorphism
+                  data-testid="stat-entry-fee"
+                />
+                <ProfessionalStatCard
+                  icon={Users}
+                  value={FREEFIRE_TOURNAMENTS.solo.slots}
+                  label="Total Slots"
+                  glassmorphism
+                  delay={0.1}
+                  data-testid="stat-total-slots"
+                />
+                <ProfessionalStatCard
+                  icon={Trophy}
+                  value={FREEFIRE_TOURNAMENTS.solo.winner}
+                  label="Winner Prize"
+                  prefix="₹"
+                  glassmorphism
+                  delay={0.2}
+                  data-testid="stat-winner-prize"
+                />
+                <ProfessionalStatCard
+                  icon={Coins}
+                  value={FREEFIRE_TOURNAMENTS.solo.perKill}
+                  label="Per Kill Reward"
+                  prefix="₹"
+                  glassmorphism
+                  delay={0.3}
+                  data-testid="stat-per-kill"
+                />
+              </div>
+            </BlurFade>
           </div>
         </SectionWrapper>
 

@@ -37,6 +37,10 @@ import RulesAccordion from "@/components/RulesAccordion";
 import PaymentInstructions from "@/components/PaymentInstructions";
 import VideoSection from "@/components/VideoSection";
 import FormEmbed from "@/components/FormEmbed";
+import FloatingOrbs from "@/components/FloatingOrbs";
+import BlurFade from "@/components/BlurFade";
+import { BentoGrid, BentoCard } from "@/components/BentoGrid";
+import EnhancedMagneticButton from "@/components/EnhancedMagneticButton";
 import { TOURNAMENTS } from "@/../../shared/config";
 import { fadeSlideUp, staggerContainer, staggerItem, scaleUp } from "@/lib/motion";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
@@ -433,131 +437,140 @@ export default function Squad() {
           data-testid="squad-hero"
         />
 
-        {/* Stats Section */}
-        <SectionWrapper variant="muted" data-testid="stats-section">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <ProfessionalStatCard
-              icon={Ticket}
-              value={TOURNAMENTS.squad.entryFee}
-              label="Entry Fee per Squad"
-              prefix="₹"
-              data-testid="stat-entry-fee"
-            />
-            <ProfessionalStatCard
-              icon={Users}
-              value={TOURNAMENTS.squad.slots}
-              label="Total Squad Slots"
-              data-testid="stat-total-slots"
-            />
-            <ProfessionalStatCard
-              icon={Trophy}
-              value={TOURNAMENTS.squad.winner}
-              label="Winner Prize"
-              prefix="₹"
-              glassmorphism
-              data-testid="stat-winner-prize"
-            />
-            <ProfessionalStatCard
-              icon={Coins}
-              value={TOURNAMENTS.squad.perKill}
-              label="Per Kill Bonus"
-              prefix="₹"
-              data-testid="stat-per-kill"
-            />
+        {/* Stats Section with FloatingOrbs and BlurFade */}
+        <SectionWrapper variant="muted" data-testid="stats-section" className="relative overflow-hidden">
+          <FloatingOrbs count={3} />
+          <div className="relative z-10">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+              <BlurFade delay={0.2} duration={0.6}>
+                <ProfessionalStatCard
+                  icon={Ticket}
+                  value={TOURNAMENTS.squad.entryFee}
+                  label="Entry Fee per Squad"
+                  prefix="₹"
+                  data-testid="stat-entry-fee"
+                />
+              </BlurFade>
+              <BlurFade delay={0.3} duration={0.6}>
+                <ProfessionalStatCard
+                  icon={Users}
+                  value={TOURNAMENTS.squad.slots}
+                  label="Total Squad Slots"
+                  data-testid="stat-total-slots"
+                />
+              </BlurFade>
+              <BlurFade delay={0.4} duration={0.6}>
+                <ProfessionalStatCard
+                  icon={Trophy}
+                  value={TOURNAMENTS.squad.winner}
+                  label="Winner Prize"
+                  prefix="₹"
+                  glassmorphism
+                  data-testid="stat-winner-prize"
+                />
+              </BlurFade>
+              <BlurFade delay={0.5} duration={0.6}>
+                <ProfessionalStatCard
+                  icon={Coins}
+                  value={TOURNAMENTS.squad.perKill}
+                  label="Per Kill Bonus"
+                  prefix="₹"
+                  data-testid="stat-per-kill"
+                />
+              </BlurFade>
+            </div>
           </div>
         </SectionWrapper>
 
         {/* Comprehensive Feature Highlight Card - Squad Tournament Benefits */}
-        <SectionWrapper variant="default" data-testid="section-feature-highlight">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <Card className="hover-elevate transition-all duration-300 overflow-hidden" data-testid="feature-squad-tournament">
-              <div className="grid md:grid-cols-2 gap-0">
-                {/* Image Section */}
-                <div className="aspect-video md:aspect-auto overflow-hidden">
-                  <img
-                    src={prizeCeremonyImage}
-                    alt="BGMI Squad Tournament Prize Ceremony"
-                    className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
-                  />
-                </div>
-                
-                {/* Content Section */}
-                <div className="p-6 md:p-8 flex flex-col justify-center">
-                  <div className="mb-4">
-                    <div className="flex items-center gap-2 mb-3">
-                      <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-                        <Users className="w-6 h-6 text-primary" />
-                      </div>
-                      <h3 className="text-2xl md:text-3xl font-bold">Squad Tournament Excellence</h3>
-                    </div>
-                    <p className="text-muted-foreground">
-                      Assemble your 4-player squad for the ultimate BGMI team competition with guaranteed prizes and professional tournament experience
-                    </p>
+        <SectionWrapper variant="default" data-testid="section-feature-highlight" className="relative overflow-hidden">
+          <FloatingOrbs count={2} />
+          <div className="relative z-10">
+            <BlurFade delay={0.2} duration={0.8}>
+              <Card className="hover-elevate transition-all duration-300 overflow-hidden" data-testid="feature-squad-tournament">
+                <div className="grid md:grid-cols-2 gap-0">
+                  {/* Image Section */}
+                  <div className="aspect-video md:aspect-auto overflow-hidden">
+                    <img
+                      src={prizeCeremonyImage}
+                      alt="BGMI Squad Tournament Prize Ceremony"
+                      className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
+                    />
                   </div>
-
-                  <div className="space-y-4 mb-6">
-                    <div className="flex items-start gap-3">
-                      <div className="w-10 h-10 rounded-full bg-green-500/10 flex items-center justify-center flex-shrink-0">
-                        <Trophy className="w-5 h-5 text-green-500" />
+                  
+                  {/* Content Section */}
+                  <div className="p-4 md:p-6 lg:p-8 flex flex-col justify-center">
+                    <div className="mb-4">
+                      <div className="flex items-center gap-2 mb-3">
+                        <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                          <Users className="w-5 h-5 md:w-6 md:h-6 text-primary" />
+                        </div>
+                        <h3 className="text-xl md:text-2xl lg:text-3xl font-bold">Squad Tournament Excellence</h3>
                       </div>
-                      <div>
-                        <h4 className="font-semibold mb-1">Squad Prize Distribution</h4>
-                        <p className="text-sm text-muted-foreground">Winner: ₹350 | Runner-Up: ₹250 | Per Kill: ₹9 - Team prizes distributed within 24-48 hours to squad leader</p>
+                      <p className="text-sm md:text-base text-muted-foreground">
+                        Assemble your 4-player squad for the ultimate BGMI team competition with guaranteed prizes and professional tournament experience
+                      </p>
+                    </div>
+
+                    <div className="space-y-4 mb-6">
+                      <div className="flex items-start gap-3">
+                        <div className="w-10 h-10 rounded-full bg-green-500/10 flex items-center justify-center flex-shrink-0">
+                          <Trophy className="w-5 h-5 text-green-500" />
+                        </div>
+                        <div>
+                          <h4 className="font-semibold mb-1">Squad Prize Distribution</h4>
+                          <p className="text-sm text-muted-foreground">Winner: ₹350 | Runner-Up: ₹250 | Per Kill: ₹9 - Team prizes distributed within 24-48 hours to squad leader</p>
+                        </div>
+                      </div>
+
+                      <div className="flex items-start gap-3">
+                        <div className="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center flex-shrink-0">
+                          <Shield className="w-5 h-5 text-blue-500" />
+                        </div>
+                        <div>
+                          <h4 className="font-semibold mb-1">Full Squad Registration</h4>
+                          <p className="text-sm text-muted-foreground">Register all 4 squad members with secure verification - Complete confirmation within 24 hours via WhatsApp</p>
+                        </div>
+                      </div>
+
+                      <div className="flex items-start gap-3">
+                        <div className="w-10 h-10 rounded-full bg-purple-500/10 flex items-center justify-center flex-shrink-0">
+                          <Crosshair className="w-5 h-5 text-purple-500" />
+                        </div>
+                        <div>
+                          <h4 className="font-semibold mb-1">Advanced Squad Tactics</h4>
+                          <p className="text-sm text-muted-foreground">Coordinate with 4 players, execute strategic plays, and dominate as a united squad force</p>
+                        </div>
+                      </div>
+
+                      <div className="flex items-start gap-3">
+                        <div className="w-10 h-10 rounded-full bg-orange-500/10 flex items-center justify-center flex-shrink-0">
+                          <Star className="w-5 h-5 text-orange-500" />
+                        </div>
+                        <div>
+                          <h4 className="font-semibold mb-1">Professional Tournament Experience</h4>
+                          <p className="text-sm text-muted-foreground">Fair play enforcement, dedicated support, real-time updates, and transparent prize distribution</p>
+                        </div>
                       </div>
                     </div>
 
-                    <div className="flex items-start gap-3">
-                      <div className="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center flex-shrink-0">
-                        <Shield className="w-5 h-5 text-blue-500" />
-                      </div>
-                      <div>
-                        <h4 className="font-semibold mb-1">Full Squad Registration</h4>
-                        <p className="text-sm text-muted-foreground">Register all 4 squad members with secure verification - Complete confirmation within 24 hours via WhatsApp</p>
-                      </div>
+                    <div className="flex flex-wrap gap-3">
+                      <Button onClick={scrollToRegistration} data-testid="button-register-squad-feature">
+                        Register Your Squad - ₹{TOURNAMENTS.squad.entryFee}
+                        <ArrowRight className="w-4 h-4 ml-2" />
+                      </Button>
+                      <Button variant="outline" data-testid="button-rules-squad-feature">
+                        <a href="#rules" className="flex items-center">
+                          View Squad Rules
+                          <ExternalLink className="w-4 h-4 ml-2" />
+                        </a>
+                      </Button>
                     </div>
-
-                    <div className="flex items-start gap-3">
-                      <div className="w-10 h-10 rounded-full bg-purple-500/10 flex items-center justify-center flex-shrink-0">
-                        <Crosshair className="w-5 h-5 text-purple-500" />
-                      </div>
-                      <div>
-                        <h4 className="font-semibold mb-1">Advanced Squad Tactics</h4>
-                        <p className="text-sm text-muted-foreground">Coordinate with 4 players, execute strategic plays, and dominate as a united squad force</p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-start gap-3">
-                      <div className="w-10 h-10 rounded-full bg-orange-500/10 flex items-center justify-center flex-shrink-0">
-                        <Star className="w-5 h-5 text-orange-500" />
-                      </div>
-                      <div>
-                        <h4 className="font-semibold mb-1">Professional Tournament Experience</h4>
-                        <p className="text-sm text-muted-foreground">Fair play enforcement, dedicated support, real-time updates, and transparent prize distribution</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex flex-wrap gap-3">
-                    <Button onClick={scrollToRegistration} data-testid="button-register-squad-feature">
-                      Register Your Squad - ₹{TOURNAMENTS.squad.entryFee}
-                      <ArrowRight className="w-4 h-4 ml-2" />
-                    </Button>
-                    <Button variant="outline" data-testid="button-rules-squad-feature">
-                      <a href="#rules" className="flex items-center">
-                        View Squad Rules
-                        <ExternalLink className="w-4 h-4 ml-2" />
-                      </a>
-                    </Button>
                   </div>
                 </div>
-              </div>
-            </Card>
-          </motion.div>
+              </Card>
+            </BlurFade>
+          </div>
         </SectionWrapper>
 
         {/* Registration Form - Moved Higher for Easy Access */}
@@ -777,17 +790,20 @@ export default function Squad() {
         </SectionWrapper>
 
         {/* Prize Breakdown Visualization */}
-        <SectionWrapper variant="muted" data-testid="prize-breakdown-section">
-          <div className="text-center mb-12">
-            <Badge variant="secondary" className="mb-4">
-              <Trophy className="w-4 h-4 mr-2" />
-              Prize Pool
-            </Badge>
-            <h2 className="text-4xl font-bold mb-4">Detailed Prize Breakdown</h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Multiple ways to win with placement prizes and per-kill bonuses
-            </p>
-          </div>
+        <SectionWrapper variant="muted" data-testid="prize-breakdown-section" className="relative overflow-hidden">
+          <FloatingOrbs count={2} />
+          <div className="relative z-10">
+            <BlurFade delay={0.2} duration={0.8} blur={8}>
+              <div className="text-center mb-12">
+                <Badge variant="secondary" className="mb-4">
+                  <Trophy className="w-4 h-4 mr-2" />
+                  Prize Pool
+                </Badge>
+                <h2 className="text-4xl font-bold mb-4">Detailed Prize Breakdown</h2>
+                <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                  Multiple ways to win with placement prizes and per-kill bonuses
+                </p>
+              </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
             <motion.div
@@ -921,20 +937,23 @@ export default function Squad() {
               </div>
             </CardContent>
           </Card>
+            </BlurFade>
+          </div>
         </SectionWrapper>
 
         {/* Past Winners Showcase */}
         <SectionWrapper data-testid="past-winners-section">
-          <div className="text-center mb-12">
-            <Badge variant="secondary" className="mb-4">
-              <Star className="w-4 h-4 mr-2" />
-              Hall of Champions
-            </Badge>
-            <h2 className="text-4xl font-bold mb-4">Past Squad Champions</h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Celebrating our previous tournament winners and their incredible performances
-            </p>
-          </div>
+          <BlurFade delay={0.2} duration={0.8} blur={8}>
+            <div className="text-center mb-12">
+              <Badge variant="secondary" className="mb-4">
+                <Star className="w-4 h-4 mr-2" />
+                Hall of Champions
+              </Badge>
+              <h2 className="text-4xl font-bold mb-4">Past Squad Champions</h2>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Celebrating our previous tournament winners and their incredible performances
+              </p>
+            </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {pastWinners.map((winner, index) => (
@@ -987,20 +1006,22 @@ export default function Squad() {
               </motion.div>
             ))}
           </div>
+          </BlurFade>
         </SectionWrapper>
 
         {/* Squad Roles & Strategy */}
         <SectionWrapper variant="muted" data-testid="squad-roles-section">
-          <div className="text-center mb-12">
-            <Badge variant="secondary" className="mb-4">
-              <Target className="w-4 h-4 mr-2" />
-              Strategy Guide
-            </Badge>
-            <h2 className="text-4xl font-bold mb-4">Squad Roles & Tactics</h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Understanding squad roles is crucial for competitive success
-            </p>
-          </div>
+          <BlurFade delay={0.2} duration={0.8} blur={8}>
+            <div className="text-center mb-12">
+              <Badge variant="secondary" className="mb-4">
+                <Target className="w-4 h-4 mr-2" />
+                Strategy Guide
+              </Badge>
+              <h2 className="text-4xl font-bold mb-4">Squad Roles & Tactics</h2>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Understanding squad roles is crucial for competitive success
+              </p>
+            </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <Card className="hover-elevate" data-testid="role-igl">
@@ -1152,20 +1173,22 @@ export default function Squad() {
               </ul>
             </CardContent>
           </Card>
+          </BlurFade>
         </SectionWrapper>
 
         {/* Live Leaderboard Preview */}
         <SectionWrapper data-testid="leaderboard-section">
-          <div className="text-center mb-12">
-            <Badge variant="secondary" className="mb-4">
-              <TrendingUp className="w-4 h-4 mr-2" />
-              Live Standings
-            </Badge>
-            <h2 className="text-4xl font-bold mb-4">Tournament Leaderboard Preview</h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Example leaderboard from our previous squad tournament
-            </p>
-          </div>
+          <BlurFade delay={0.2} duration={0.8} blur={8}>
+            <div className="text-center mb-12">
+              <Badge variant="secondary" className="mb-4">
+                <TrendingUp className="w-4 h-4 mr-2" />
+                Live Standings
+              </Badge>
+              <h2 className="text-4xl font-bold mb-4">Tournament Leaderboard Preview</h2>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Example leaderboard from our previous squad tournament
+              </p>
+            </div>
 
           <Card data-testid="leaderboard-table">
             <CardHeader>
@@ -1223,20 +1246,22 @@ export default function Squad() {
               </div>
             </CardContent>
           </Card>
+          </BlurFade>
         </SectionWrapper>
 
         {/* Registration Timeline */}
         <SectionWrapper variant="muted" data-testid="timeline-section">
-          <div className="text-center mb-12">
-            <Badge variant="secondary" className="mb-4">
-              <FileText className="w-4 h-4 mr-2" />
-              Registration Process
-            </Badge>
-            <h2 className="text-4xl font-bold mb-4">Squad Registration Timeline</h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Follow these steps to register your 4-player squad
-            </p>
-          </div>
+          <BlurFade delay={0.2} duration={0.8} blur={8}>
+            <div className="text-center mb-12">
+              <Badge variant="secondary" className="mb-4">
+                <FileText className="w-4 h-4 mr-2" />
+                Registration Process
+              </Badge>
+              <h2 className="text-4xl font-bold mb-4">Squad Registration Timeline</h2>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Follow these steps to register your 4-player squad
+              </p>
+            </div>
 
           <div className="max-w-4xl mx-auto">
             <div className="relative">
@@ -1323,127 +1348,140 @@ export default function Squad() {
               </div>
             </div>
           </div>
+          </BlurFade>
         </SectionWrapper>
 
         {/* Squad Testimonials */}
         <SectionWrapper data-testid="testimonials-section">
-          <div className="text-center mb-12">
-            <Badge variant="secondary" className="mb-4">
-              <Star className="w-4 h-4 mr-2" />
-              Player Testimonials
-            </Badge>
-            <h2 className="text-4xl font-bold mb-4">What Squads Are Saying</h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Hear from our previous tournament participants and champions
-            </p>
-          </div>
+          <BlurFade delay={0.2} duration={0.8} blur={8}>
+            <div className="text-center mb-12">
+              <Badge variant="secondary" className="mb-4">
+                <Star className="w-4 h-4 mr-2" />
+                Player Testimonials
+              </Badge>
+              <h2 className="text-4xl font-bold mb-4">What Squads Are Saying</h2>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Hear from our previous tournament participants and champions
+              </p>
+            </div>
 
-          <ModernTestimonials testimonials={testimonials} autoPlay autoPlayInterval={6000} />
+            <ModernTestimonials testimonials={testimonials} autoPlay autoPlayInterval={6000} />
+          </BlurFade>
         </SectionWrapper>
 
         {/* Enhanced FAQ Section */}
         <SectionWrapper variant="muted" data-testid="faq-section">
-          <div className="text-center mb-12">
-            <Badge variant="secondary" className="mb-4">
-              Frequently Asked Questions
-            </Badge>
-            <h2 className="text-4xl font-bold mb-4">Squad Tournament FAQs</h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Everything you need to know about squad formation, registration, and gameplay
-            </p>
-          </div>
+          <BlurFade delay={0.2} duration={0.8} blur={8}>
+            <div className="text-center mb-12">
+              <Badge variant="secondary" className="mb-4">
+                Frequently Asked Questions
+              </Badge>
+              <h2 className="text-4xl font-bold mb-4">Squad Tournament FAQs</h2>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Everything you need to know about squad formation, registration, and gameplay
+              </p>
+            </div>
 
-          <div className="max-w-4xl mx-auto">
-            <RulesAccordion rules={enhancedFAQs} />
-          </div>
+            <div className="max-w-4xl mx-auto">
+              <RulesAccordion rules={enhancedFAQs} />
+            </div>
+          </BlurFade>
         </SectionWrapper>
 
         {/* Tournament Rules Deep Dive */}
         <SectionWrapper data-testid="rules-section">
-          <div className="text-center mb-12">
-            <Badge variant="secondary" className="mb-4">
-              <Shield className="w-4 h-4 mr-2" />
-              Official Rules
-            </Badge>
-            <h2 className="text-4xl font-bold mb-4">Detailed Tournament Rules</h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Complete guidelines for squad registration, gameplay, and prize distribution
-            </p>
-          </div>
+          <BlurFade delay={0.2} duration={0.8} blur={8}>
+            <div className="text-center mb-12">
+              <Badge variant="secondary" className="mb-4">
+                <Shield className="w-4 h-4 mr-2" />
+                Official Rules
+              </Badge>
+              <h2 className="text-4xl font-bold mb-4">Detailed Tournament Rules</h2>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Complete guidelines for squad registration, gameplay, and prize distribution
+              </p>
+            </div>
 
-          <div className="max-w-4xl mx-auto">
-            <RulesAccordion rules={squadRules} />
-          </div>
+            <div className="max-w-4xl mx-auto">
+              <RulesAccordion rules={squadRules} />
+            </div>
+          </BlurFade>
         </SectionWrapper>
 
         {/* Payment Instructions */}
         <SectionWrapper variant="muted" data-testid="payment-section">
-          <div className="text-center mb-12">
-            <Badge variant="secondary" className="mb-4">
-              <CreditCard className="w-4 h-4 mr-2" />
-              Payment Details
-            </Badge>
-            <h2 className="text-4xl font-bold mb-4">How to Make Payment</h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Secure payment process for squad registration
-            </p>
-          </div>
+          <BlurFade delay={0.2} duration={0.8} blur={8}>
+            <div className="text-center mb-12">
+              <Badge variant="secondary" className="mb-4">
+                <CreditCard className="w-4 h-4 mr-2" />
+                Payment Details
+              </Badge>
+              <h2 className="text-4xl font-bold mb-4">How to Make Payment</h2>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Secure payment process for squad registration
+              </p>
+            </div>
 
-          <div className="max-w-2xl mx-auto">
-            <PaymentInstructions amount={80} />
-          </div>
+            <div className="max-w-2xl mx-auto">
+              <PaymentInstructions amount={80} />
+            </div>
+          </BlurFade>
         </SectionWrapper>
 
         {/* Video Strategy Guide */}
         <SectionWrapper variant="muted" data-testid="video-strategy-section">
-          <div className="text-center mb-12">
-            <Badge variant="secondary" className="mb-4">
-              Squad Strategy Guide
-            </Badge>
-            <h2 className="text-4xl font-bold mb-4">Master Squad Tactics</h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Learn winning strategies from professional BGMI squad gameplay
-            </p>
-          </div>
+          <BlurFade delay={0.2} duration={0.8} blur={8}>
+            <div className="text-center mb-12">
+              <Badge variant="secondary" className="mb-4">
+                Squad Strategy Guide
+              </Badge>
+              <h2 className="text-4xl font-bold mb-4">Master Squad Tactics</h2>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Learn winning strategies from professional BGMI squad gameplay
+              </p>
+            </div>
 
-          <div className="max-w-4xl mx-auto">
-            <VideoSection
-              title="Advanced Squad Coordination Tactics"
-              description="Watch this comprehensive guide on squad roles, communication strategies, and winning techniques for Battle Royale tournaments."
-              videoId="dQw4w9WgXcQ"
-            />
-          </div>
+            <div className="max-w-4xl mx-auto">
+              <VideoSection
+                title="Advanced Squad Coordination Tactics"
+                description="Watch this comprehensive guide on squad roles, communication strategies, and winning techniques for Battle Royale tournaments."
+                videoId="dQw4w9WgXcQ"
+              />
+            </div>
+          </BlurFade>
         </SectionWrapper>
 
         {/* Tournament Gallery with MediaLightbox */}
         <SectionWrapper data-testid="gallery-section">
-          <div className="text-center mb-12">
-            <Badge variant="secondary" className="mb-4">
-              Tournament Gallery
-            </Badge>
-            <h2 className="text-4xl font-bold mb-4">Squad Tournament Highlights</h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Experience the intensity and excitement from our previous tournaments
-            </p>
-          </div>
+          <BlurFade delay={0.2} duration={0.8} blur={8}>
+            <div className="text-center mb-12">
+              <Badge variant="secondary" className="mb-4">
+                Tournament Gallery
+              </Badge>
+              <h2 className="text-4xl font-bold mb-4">Squad Tournament Highlights</h2>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Experience the intensity and excitement from our previous tournaments
+              </p>
+            </div>
 
-          <MediaLightbox
-            items={[
-              { src: actionImage1, alt: "Intense squad combat in final zone", caption: "Final circle squad battle" },
-              { src: actionImage2, alt: "Professional esports squad coordination", caption: "Team coordination in action" },
-              { src: actionImage3, alt: "Squad tournament gameplay", caption: "Strategic positioning" },
-              { src: tournamentImage1, alt: "Tournament arena atmosphere", caption: "Tournament day excitement" },
-              { src: tournamentImage2, alt: "Competitive gaming tournament", caption: "Professional setup" },
-              { src: esportsImage1, alt: "Mobile esports competition", caption: "Mobile gaming excellence" },
-              { src: esportsImage2, alt: "Esports tournament action", caption: "Competitive gaming" },
-              { src: techImage1, alt: "Gaming technology and setup", caption: "Professional gaming gear" },
-              { src: techImage2, alt: "Modern gaming workspace", caption: "Optimal gaming environment" },
-              { src: techImage3, alt: "Gaming technology innovation", caption: "Latest gaming tech" },
-              { src: businessImage1, alt: "Professional tournament organization", caption: "Tournament management" },
-              { src: heroImage, alt: "Championship squad celebration", caption: "Victory moment" },
-            ]}
-            columns={{ sm: 1, md: 2, lg: 3 }}
-          />
+            <MediaLightbox
+              items={[
+                { src: actionImage1, alt: "Intense squad combat in final zone", caption: "Final circle squad battle" },
+                { src: actionImage2, alt: "Professional esports squad coordination", caption: "Team coordination in action" },
+                { src: actionImage3, alt: "Squad tournament gameplay", caption: "Strategic positioning" },
+                { src: tournamentImage1, alt: "Tournament arena atmosphere", caption: "Tournament day excitement" },
+                { src: tournamentImage2, alt: "Competitive gaming tournament", caption: "Professional setup" },
+                { src: esportsImage1, alt: "Mobile esports competition", caption: "Mobile gaming excellence" },
+                { src: esportsImage2, alt: "Esports tournament action", caption: "Competitive gaming" },
+                { src: techImage1, alt: "Gaming technology and setup", caption: "Professional gaming gear" },
+                { src: techImage2, alt: "Modern gaming workspace", caption: "Optimal gaming environment" },
+                { src: techImage3, alt: "Gaming technology innovation", caption: "Latest gaming tech" },
+                { src: businessImage1, alt: "Professional tournament organization", caption: "Tournament management" },
+                { src: heroImage, alt: "Championship squad celebration", caption: "Victory moment" },
+              ]}
+              columns={{ sm: 1, md: 2, lg: 3 }}
+            />
+          </BlurFade>
         </SectionWrapper>
 
         {/* CTA Band */}

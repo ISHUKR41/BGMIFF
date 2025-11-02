@@ -40,6 +40,10 @@ import ScrollReveal from "@/components/ScrollReveal";
 import InteractiveCard from "@/components/InteractiveCard";
 import AnimatedCounter from "@/components/AnimatedCounter";
 import GradientBlob from "@/components/GradientBlob";
+import FloatingOrbs from "@/components/FloatingOrbs";
+import BlurFade from "@/components/BlurFade";
+import { BentoGrid, BentoCard } from "@/components/BentoGrid";
+import EnhancedMagneticButton from "@/components/EnhancedMagneticButton";
 import { TOURNAMENTS } from "@/../../shared/config";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -49,6 +53,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Separator } from "@/components/ui/separator";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
+import { motion } from "framer-motion";
 import { 
   Trophy, 
   Users, 
@@ -443,11 +448,9 @@ export default function Solo() {
       />
       
       <main className="flex-1 pt-16">
-        {/* Hero Section with ModernHero and GradientBlob backgrounds */}
-        <div className="relative">
-          <GradientBlob size="xl" position="top-right" color="primary" speed="slow" />
-          <GradientBlob size="lg" position="bottom-left" color="secondary" speed="medium" />
-          <GradientBlob size="md" position="center" color="accent" speed="fast" opacity={0.1} />
+        {/* Hero Section with FloatingOrbs for modern animated backgrounds */}
+        <div className="relative overflow-hidden">
+          <FloatingOrbs count={3} />
           <ModernHero
             title="BGMI Solo Tournament"
             description="Compete individually in India's most competitive solo battle royale tournament. 100 players enter, only one emerges victorious. Test your skills, win big prizes, and prove you're the ultimate solo warrior."
@@ -516,107 +519,83 @@ export default function Solo() {
           </div>
         </SectionWrapper>
 
-        {/* Comprehensive Feature Highlight Card - Solo Tournament Benefits */}
+        {/* Tournament Features with BentoGrid */}
         <SectionWrapper variant="default" data-testid="section-feature-highlight">
-          <ScrollReveal direction="bottom" delay={0.2}>
-            <InteractiveCard enableTilt className="overflow-hidden" data-testid="feature-solo-tournament">
-              <div className="grid md:grid-cols-2 gap-0">
-                {/* Image Section */}
-                <div className="aspect-video md:aspect-auto overflow-hidden">
-                  <img
-                    src={heroImage}
-                    alt="BGMI Solo Tournament Championship"
-                    className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
-                  />
-                </div>
-                
-                {/* Content Section */}
-                <div className="p-6 md:p-8 flex flex-col justify-center">
-                  <div className="mb-4">
-                    <div className="flex items-center gap-2 mb-3">
-                      <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-                        <Trophy className="w-6 h-6 text-primary" />
-                      </div>
-                      <h3 className="text-2xl md:text-3xl font-bold">Solo Tournament Excellence</h3>
-                    </div>
-                    <p className="text-muted-foreground">
-                      Experience competitive solo BGMI gameplay with guaranteed prizes and professional tournament management
-                    </p>
-                  </div>
+          <BlurFade blur={10} direction="up" delay={0.2} className="space-y-8">
+            <div className="text-center space-y-4">
+              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold">Solo Tournament Excellence</h2>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Experience competitive solo BGMI gameplay with guaranteed prizes and professional tournament management
+              </p>
+            </div>
+            
+            <BentoGrid className="max-w-6xl mx-auto">
+              <BentoCard
+                title="Guaranteed Prize Pool"
+                description="Winner: ₹350 | Runner-Up: ₹250 | Per Kill: ₹9 - Prizes distributed within 24-48 hours via UPI"
+                icon={<Trophy className="w-6 h-6" />}
+                gradient="from-green-500/20 to-emerald-500/20"
+                className="md:col-span-1"
+              />
+              
+              <BentoCard
+                title="Secure Registration"
+                description="SSL encrypted payments with screenshot verification - Slot confirmation within 2-4 hours via WhatsApp"
+                icon={<Shield className="w-6 h-6" />}
+                gradient="from-blue-500/20 to-cyan-500/20"
+                className="md:col-span-1"
+              />
+              
+              <BentoCard
+                title="Fair Play Guaranteed"
+                description="Advanced anti-cheat monitoring with zero tolerance for hacks - Your skill determines your success"
+                icon={<Target className="w-6 h-6" />}
+                gradient="from-purple-500/20 to-pink-500/20"
+                className="md:col-span-1"
+              />
+              
+              <BentoCard
+                title="Professional Management"
+                description="Experienced organizers, 24/7 WhatsApp support, and transparent operations from start to finish"
+                icon={<Zap className="w-6 h-6" />}
+                gradient="from-orange-500/20 to-amber-500/20"
+                className="md:col-span-1"
+              />
+            </BentoGrid>
 
-                  <div className="space-y-4 mb-6">
-                    <div className="flex items-start gap-3">
-                      <div className="w-10 h-10 rounded-full bg-green-500/10 flex items-center justify-center flex-shrink-0">
-                        <Trophy className="w-5 h-5 text-green-500" />
-                      </div>
-                      <div>
-                        <h4 className="font-semibold mb-1">Guaranteed Prize Pool</h4>
-                        <p className="text-sm text-muted-foreground">Winner: ₹350 | Runner-Up: ₹250 | Per Kill: ₹9 - Prizes distributed within 24-48 hours via UPI</p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-start gap-3">
-                      <div className="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center flex-shrink-0">
-                        <Shield className="w-5 h-5 text-blue-500" />
-                      </div>
-                      <div>
-                        <h4 className="font-semibold mb-1">Secure Registration Process</h4>
-                        <p className="text-sm text-muted-foreground">SSL encrypted payments with screenshot verification - Slot confirmation within 2-4 hours via WhatsApp</p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-start gap-3">
-                      <div className="w-10 h-10 rounded-full bg-purple-500/10 flex items-center justify-center flex-shrink-0">
-                        <Target className="w-5 h-5 text-purple-500" />
-                      </div>
-                      <div>
-                        <h4 className="font-semibold mb-1">Fair Play Guaranteed</h4>
-                        <p className="text-sm text-muted-foreground">Advanced anti-cheat monitoring with zero tolerance for hacks - Your skill determines your success</p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-start gap-3">
-                      <div className="w-10 h-10 rounded-full bg-orange-500/10 flex items-center justify-center flex-shrink-0">
-                        <Zap className="w-5 h-5 text-orange-500" />
-                      </div>
-                      <div>
-                        <h4 className="font-semibold mb-1">Professional Management</h4>
-                        <p className="text-sm text-muted-foreground">Experienced organizers, 24/7 WhatsApp support, and transparent operations from start to finish</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex flex-wrap gap-3">
-                    <Button onClick={scrollToRegistration} data-testid="button-register-feature">
-                      Register Now - ₹{TOURNAMENTS.solo.entryFee}
-                      <ArrowRight className="w-4 h-4 ml-2" />
-                    </Button>
-                    <Button variant="outline" data-testid="button-rules-feature">
-                      <a href="#rules" className="flex items-center">
-                        View Tournament Rules
-                        <ExternalLink className="w-4 h-4 ml-2" />
-                      </a>
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            </Card>
-          </motion.div>
+            <div className="flex flex-wrap justify-center gap-3 mt-8">
+              <EnhancedMagneticButton 
+                onClick={scrollToRegistration} 
+                data-testid="button-register-feature"
+                magneticStrength={0.3}
+                enableGlow
+                className="gap-2"
+              >
+                Register Now - ₹{TOURNAMENTS.solo.entryFee}
+                <ArrowRight className="w-4 h-4" />
+              </EnhancedMagneticButton>
+              <EnhancedMagneticButton 
+                variant="outline" 
+                data-testid="button-rules-feature"
+                asChild
+                magneticStrength={0.25}
+              >
+                <a href="#rules" className="flex items-center gap-2">
+                  View Tournament Rules
+                  <ExternalLink className="w-4 h-4" />
+                </a>
+              </EnhancedMagneticButton>
+            </div>
+          </BlurFade>
         </SectionWrapper>
 
         {/* Registration Form - Moved Higher for Easy Access */}
         <SectionWrapper id="registration" variant="muted" data-testid="section-registration">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="space-y-8"
-          >
+          <BlurFade blur={10} direction="up" delay={0.1} className="space-y-8">
             <div className="text-center space-y-4">
               <div className="flex items-center justify-center gap-2">
                 <Trophy className="w-8 h-8 text-primary" />
-                <h2 className="text-4xl font-bold" data-testid="heading-registration">Register Now</h2>
+                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold" data-testid="heading-registration">Register Now</h2>
               </div>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
                 Complete the registration form below to secure your spot in the tournament. Make sure all details are accurate.
@@ -625,10 +604,10 @@ export default function Solo() {
 
             <div className="max-w-4xl mx-auto">
               <Card className="hover-elevate transition-all duration-300">
-                <CardHeader>
+                <CardHeader className="p-4 md:p-6">
                   <div className="flex items-start justify-between gap-4">
                     <div>
-                      <CardTitle className="text-2xl">BGMI Solo Tournament Registration</CardTitle>
+                      <CardTitle className="text-xl md:text-2xl">BGMI Solo Tournament Registration</CardTitle>
                       <CardDescription className="mt-2">
                         Fill out all fields accurately. Your slot will be confirmed after payment verification within 2-4 hours.
                       </CardDescription>
@@ -714,22 +693,16 @@ export default function Solo() {
                 </CardFooter>
               </Card>
             </div>
-          </motion.div>
+          </BlurFade>
         </SectionWrapper>
 
         {/* Tournament Schedule */}
         <SectionWrapper id="schedule" data-testid="section-schedule">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="space-y-8"
-          >
+          <BlurFade blur={10} direction="right" delay={0.15} className="space-y-8">
             <div className="text-center space-y-4">
               <div className="flex items-center justify-center gap-2">
                 <Calendar className="w-8 h-8 text-primary" />
-                <h2 className="text-4xl font-bold" data-testid="heading-schedule">Tournament Schedule</h2>
+                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold" data-testid="heading-schedule">Tournament Schedule</h2>
               </div>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
                 Mark your calendar and stay updated with all important dates and timings. All times are in Indian Standard Time (IST).
@@ -788,22 +761,18 @@ export default function Solo() {
                 </p>
               </CardContent>
             </Card>
-          </motion.div>
+          </BlurFade>
         </SectionWrapper>
 
         {/* Prize Breakdown Visualization */}
         <SectionWrapper variant="muted" data-testid="section-prize-breakdown">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="space-y-8"
-          >
+          <div className="relative">
+            <FloatingOrbs count={2} />
+            <BlurFade blur={10} direction="left" delay={0.2} className="space-y-8">
             <div className="text-center space-y-4">
               <div className="flex items-center justify-center gap-2">
                 <Award className="w-8 h-8 text-primary" />
-                <h2 className="text-4xl font-bold" data-testid="heading-prize-breakdown">Prize Pool Distribution</h2>
+                <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold" data-testid="heading-prize-breakdown">Prize Pool Distribution</h2>
               </div>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
                 Total prize pool of ₹1000+ distributed among winners and per-kill rewards. Every elimination counts!
@@ -913,22 +882,17 @@ export default function Solo() {
                 </p>
               </CardContent>
             </Card>
-          </motion.div>
+          </BlurFade>
+          </div>
         </SectionWrapper>
 
         {/* Past Winners Showcase */}
         <SectionWrapper data-testid="section-past-winners">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="space-y-8"
-          >
+          <BlurFade blur={10} direction="up" delay={0.1} className="space-y-8">
             <div className="text-center space-y-4">
               <div className="flex items-center justify-center gap-2">
                 <Star className="w-8 h-8 text-primary" />
-                <h2 className="text-4xl font-bold" data-testid="heading-past-winners">Hall of Champions</h2>
+                <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold" data-testid="heading-past-winners">Hall of Champions</h2>
               </div>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
                 Celebrating our past solo tournament champions who dominated the battlefield and emerged victorious.
@@ -978,22 +942,16 @@ export default function Solo() {
                 </motion.div>
               ))}
             </div>
-          </motion.div>
+          </BlurFade>
         </SectionWrapper>
 
         {/* Live Leaderboard Preview */}
         <SectionWrapper variant="muted" data-testid="section-leaderboard">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="space-y-8"
-          >
+          <BlurFade blur={10} direction="down" delay={0.15} className="space-y-8">
             <div className="text-center space-y-4">
               <div className="flex items-center justify-center gap-2">
                 <TrendingUp className="w-8 h-8 text-primary" />
-                <h2 className="text-4xl font-bold" data-testid="heading-leaderboard">Live Leaderboard Preview</h2>
+                <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold" data-testid="heading-leaderboard">Live Leaderboard Preview</h2>
               </div>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
                 See how the competition looks during tournaments. Rankings update in real-time based on points and eliminations.
@@ -1052,22 +1010,16 @@ export default function Solo() {
                 </div>
               </CardContent>
             </Card>
-          </motion.div>
+          </BlurFade>
         </SectionWrapper>
 
         {/* Registration Timeline */}
         <SectionWrapper data-testid="section-timeline">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="space-y-8"
-          >
+          <BlurFade blur={10} direction="right" delay={0.1} className="space-y-8">
             <div className="text-center space-y-4">
               <div className="flex items-center justify-center gap-2">
                 <Zap className="w-8 h-8 text-primary" />
-                <h2 className="text-4xl font-bold" data-testid="heading-timeline">Registration Process</h2>
+                <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold" data-testid="heading-timeline">Registration Process</h2>
               </div>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
                 Simple 5-step process to secure your spot. From payment to tournament entry - we guide you every step of the way.
@@ -1133,22 +1085,16 @@ export default function Solo() {
                 })}
               </div>
             </div>
-          </motion.div>
+          </BlurFade>
         </SectionWrapper>
 
         {/* Tournament Rules Deep Dive */}
-        <SectionWrapper variant="muted" data-testid="section-rules">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="space-y-8"
-          >
+        <SectionWrapper variant="muted" id="rules" data-testid="section-rules">
+          <BlurFade blur={10} direction="left" delay={0.2} className="space-y-8">
             <div className="text-center space-y-4">
               <div className="flex items-center justify-center gap-2">
                 <Shield className="w-8 h-8 text-primary" />
-                <h2 className="text-4xl font-bold" data-testid="heading-rules">Complete Tournament Rules</h2>
+                <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold" data-testid="heading-rules">Complete Tournament Rules</h2>
               </div>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
                 Read all rules carefully before registering. Fair play and sportsmanship ensure the best experience for everyone.
@@ -1194,22 +1140,16 @@ export default function Solo() {
                 <RulesAccordion rules={[detailedRules[6]]} />
               </TabsContent>
             </Tabs>
-          </motion.div>
+          </BlurFade>
         </SectionWrapper>
 
         {/* Technical Requirements */}
         <SectionWrapper data-testid="section-technical">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="space-y-8"
-          >
+          <BlurFade blur={10} direction="up" delay={0.15} className="space-y-8">
             <div className="text-center space-y-4">
               <div className="flex items-center justify-center gap-2">
                 <Smartphone className="w-8 h-8 text-primary" />
-                <h2 className="text-4xl font-bold" data-testid="heading-technical">Technical Requirements</h2>
+                <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold" data-testid="heading-technical">Technical Requirements</h2>
               </div>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
                 Ensure your device and connection meet these requirements for smooth, lag-free tournament experience.
@@ -1387,20 +1327,14 @@ export default function Solo() {
                 </p>
               </CardContent>
             </Card>
-          </motion.div>
+          </BlurFade>
         </SectionWrapper>
 
         {/* Enhanced FAQ Section */}
         <SectionWrapper variant="muted" data-testid="section-faq">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="space-y-8"
-          >
+          <BlurFade blur={10} direction="right" delay={0.1} className="space-y-8">
             <div className="text-center space-y-4">
-              <h2 className="text-4xl font-bold" data-testid="heading-faq">Frequently Asked Questions</h2>
+              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold" data-testid="heading-faq">Frequently Asked Questions</h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
                 Find answers to common questions about registration, gameplay, prizes, and more.
               </p>
@@ -1418,42 +1352,30 @@ export default function Solo() {
                 </AccordionItem>
               ))}
             </Accordion>
-          </motion.div>
+          </BlurFade>
         </SectionWrapper>
 
         {/* Player Testimonials */}
         <SectionWrapper data-testid="section-testimonials">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="space-y-8"
-          >
+          <BlurFade blur={10} direction="left" delay={0.15} className="space-y-8">
             <div className="text-center space-y-4">
-              <h2 className="text-4xl font-bold" data-testid="heading-testimonials">What Players Say</h2>
+              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold" data-testid="heading-testimonials">What Players Say</h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
                 Hear from our community of competitive players who have experienced GameArena tournaments.
               </p>
             </div>
 
             <ModernTestimonials testimonials={testimonials} autoPlay autoPlayInterval={6000} />
-          </motion.div>
+          </BlurFade>
         </SectionWrapper>
 
         {/* Video Strategy Guide */}
         <SectionWrapper variant="muted" data-testid="section-video-guide">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="space-y-8"
-          >
+          <BlurFade blur={10} direction="down" delay={0.1} className="space-y-8">
             <div className="text-center space-y-4">
               <div className="flex items-center justify-center gap-2">
                 <Play className="w-8 h-8 text-primary" />
-                <h2 className="text-4xl font-bold" data-testid="heading-video-guide">Solo Strategy Guide</h2>
+                <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold" data-testid="heading-video-guide">Solo Strategy Guide</h2>
               </div>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
                 Master solo gameplay with our comprehensive strategy guide. Learn positioning, looting, rotations, and endgame tactics.
@@ -1495,20 +1417,14 @@ export default function Solo() {
                 </ul>
               </CardContent>
             </Card>
-          </motion.div>
+          </BlurFade>
         </SectionWrapper>
 
         {/* Tournament Gallery with MediaLightbox */}
         <SectionWrapper data-testid="section-gallery">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="space-y-8"
-          >
+          <BlurFade blur={10} direction="up" delay={0.2} className="space-y-8">
             <div className="text-center space-y-4">
-              <h2 className="text-4xl font-bold" data-testid="heading-gallery">Tournament Gallery</h2>
+              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold" data-testid="heading-gallery">Tournament Gallery</h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
                 Experience the intensity and excitement of our competitive solo tournaments.
               </p>
@@ -1527,20 +1443,14 @@ export default function Solo() {
               ]}
               columns={{ sm: 1, md: 2, lg: 4 }}
             />
-          </motion.div>
+          </BlurFade>
         </SectionWrapper>
 
         {/* Payment Instructions */}
         <SectionWrapper variant="muted" data-testid="section-payment">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="space-y-8"
-          >
+          <BlurFade blur={10} direction="left" delay={0.15} className="space-y-8">
             <div className="text-center space-y-4">
-              <h2 className="text-4xl font-bold" data-testid="heading-payment">Payment Instructions</h2>
+              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold" data-testid="heading-payment">Payment Instructions</h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
                 Follow these simple steps to complete your payment and secure your tournament slot.
               </p>
@@ -1549,7 +1459,7 @@ export default function Solo() {
             <div className="max-w-4xl mx-auto">
               <PaymentInstructions amount={20} />
             </div>
-          </motion.div>
+          </BlurFade>
         </SectionWrapper>
 
         {/* CTA Band */}

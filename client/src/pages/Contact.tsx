@@ -35,6 +35,10 @@ import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import FloatingOrbs from "@/components/FloatingOrbs";
+import BlurFade from "@/components/BlurFade";
+import { BentoGrid, BentoCard } from "@/components/BentoGrid";
+import EnhancedMagneticButton from "@/components/EnhancedMagneticButton";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -204,27 +208,26 @@ export default function Contact() {
     <div className="min-h-screen bg-background">
       <Navigation />
       
-      {/* Hero Header with Fade-in Animation */}
-      <motion.div
-        ref={headerRef}
-        initial="hidden"
-        animate={headerInView ? "visible" : "hidden"}
-        variants={fadeSlideUp}
-        className="pt-24 pb-12"
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <Badge className="mb-4" variant="secondary" data-testid="badge-contact">
-              <MessageCircle className="w-3 h-3 mr-1" />
-              Get in Touch
-            </Badge>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6" data-testid="heading-contact">
-              Contact GameArena
-            </h1>
-            <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed" data-testid="text-description">
-              Have questions about tournaments, payments, or need support? We're here to help you 24/7.
-            </p>
-          </div>
+      {/* Hero Header with FloatingOrbs and BlurFade Animation */}
+      <div className="relative pt-24 pb-12 overflow-hidden">
+        {/* 3 FloatingOrbs in hero/header section */}
+        <FloatingOrbs count={3} />
+        
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <BlurFade blur={10} direction="down" delay={0}>
+            <div className="text-center mb-12">
+              <Badge className="mb-4" variant="secondary" data-testid="badge-contact">
+                <MessageCircle className="w-3 h-3 mr-1" />
+                Get in Touch
+              </Badge>
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6" data-testid="heading-contact">
+                Contact GameArena
+              </h1>
+              <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed" data-testid="text-description">
+                Have questions about tournaments, payments, or need support? We're here to help you 24/7.
+              </p>
+            </div>
+          </BlurFade>
 
           {/* Trust Panels - Company Credibility Indicators */}
           <motion.div
@@ -283,24 +286,21 @@ export default function Contact() {
             </motion.div>
           </motion.div>
 
-          {/* Enhanced Support Cards with Glow Effects and Animations */}
-          <motion.div
-            ref={supportRef}
-            initial="hidden"
-            animate={supportInView ? "visible" : "hidden"}
-            variants={staggerContainer}
-            className="grid md:grid-cols-3 gap-6 sm:gap-8 mb-16"
-          >
-            {/* WhatsApp Card with Glow Effect */}
-            <motion.div variants={staggerItem}>
-              <Card className="hover-elevate glow-on-hover h-full group transition-all duration-300" data-testid="card-whatsapp">
+          {/* Contact Methods Section with BentoGrid and FloatingOrbs */}
+          <div className="relative mb-16">
+            {/* 2 FloatingOrbs in contact methods section */}
+            <FloatingOrbs count={2} />
+            
+            <BentoGrid columns={3} className="relative z-10">
+              {/* WhatsApp Card - Primary contact method spanning 2 columns */}
+              <BentoCard colSpan={2} delay={0} data-testid="card-whatsapp">
                 <CardHeader className="space-y-4">
                   <div className="w-14 h-14 bg-green-500/10 rounded-xl flex items-center justify-center group-hover:bg-green-500/20 transition-colors">
                     <SiWhatsapp className="w-7 h-7 text-green-500" />
                   </div>
                   <div>
                     <CardTitle className="text-xl mb-2">WhatsApp</CardTitle>
-                    <CardDescription className="text-base">24/7 Instant Support</CardDescription>
+                    <CardDescription className="text-base">24/7 Instant Support - Our Primary Contact Method</CardDescription>
                   </div>
                   <Badge variant="secondary" className="w-fit">
                     <Clock className="w-3 h-3 mr-1" />
@@ -319,9 +319,15 @@ export default function Contact() {
                     <ExternalLink className="w-4 h-4" />
                   </a>
                   <p className="text-sm text-muted-foreground leading-relaxed">
-                    Fastest response for urgent queries, payment issues, and tournament support
+                    Fastest response for urgent queries, payment issues, and tournament support. Get replies within 30 minutes!
                   </p>
-                  <Button asChild className="w-full" size="lg">
+                  <EnhancedMagneticButton
+                    magneticStrength={0.4}
+                    enableGlow={true}
+                    fullWidth
+                    size="lg"
+                    asChild
+                  >
                     <a
                       href={`https://wa.me/${CONTACT_INFO.whatsapp.replace('+', '')}`}
                       target="_blank"
@@ -330,14 +336,12 @@ export default function Contact() {
                       <MessageSquare className="w-4 h-4 mr-2" />
                       Chat on WhatsApp
                     </a>
-                  </Button>
+                  </EnhancedMagneticButton>
                 </CardContent>
-              </Card>
-            </motion.div>
+              </BentoCard>
 
-            {/* Phone Card with Glow Effect */}
-            <motion.div variants={staggerItem}>
-              <Card className="hover-elevate glow-on-hover h-full group transition-all duration-300" data-testid="card-phone">
+              {/* Phone Card */}
+              <BentoCard delay={0.1} data-testid="card-phone">
                 <CardHeader className="space-y-4">
                   <div className="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center group-hover:bg-primary/20 transition-colors">
                     <Phone className="w-7 h-7 text-primary" />
@@ -360,21 +364,25 @@ export default function Contact() {
                     {CONTACT_INFO.phone}
                   </a>
                   <p className="text-sm text-muted-foreground leading-relaxed">
-                    Direct phone support for immediate assistance and queries
+                    Direct phone support for immediate assistance
                   </p>
-                  <Button asChild className="w-full" size="lg" variant="outline">
+                  <EnhancedMagneticButton
+                    magneticStrength={0.3}
+                    fullWidth
+                    size="lg"
+                    variant="outline"
+                    asChild
+                  >
                     <a href={`tel:${CONTACT_INFO.phone}`}>
                       <Phone className="w-4 h-4 mr-2" />
                       Call Now
                     </a>
-                  </Button>
+                  </EnhancedMagneticButton>
                 </CardContent>
-              </Card>
-            </motion.div>
+              </BentoCard>
 
-            {/* Email Card with Glow Effect */}
-            <motion.div variants={staggerItem}>
-              <Card className="hover-elevate glow-on-hover h-full group transition-all duration-300" data-testid="card-email">
+              {/* Email Card */}
+              <BentoCard delay={0.2} data-testid="card-email">
                 <CardHeader className="space-y-4">
                   <div className="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center group-hover:bg-primary/20 transition-colors">
                     <Mail className="w-7 h-7 text-primary" />
@@ -398,215 +406,264 @@ export default function Contact() {
                     <ExternalLink className="w-4 h-4 flex-shrink-0" />
                   </a>
                   <p className="text-sm text-muted-foreground leading-relaxed">
-                    For detailed queries, documentation, and official correspondence
+                    For detailed queries and documentation
                   </p>
-                  <Button asChild className="w-full" size="lg" variant="outline">
+                  <EnhancedMagneticButton
+                    magneticStrength={0.3}
+                    fullWidth
+                    size="lg"
+                    variant="outline"
+                    asChild
+                  >
                     <a href={`mailto:${CONTACT_INFO.email}`}>
                       <Mail className="w-4 h-4 mr-2" />
                       Send Email
                     </a>
-                  </Button>
+                  </EnhancedMagneticButton>
                 </CardContent>
-              </Card>
-            </motion.div>
-          </motion.div>
+              </BentoCard>
+            </BentoGrid>
+          </div>
 
-          <Card className="mb-16" data-testid="card-map">
-            <CardHeader>
-              <div className="flex items-center gap-3 mb-2">
-                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
-                  <MapPin className="w-6 h-6 text-primary" />
+          <BlurFade blur={6} direction="up" delay={0.1}>
+            <Card className="mb-16" data-testid="card-map">
+              <CardHeader>
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
+                    <MapPin className="w-6 h-6 text-primary" />
+                  </div>
+                  <div>
+                    <CardTitle className="text-2xl">Our Location</CardTitle>
+                    <CardDescription className="text-base">
+                      IIT Patna Campus, Patna, Bihar, 801106
+                    </CardDescription>
+                  </div>
                 </div>
-                <div>
-                  <CardTitle className="text-2xl">Our Location</CardTitle>
-                  <CardDescription className="text-base">
-                    IIT Patna Campus, Patna, Bihar, 801106
-                  </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="w-full h-[400px] md:h-[500px] rounded-lg overflow-hidden">
+                  <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3598.4856668658706!2d84.84891261501744!3d25.536167583755677!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39ed577f6954a4ab%3A0x6ce8f1b9fc2e321c!2sIndian%20Institute%20of%20Technology%20Patna!5e0!3m2!1sen!2sin!4v1635421234567!5m2!1sen!2sin"
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0 }}
+                    allowFullScreen
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    title="GameArena Location - IIT Patna Campus"
+                    data-testid="iframe-map"
+                  />
                 </div>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="w-full h-[400px] md:h-[500px] rounded-lg overflow-hidden">
-                <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3598.4856668658706!2d84.84891261501744!3d25.536167583755677!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39ed577f6954a4ab%3A0x6ce8f1b9fc2e321c!2sIndian%20Institute%20of%20Technology%20Patna!5e0!3m2!1sen!2sin!4v1635421234567!5m2!1sen!2sin"
-                  width="100%"
-                  height="100%"
-                  style={{ border: 0 }}
-                  allowFullScreen
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                  title="GameArena Location - IIT Patna Campus"
-                  data-testid="iframe-map"
-                />
-              </div>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+          </BlurFade>
 
+          {/* Contact Form and FAQ Section */}
           <div className="grid lg:grid-cols-2 gap-12 mb-16">
-            <div>
-              <h2 className="text-3xl font-bold mb-6" data-testid="heading-send-message">
-                Send Us a Message
-              </h2>
-              <Card data-testid="card-contact-form">
-                <CardContent className="pt-6">
-                  <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                      <FormField
-                        control={form.control}
-                        name="name"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Full Name</FormLabel>
-                            <FormControl>
-                              <Input
-                                placeholder="Your name"
-                                {...field}
-                                data-testid="input-name"
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
+            {/* Contact Form with BlurFade and FloatingOrbs */}
+            <div className="relative">
+              {/* 2 FloatingOrbs in contact form section */}
+              <FloatingOrbs count={2} />
+              
+              <BlurFade blur={8} direction="up" delay={0.2}>
+                <div className="relative z-10">
+                  <h2 className="text-3xl font-bold mb-6" data-testid="heading-send-message">
+                    Send Us a Message
+                  </h2>
+                  <Card data-testid="card-contact-form">
+                    <CardContent className="pt-6">
+                      <Form {...form}>
+                        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                          <FormField
+                            control={form.control}
+                            name="name"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Full Name</FormLabel>
+                                <FormControl>
+                                  <motion.div
+                                    whileFocus={{ scale: 1.01 }}
+                                    transition={{ duration: 0.2 }}
+                                  >
+                                    <Input
+                                      placeholder="Your name"
+                                      {...field}
+                                      data-testid="input-name"
+                                      className="transition-all duration-200 focus:ring-2 focus:ring-primary/20"
+                                    />
+                                  </motion.div>
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
 
-                      <div className="grid sm:grid-cols-2 gap-4">
-                        <FormField
-                          control={form.control}
-                          name="email"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Email</FormLabel>
-                              <FormControl>
-                                <Input
-                                  type="email"
-                                  placeholder="your@email.com"
-                                  {...field}
-                                  data-testid="input-email"
-                                />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
+                          <div className="grid sm:grid-cols-2 gap-4">
+                            <FormField
+                              control={form.control}
+                              name="email"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>Email</FormLabel>
+                                  <FormControl>
+                                    <motion.div
+                                      whileFocus={{ scale: 1.01 }}
+                                      transition={{ duration: 0.2 }}
+                                    >
+                                      <Input
+                                        type="email"
+                                        placeholder="your@email.com"
+                                        {...field}
+                                        data-testid="input-email"
+                                        className="transition-all duration-200 focus:ring-2 focus:ring-primary/20"
+                                      />
+                                    </motion.div>
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
 
-                        <FormField
-                          control={form.control}
-                          name="phone"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Phone</FormLabel>
-                              <FormControl>
-                                <Input
-                                  placeholder="+91 XXXXX XXXXX"
-                                  {...field}
-                                  data-testid="input-phone"
-                                />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                      </div>
+                            <FormField
+                              control={form.control}
+                              name="phone"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>Phone</FormLabel>
+                                  <FormControl>
+                                    <motion.div
+                                      whileFocus={{ scale: 1.01 }}
+                                      transition={{ duration: 0.2 }}
+                                    >
+                                      <Input
+                                        placeholder="+91 XXXXX XXXXX"
+                                        {...field}
+                                        data-testid="input-phone"
+                                        className="transition-all duration-200 focus:ring-2 focus:ring-primary/20"
+                                      />
+                                    </motion.div>
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                          </div>
 
-                      <FormField
-                        control={form.control}
-                        name="category"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Category</FormLabel>
-                            <Select
-                              onValueChange={field.onChange}
-                              defaultValue={field.value}
-                            >
-                              <FormControl>
-                                <SelectTrigger data-testid="select-category">
-                                  <SelectValue placeholder="Select a category" />
-                                </SelectTrigger>
-                              </FormControl>
-                              <SelectContent>
-                                <SelectItem value="tournament">Tournament Registration</SelectItem>
-                                <SelectItem value="payment">Payment Issues</SelectItem>
-                                <SelectItem value="technical">Technical Support</SelectItem>
-                                <SelectItem value="account">Account Issues</SelectItem>
-                                <SelectItem value="general">General Inquiry</SelectItem>
-                              </SelectContent>
-                            </Select>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
+                          <FormField
+                            control={form.control}
+                            name="category"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Category</FormLabel>
+                                <Select
+                                  onValueChange={field.onChange}
+                                  defaultValue={field.value}
+                                >
+                                  <FormControl>
+                                    <motion.div
+                                      whileFocus={{ scale: 1.01 }}
+                                      transition={{ duration: 0.2 }}
+                                    >
+                                      <SelectTrigger 
+                                        data-testid="select-category"
+                                        className="transition-all duration-200 focus:ring-2 focus:ring-primary/20"
+                                      >
+                                        <SelectValue placeholder="Select a category" />
+                                      </SelectTrigger>
+                                    </motion.div>
+                                  </FormControl>
+                                  <SelectContent>
+                                    <SelectItem value="tournament">Tournament Registration</SelectItem>
+                                    <SelectItem value="payment">Payment Issues</SelectItem>
+                                    <SelectItem value="technical">Technical Support</SelectItem>
+                                    <SelectItem value="account">Account Issues</SelectItem>
+                                    <SelectItem value="general">General Inquiry</SelectItem>
+                                  </SelectContent>
+                                </Select>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
 
-                      <FormField
-                        control={form.control}
-                        name="subject"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Subject</FormLabel>
-                            <FormControl>
-                              <Input
-                                placeholder="Brief subject of your message"
-                                {...field}
-                                data-testid="input-subject"
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
+                          <FormField
+                            control={form.control}
+                            name="subject"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Subject</FormLabel>
+                                <FormControl>
+                                  <motion.div
+                                    whileFocus={{ scale: 1.01 }}
+                                    transition={{ duration: 0.2 }}
+                                  >
+                                    <Input
+                                      placeholder="Brief subject of your message"
+                                      {...field}
+                                      data-testid="input-subject"
+                                      className="transition-all duration-200 focus:ring-2 focus:ring-primary/20"
+                                    />
+                                  </motion.div>
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
 
-                      <FormField
-                        control={form.control}
-                        name="message"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Message</FormLabel>
-                            <FormControl>
-                              <Textarea
-                                placeholder="Describe your query in detail..."
-                                rows={5}
-                                {...field}
-                                data-testid="textarea-message"
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
+                          <FormField
+                            control={form.control}
+                            name="message"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Message</FormLabel>
+                                <FormControl>
+                                  <motion.div
+                                    whileFocus={{ scale: 1.01 }}
+                                    transition={{ duration: 0.2 }}
+                                  >
+                                    <Textarea
+                                      placeholder="Describe your query in detail..."
+                                      rows={5}
+                                      {...field}
+                                      data-testid="textarea-message"
+                                      className="transition-all duration-200 focus:ring-2 focus:ring-primary/20"
+                                    />
+                                  </motion.div>
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
 
-                      <motion.div
-                        whileHover={{ scale: isSubmitting ? 1 : 1.02 }}
-                        whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
-                      >
-                        <Button
-                          type="submit"
-                          className="w-full"
-                          disabled={isSubmitting}
-                          data-testid="button-submit"
-                        >
-                          {isSubmitting ? (
-                            <>
-                              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                              Sending Message...
-                            </>
-                          ) : (
-                            <>
-                              <Send className="w-4 h-4 mr-2" />
-                              Send Message
-                            </>
-                          )}
-                        </Button>
-                      </motion.div>
-                    </form>
-                  </Form>
-                </CardContent>
-              </Card>
+                          <EnhancedMagneticButton
+                            magneticStrength={0.4}
+                            enableGlow={true}
+                            fullWidth
+                            size="lg"
+                            onClick={form.handleSubmit(onSubmit)}
+                            data-testid="button-submit"
+                          >
+                            {isSubmitting ? (
+                              <>
+                                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                                Sending Message...
+                              </>
+                            ) : (
+                              <>
+                                <Send className="w-4 h-4 mr-2" />
+                                Send Message
+                              </>
+                            )}
+                          </EnhancedMagneticButton>
+                        </form>
+                      </Form>
+                    </CardContent>
+                  </Card>
+                </div>
+              </BlurFade>
             </div>
 
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-            >
+            {/* FAQ Section with BlurFade */}
+            <BlurFade blur={8} direction="up" delay={0.3}>
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
                   <HelpCircle className="w-6 h-6 text-primary" />
@@ -637,112 +694,120 @@ export default function Contact() {
                   </AccordionItem>
                 ))}
               </Accordion>
-            </motion.div>
+            </BlurFade>
           </div>
 
-          <Card className="mb-16" data-testid="card-social">
-            <CardHeader className="text-center">
-              <CardTitle className="text-2xl">Connect With Us</CardTitle>
-              <CardDescription>
-                Follow us on social media for updates, announcements, and community engagement
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="flex flex-wrap justify-center gap-4">
-                <Button
-                  variant="outline"
-                  size="lg"
-                  asChild
-                  data-testid="button-instagram"
-                >
-                  <a
-                    href={SOCIAL_LINKS.instagram}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="gap-2"
+          <BlurFade blur={6} direction="up" delay={0.2}>
+            <Card className="mb-16" data-testid="card-social">
+              <CardHeader className="text-center">
+                <CardTitle className="text-2xl">Connect With Us</CardTitle>
+                <CardDescription>
+                  Follow us on social media for updates, announcements, and community engagement
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="flex flex-wrap justify-center gap-4">
+                  <EnhancedMagneticButton
+                    variant="outline"
+                    size="lg"
+                    magneticStrength={0.3}
+                    asChild
+                    data-testid="button-instagram"
                   >
-                    <SiInstagram className="w-5 h-5" />
-                    Instagram
-                  </a>
-                </Button>
+                    <a
+                      href={SOCIAL_LINKS.instagram}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="gap-2"
+                    >
+                      <SiInstagram className="w-5 h-5" />
+                      Instagram
+                    </a>
+                  </EnhancedMagneticButton>
 
-                <Button
-                  variant="outline"
-                  size="lg"
-                  asChild
-                  data-testid="button-facebook"
-                >
-                  <a
-                    href={SOCIAL_LINKS.facebook}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="gap-2"
+                  <EnhancedMagneticButton
+                    variant="outline"
+                    size="lg"
+                    magneticStrength={0.3}
+                    asChild
+                    data-testid="button-facebook"
                   >
-                    <SiFacebook className="w-5 h-5" />
-                    Facebook
-                  </a>
-                </Button>
+                    <a
+                      href={SOCIAL_LINKS.facebook}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="gap-2"
+                    >
+                      <SiFacebook className="w-5 h-5" />
+                      Facebook
+                    </a>
+                  </EnhancedMagneticButton>
 
-                <Button
-                  variant="outline"
-                  size="lg"
-                  asChild
-                  data-testid="button-twitter"
-                >
-                  <a
-                    href={SOCIAL_LINKS.twitter}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="gap-2"
+                  <EnhancedMagneticButton
+                    variant="outline"
+                    size="lg"
+                    magneticStrength={0.3}
+                    asChild
+                    data-testid="button-twitter"
                   >
-                    <SiX className="w-5 h-5" />
-                    Twitter/X
-                  </a>
-                </Button>
+                    <a
+                      href={SOCIAL_LINKS.twitter}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="gap-2"
+                    >
+                      <SiX className="w-5 h-5" />
+                      Twitter/X
+                    </a>
+                  </EnhancedMagneticButton>
 
-                <Button
-                  variant="outline"
-                  size="lg"
-                  asChild
-                  data-testid="button-linkedin"
-                >
-                  <a
-                    href={SOCIAL_LINKS.linkedin}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="gap-2"
+                  <EnhancedMagneticButton
+                    variant="outline"
+                    size="lg"
+                    magneticStrength={0.3}
+                    asChild
+                    data-testid="button-linkedin"
                   >
-                    <SiLinkedin className="w-5 h-5" />
-                    LinkedIn
-                  </a>
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-primary/5 border-primary/20" data-testid="card-support-hours">
-            <CardContent className="p-8">
-              <div className="grid md:grid-cols-3 gap-8 text-center">
-                <div>
-                  <Clock className="w-8 h-8 mx-auto mb-3 text-primary" />
-                  <h3 className="font-semibold mb-2">WhatsApp Support</h3>
-                  <p className="text-sm text-muted-foreground">24/7 Available</p>
+                    <a
+                      href={SOCIAL_LINKS.linkedin}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="gap-2"
+                    >
+                      <SiLinkedin className="w-5 h-5" />
+                      LinkedIn
+                    </a>
+                  </EnhancedMagneticButton>
                 </div>
-                <div>
-                  <Mail className="w-8 h-8 mx-auto mb-3 text-primary" />
-                  <h3 className="font-semibold mb-2">Email Support</h3>
-                  <p className="text-sm text-muted-foreground">Response within 4-6 hours</p>
+              </CardContent>
+            </Card>
+          </BlurFade>
+
+          <BlurFade blur={6} direction="up" delay={0.25}>
+            <Card className="bg-primary/5 border-primary/20" data-testid="card-support-hours">
+              <CardContent className="p-8">
+                <div className="grid md:grid-cols-3 gap-8 text-center">
+                  <div>
+                    <Clock className="w-8 h-8 mx-auto mb-3 text-primary" />
+                    <h3 className="font-semibold mb-2">WhatsApp Support</h3>
+                    <p className="text-sm text-muted-foreground">24/7 Available</p>
+                  </div>
+                  <div>
+                    <Mail className="w-8 h-8 mx-auto mb-3 text-primary" />
+                    <h3 className="font-semibold mb-2">Email Support</h3>
+                    <p className="text-sm text-muted-foreground">Response within 4-6 hours</p>
+                  </div>
+                  <div>
+                    <Phone className="w-8 h-8 mx-auto mb-3 text-primary" />
+                    <h3 className="font-semibold mb-2">Phone Support</h3>
+                    <p className="text-sm text-muted-foreground">Mon-Sun: 9 AM - 11 PM IST</p>
+                  </div>
                 </div>
-                <div>
-                  <Phone className="w-8 h-8 mx-auto mb-3 text-primary" />
-                  <h3 className="font-semibold mb-2">Phone Support</h3>
-                  <p className="text-sm text-muted-foreground">Mon-Sun: 9 AM - 11 PM IST</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+          </BlurFade>
         </div>
-      </motion.div>
+      </div>
 
       <Footer />
     </div>

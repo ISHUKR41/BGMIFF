@@ -18,6 +18,7 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { Button } from "@/components/ui/button";
+import EnhancedMagneticButton from "@/components/EnhancedMagneticButton";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -196,7 +197,7 @@ export default function ModernHero({
             </motion.p>
           )}
 
-          {/* CTA Buttons with Enhanced Hover Effects */}
+          {/* CTA Buttons with Enhanced Magnetic Effects */}
           {ctaButtons.length > 0 && (
             <motion.div
               initial="hidden"
@@ -217,42 +218,34 @@ export default function ModernHero({
 
                 if (button.href) {
                   return (
-                    <motion.div
+                    <EnhancedMagneticButton
                       key={index}
-                      whileHover={{ scale: 1.05, y: -2 }}
-                      whileTap={{ scale: 0.98 }}
-                      transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                      variant={button.variant || "default"}
+                      size="lg"
+                      magneticStrength={0.4}
+                      enableGlow={true}
+                      className="text-base px-8 py-6 shadow-lg hover:shadow-xl transition-shadow"
+                      asChild
+                      data-testid={`hero-cta-${index}`}
                     >
-                      <Button
-                        variant={button.variant || "default"}
-                        size="lg"
-                        className="text-base px-8 py-6 shadow-lg hover:shadow-xl transition-shadow"
-                        asChild
-                        data-testid={`hero-cta-${index}`}
-                      >
-                        <a href={button.href}>{ButtonContent}</a>
-                      </Button>
-                    </motion.div>
+                      <a href={button.href}>{ButtonContent}</a>
+                    </EnhancedMagneticButton>
                   );
                 }
 
                 return (
-                  <motion.div
+                  <EnhancedMagneticButton
                     key={index}
-                    whileHover={{ scale: 1.05, y: -2 }}
-                    whileTap={{ scale: 0.98 }}
-                    transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                    variant={button.variant || "default"}
+                    size="lg"
+                    magneticStrength={0.4}
+                    enableGlow={true}
+                    className="text-base px-8 py-6 shadow-lg hover:shadow-xl transition-shadow"
+                    onClick={button.onClick}
+                    data-testid={`hero-cta-${index}`}
                   >
-                    <Button
-                      variant={button.variant || "default"}
-                      size="lg"
-                      className="text-base px-8 py-6 shadow-lg hover:shadow-xl transition-shadow"
-                      onClick={button.onClick}
-                      data-testid={`hero-cta-${index}`}
-                    >
-                      {ButtonContent}
-                    </Button>
-                  </motion.div>
+                    {ButtonContent}
+                  </EnhancedMagneticButton>
                 );
               })}
             </motion.div>
