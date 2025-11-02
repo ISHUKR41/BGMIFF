@@ -64,7 +64,8 @@ import {
   ExternalLink,
   AlertCircle,
   Sparkles,
-  MessageSquare
+  MessageSquare,
+  UserPlus
 } from "lucide-react";
 import { BarChart, Bar, PieChart, Pie, Cell, ResponsiveContainer, XAxis, YAxis, Legend, Tooltip } from "recharts";
 import {
@@ -784,10 +785,9 @@ export default function FreeFireDuo() {
               <motion.div variants={staggerItem}>
                 <ProfessionalStatCard
                   icon={Ticket}
-                  title="Entry Fee"
-                  value={`₹${FREEFIRE_TOURNAMENTS.duo.entryFee}`}
-                  description="Per team (both players)"
-                  trend="Pocket-friendly"
+                  label="Entry Fee"
+                  value={FREEFIRE_TOURNAMENTS.duo.entryFee}
+                  prefix="₹"
                   delay={0}
                 />
               </motion.div>
@@ -795,10 +795,9 @@ export default function FreeFireDuo() {
               <motion.div variants={staggerItem}>
                 <ProfessionalStatCard
                   icon={Users}
-                  title="Total Slots"
-                  value={`${FREEFIRE_TOURNAMENTS.duo.slots} Teams`}
-                  description="50 players total"
-                  trend="Limited availability"
+                  label="Total Slots"
+                  value={FREEFIRE_TOURNAMENTS.duo.slots}
+                  suffix=" Teams"
                   delay={0.1}
                 />
               </motion.div>
@@ -806,10 +805,9 @@ export default function FreeFireDuo() {
               <motion.div variants={staggerItem}>
                 <ProfessionalStatCard
                   icon={Trophy}
-                  title="Winner Prize"
-                  value={`₹${FREEFIRE_TOURNAMENTS.duo.winner}`}
-                  description="1st place guaranteed"
-                  trend="+Booyah Bonus"
+                  label="Winner Prize"
+                  value={FREEFIRE_TOURNAMENTS.duo.winner}
+                  prefix="₹"
                   delay={0.2}
                 />
               </motion.div>
@@ -817,10 +815,9 @@ export default function FreeFireDuo() {
               <motion.div variants={staggerItem}>
                 <ProfessionalStatCard
                   icon={Target}
-                  title="Per Kill"
-                  value={`₹${FREEFIRE_TOURNAMENTS.duo.perKill}`}
-                  description="For each elimination"
-                  trend="Team-based rewards"
+                  label="Per Kill"
+                  value={FREEFIRE_TOURNAMENTS.duo.perKill}
+                  prefix="₹"
                   delay={0.3}
                 />
               </motion.div>
@@ -1055,7 +1052,7 @@ export default function FreeFireDuo() {
             </motion.div>
 
             <motion.div variants={staggerItem}>
-              <PaymentInstructions />
+              <PaymentInstructions amount={FREEFIRE_TOURNAMENTS.duo.entryFee} />
             </motion.div>
           </motion.div>
         </SectionWrapper>

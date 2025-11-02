@@ -27,6 +27,7 @@ import PaymentInstructions from "@/components/PaymentInstructions";
 import MediaLightbox from "@/components/MediaLightbox";
 import ModernTestimonials from "@/components/ModernTestimonials";
 import CTABand from "@/components/CTABand";
+import FormEmbed from "@/components/FormEmbed";
 import FloatingOrbs from "@/components/FloatingOrbs";
 import BlurFade from "@/components/BlurFade";
 import EnhancedMagneticButton from "@/components/EnhancedMagneticButton";
@@ -166,68 +167,201 @@ const testimonials = [
 // Comprehensive FAQ covering squad-specific scenarios
 const enhancedFAQs = [
   {
-    question: "How do I form a squad for the Free Fire Max tournament?",
-    answer: "Gather 3 friends or teammates who play Free Fire Max regularly. Decide on a unique squad name that represents your team. Choose one person as team leader/captain for all communications. Collect all 4 players' Free Fire Max IDs, in-game names, and contact details. Ensure all members are available for the tournament date and time. Have the team leader complete registration with accurate details.",
+    title: "How do I form a squad for the Free Fire Max tournament?",
+    type: "info" as const,
+    content: [
+      "Gather 3 friends or teammates who play Free Fire Max regularly",
+      "Decide on a unique squad name that represents your team",
+      "Choose one person as team leader/captain for all communications",
+      "Collect all 4 players' Free Fire Max IDs, in-game names, and contact details",
+      "Ensure all members are available for the tournament date and time",
+      "Have the team leader complete registration with accurate details",
+    ],
   },
   {
-    question: "What are the responsibilities of a squad captain/leader?",
-    answer: "Register the squad with accurate details of all 4 members. Make payment and upload payment proof on behalf of the squad. Receive and share room credentials with all squad members. Ensure all members are online 15 minutes before tournament. Act as primary point of contact with tournament admins. Coordinate team strategy and role assignments. Receive prize money and distribute to squad members. Handle any disputes or issues that arise during the tournament.",
+    title: "What are the responsibilities of a squad captain/leader?",
+    type: "info" as const,
+    content: [
+      "Register the squad with accurate details of all 4 members",
+      "Make payment and upload payment proof on behalf of the squad",
+      "Receive and share room credentials with all squad members",
+      "Ensure all members are online 15 minutes before tournament",
+      "Act as primary point of contact with tournament admins",
+      "Coordinate team strategy and role assignments",
+      "Receive prize money and distribute to squad members",
+      "Handle any disputes or issues that arise during the tournament",
+    ],
   },
   {
-    question: "Can I change squad members after registration?",
-    answer: "Generally, squad members cannot be changed after registration closes. Emergency substitutions may be allowed with 24-hour advance notice. Contact admin immediately if a member cannot participate. Substitutions require admin approval and valid reason. Original registered player details may need verification. Last-minute changes may not be possible due to tournament logistics.",
+    title: "Can I change squad members after registration?",
+    type: "warning" as const,
+    content: [
+      "Generally, squad members cannot be changed after registration closes",
+      "Emergency substitutions may be allowed with 24-hour advance notice",
+      "Contact admin immediately if a member cannot participate",
+      "Substitutions require admin approval and valid reason",
+      "Original registered player details may need verification",
+      "Last-minute changes may not be possible due to tournament logistics",
+    ],
   },
   {
-    question: "What happens if one squad member doesn't show up?",
-    answer: "Your squad will be disqualified if all 4 members are not present. Tournament requires full 4-player squads for fair competition. Incomplete squads cannot participate in the match. No refunds issued for squad member no-shows. Always have backup communication with all team members. Confirm attendance from all members before tournament day.",
+    title: "What happens if one squad member doesn't show up?",
+    type: "warning" as const,
+    content: [
+      "Your squad will be disqualified if all 4 members are not present",
+      "Tournament requires full 4-player squads for fair competition",
+      "Incomplete squads cannot participate in the match",
+      "No refunds issued for squad member no-shows",
+      "Always have backup communication with all team members",
+      "Confirm attendance from all members before tournament day",
+    ],
   },
   {
-    question: "How should we assign roles within our Free Fire Max squad?",
-    answer: "Leader: Makes strategic calls, rotation decisions, and coordinates the team. Rusher: Aggressive player focused on eliminations and engaging enemies. Support: Provides cover fire, assists teammates, manages supplies. Sniper: Long-range specialist for zone control and enemy tracking. Roles can be flexible based on situation and team strengths. Practice role coordination before tournament for better synergy. Communication is key - ensure everyone knows their primary role.",
+    title: "How should we assign roles within our Free Fire Max squad?",
+    type: "success" as const,
+    content: [
+      "Leader: Makes strategic calls, rotation decisions, and coordinates the team",
+      "Rusher: Aggressive player focused on eliminations and engaging enemies",
+      "Support: Provides cover fire, assists teammates, manages supplies",
+      "Sniper: Long-range specialist for zone control and enemy tracking",
+      "Roles can be flexible based on situation and team strengths",
+      "Practice role coordination before tournament for better synergy",
+      "Communication is key - ensure everyone knows their primary role",
+    ],
   },
   {
-    question: "What is the tournament format and duration?",
-    answer: "Classic Battle Royale format with 12 squads (48 players total). Match duration: 15-25 minutes depending on zone progression. Check-in starts 30 minutes before match time. All squads must join lobby 15 minutes before start. Single match tournament with placement and kill points. Results announced within 30 minutes of match completion.",
+    title: "What is the tournament format and duration?",
+    type: "info" as const,
+    content: [
+      "Classic Battle Royale format with 12 squads (48 players total)",
+      "Match duration: 15-25 minutes depending on zone progression",
+      "Check-in starts 30 minutes before match time",
+      "All squads must join lobby 15 minutes before start",
+      "Single match tournament with placement and kill points",
+      "Results announced within 30 minutes of match completion",
+    ],
   },
   {
-    question: "How are prizes distributed among squad members?",
-    answer: "Prize money transferred to team leader's UPI account. Team leader responsible for distributing shares to members. Common split: divide equally among all 4 members (25% each). Some teams give higher share to top fraggers or leader. Decide distribution method within your squad beforehand. GameArena only transfers to team leader, internal split is squad's decision. Prize transfer happens within 24-48 hours after tournament.",
+    title: "How are prizes distributed among squad members?",
+    type: "success" as const,
+    content: [
+      "Prize money transferred to team leader's UPI account",
+      "Team leader responsible for distributing shares to members",
+      "Common split: divide equally among all 4 members (25% each)",
+      "Some teams give higher share to top fraggers or leader",
+      "Decide distribution method within your squad beforehand",
+      "GameArena only transfers to team leader, internal split is squad's decision",
+      "Prize transfer happens within 24-48 hours after tournament",
+    ],
   },
   {
-    question: "What if there's a technical issue during the tournament?",
-    answer: "Contact tournament admin immediately via WhatsApp. Screen recording helps in case of dispute resolution. Network issues are player's responsibility - ensure stable connection. Game crashes: admin may allow rejoin if reported immediately. Server-side issues: admin may pause or reschedule if affecting multiple teams. Individual player technical issues generally don't qualify for rematch.",
+    title: "What if there's a technical issue during the tournament?",
+    type: "info" as const,
+    content: [
+      "Contact tournament admin immediately via WhatsApp",
+      "Screen recording helps in case of dispute resolution",
+      "Network issues are player's responsibility - ensure stable connection",
+      "Game crashes: admin may allow rejoin if reported immediately",
+      "Server-side issues: admin may pause or reschedule if affecting multiple teams",
+      "Individual player technical issues generally don't qualify for rematch",
+    ],
   },
   {
-    question: "Can we practice together before the tournament?",
-    answer: "Highly recommended to practice with your squad beforehand. Practice communication, callouts, and role coordination. Try different drop locations and rotation strategies. Ensure all members understand the tournament rules. Test everyone's device performance and network stability. Watch our strategy videos for Free Fire Max squad tips and tactics.",
+    title: "Can we practice together before the tournament?",
+    type: "success" as const,
+    content: [
+      "Highly recommended to practice with your squad beforehand",
+      "Practice communication, callouts, and role coordination",
+      "Try different drop locations and rotation strategies",
+      "Ensure all members understand the tournament rules",
+      "Test everyone's device performance and network stability",
+      "Watch our strategy videos for Free Fire Max squad tips and tactics",
+    ],
   },
   {
-    question: "What happens if our squad wins?",
-    answer: "You'll be announced as winners immediately after results verification. Prize money (₹200 for 1st, ₹150 for 2nd, plus kill bonuses) transferred to team leader. Team may be featured on GameArena social media channels. Winners receive priority access to future premium tournaments. Your squad name added to our Hall of Champions. Possible invitation to special invitational tournaments.",
+    title: "What happens if our squad wins?",
+    type: "success" as const,
+    content: [
+      "You'll be announced as winners immediately after results verification",
+      "Prize money (₹200 for 1st, ₹150 for 2nd, plus kill bonuses) transferred to team leader",
+      "Team may be featured on GameArena social media channels",
+      "Winners receive priority access to future premium tournaments",
+      "Your squad name added to our Hall of Champions",
+      "Possible invitation to special invitational tournaments",
+    ],
   },
 ];
 
 // Comprehensive tournament rules organized by category
 const squadRules = [
   {
-    question: "Squad Formation & Registration",
-    answer: "Each squad must consist of exactly 4 players - no more, no less. Team name must be unique, appropriate, and between 3-20 characters. All 4 players' Free Fire Max IDs and in-game names must be accurate and verified. Team leader/captain must provide a valid WhatsApp number for all official communications. Squad members cannot be changed after registration deadline. Each player can only be part of one squad per tournament. Payment verification is mandatory before slot confirmation.",
+    title: "Squad Formation & Registration",
+    type: "info" as const,
+    content: [
+      "Each squad must consist of exactly 4 players - no more, no less",
+      "Team name must be unique, appropriate, and between 3-20 characters",
+      "All 4 players' Free Fire Max IDs and in-game names must be accurate and verified",
+      "Team leader/captain must provide a valid WhatsApp number for all official communications",
+      "Squad members cannot be changed after registration deadline",
+      "Each player can only be part of one squad per tournament",
+      "Payment verification is mandatory before slot confirmation",
+    ],
   },
   {
-    question: "Payment & Verification Process",
-    answer: "Entry fee: ₹80 per squad (covers all 4 players). Payment must be made via official GameArena QR code only. Upload a clear, unedited screenshot of payment confirmation. Enter the exact Transaction ID/Reference Number from your payment. Payment deadline is 2 hours before tournament start time. Slots will be automatically canceled if payment is not verified in time. No refunds after payment verification.",
+    title: "Payment & Verification Process",
+    type: "info" as const,
+    content: [
+      "Entry fee: ₹80 per squad (covers all 4 players)",
+      "Payment must be made via official GameArena QR code only",
+      "Upload a clear, unedited screenshot of payment confirmation",
+      "Enter the exact Transaction ID/Reference Number from your payment",
+      "Payment deadline is 2 hours before tournament start time",
+      "Slots will be automatically canceled if payment is not verified in time",
+      "No refunds after payment verification",
+    ],
   },
   {
-    question: "Tournament Conduct & Gameplay Rules",
-    answer: "Absolutely no hacks, cheats, emulators, or third-party applications. All squad members must demonstrate good sportsmanship at all times. Follow room ID and password shared by tournament admin exactly. All 4 squad members must be online 15 minutes before tournament start. Use push-to-talk or mute when not communicating with team. Follow admin instructions promptly - non-compliance leads to penalties. Screen recording is recommended for dispute resolution. Team leader is fully responsible for squad coordination and communication.",
+    title: "Tournament Conduct & Gameplay Rules",
+    type: "success" as const,
+    content: [
+      "Absolutely no hacks, cheats, emulators, or third-party applications",
+      "All squad members must demonstrate good sportsmanship at all times",
+      "Follow room ID and password shared by tournament admin exactly",
+      "All 4 squad members must be online 15 minutes before tournament start",
+      "Use push-to-talk or mute when not communicating with team",
+      "Follow admin instructions promptly - non-compliance leads to penalties",
+      "Screen recording is recommended for dispute resolution",
+      "Team leader is fully responsible for squad coordination and communication",
+    ],
   },
   {
-    question: "Prize Distribution & Rewards",
-    answer: "1st Place Winner Squad: ₹200 (team prize). 2nd Place Runner-Up Squad: ₹150 (team prize). Per Kill Bonus: ₹8 per kill (accumulated for entire squad). Prizes distributed within 24-48 hours after tournament completion. Team leader must provide valid UPI ID for prize transfer. Prize transferred to team leader for distribution among members. Winners may be featured on our social media channels. Top performers receive priority access to future tournaments.",
+    title: "Prize Distribution & Rewards",
+    type: "success" as const,
+    content: [
+      "1st Place Winner Squad: ₹200 (team prize)",
+      "2nd Place Runner-Up Squad: ₹150 (team prize)",
+      "Per Kill Bonus: ₹8 per kill (accumulated for entire squad)",
+      "Prizes distributed within 24-48 hours after tournament completion",
+      "Team leader must provide valid UPI ID for prize transfer",
+      "Prize transferred to team leader for distribution among members",
+      "Winners may be featured on our social media channels",
+      "Top performers receive priority access to future tournaments",
+    ],
   },
   {
-    question: "Disqualification & Penalty Policy",
-    answer: "Providing incorrect, incomplete, or fake squad details. Payment verification failure or fraudulent payment proof. Use of unauthorized applications, hacks, or cheats by any squad member. Toxic behavior, harassment, or abusive language by any team member. Not following admin instructions or tournament rules. Playing with different squad members than those registered. Incomplete squad (less than 4 players) during tournament match. Multiple rule violations may lead to permanent tournament ban. Absolutely no refunds in case of disqualification for rule violations.",
+    title: "Disqualification & Penalty Policy",
+    type: "warning" as const,
+    content: [
+      "Providing incorrect, incomplete, or fake squad details",
+      "Payment verification failure or fraudulent payment proof",
+      "Use of unauthorized applications, hacks, or cheats by any squad member",
+      "Toxic behavior, harassment, or abusive language by any team member",
+      "Not following admin instructions or tournament rules",
+      "Playing with different squad members than those registered",
+      "Incomplete squad (less than 4 players) during tournament match",
+      "Multiple rule violations may lead to permanent tournament ban",
+      "Absolutely no refunds in case of disqualification for rule violations",
+    ],
   },
 ];
 
@@ -1045,61 +1179,23 @@ export default function FreeFireSquad() {
               className="text-center space-y-4"
             >
               <div className="flex items-center justify-center gap-2">
-                <UserPlus className="w-8 h-8 text-primary" />
-                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold">
-                  Register Your Squad
+                <Trophy className="w-8 h-8 text-primary" />
+                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold" data-testid="heading-registration">
+                  Complete Your Registration
                 </h2>
               </div>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Complete the form to secure your squad's spot in the tournament
+                Fill out the form below after making your payment. All squad member details must be accurate for slot confirmation.
               </p>
             </motion.div>
 
-            <motion.div variants={staggerItem} className="max-w-2xl mx-auto">
-              <Card className="hover-elevate transition-all duration-300">
-                <CardHeader>
-                  <CardTitle className="text-2xl">Registration Form</CardTitle>
-                  <CardDescription>
-                    Fill in all 4 squad members' details and payment information
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                  {/* Tournament Info */}
-                  <div className="grid sm:grid-cols-3 gap-4 p-4 bg-muted/50 rounded-lg">
-                    <div className="text-center">
-                      <div className="text-2xl font-bold text-primary">₹{FREEFIRE_TOURNAMENTS.squad.entryFee}</div>
-                      <div className="text-xs text-muted-foreground">Entry Fee</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-2xl font-bold text-primary">{FREEFIRE_TOURNAMENTS.squad.slots}</div>
-                      <div className="text-xs text-muted-foreground">Squad Slots</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-2xl font-bold text-primary">₹{FREEFIRE_TOURNAMENTS.squad.winner}</div>
-                      <div className="text-xs text-muted-foreground">Winner Prize</div>
-                    </div>
-                  </div>
-
-                  {/* Registration Button */}
-                  <EnhancedMagneticButton
-                    variant="default"
-                    size="lg"
-                    className="w-full text-lg py-6"
-                    magneticStrength={0.3}
-                    enableGlow={true}
-                    onClick={scrollToRegistration}
-                    data-testid="button-open-form"
-                  >
-                    <Trophy className="w-5 h-5 mr-2" />
-                    Register Now
-                    <ArrowRight className="w-5 h-5 ml-2" />
-                  </EnhancedMagneticButton>
-
-                  <p className="text-center text-sm text-muted-foreground">
-                    Complete all fields accurately to avoid disqualification
-                  </p>
-                </CardContent>
-              </Card>
+            <motion.div variants={staggerItem}>
+              <FormEmbed
+                formUrl={FREEFIRE_TOURNAMENTS.squad.formUrl}
+                embedUrl={FREEFIRE_TOURNAMENTS.squad.embedUrl}
+                title="Squad Tournament Registration Form"
+                description="Complete all required fields for all 4 squad members. Your slot will be confirmed after payment verification."
+              />
             </motion.div>
           </motion.div>
         </SectionWrapper>
@@ -1319,13 +1415,13 @@ export default function FreeFireSquad() {
 
             <motion.div variants={staggerItem}>
               <MediaLightbox
-                images={[
-                  { src: actionImage1, alt: "Free Fire Max Squad Action 1" },
-                  { src: actionImage2, alt: "Free Fire Max Squad Action 2" },
-                  { src: actionImage3, alt: "Free Fire Max Victory" },
-                  { src: tournamentImage1, alt: "Tournament Scene" },
-                  { src: tournamentImage2, alt: "Championship Trophy" },
-                  { src: esportsImage1, alt: "Weapon Showcase" },
+                items={[
+                  { src: actionImage1, alt: "Free Fire Max Squad Action 1", caption: "Squad action highlights" },
+                  { src: actionImage2, alt: "Free Fire Max Squad Action 2", caption: "Intense firefight moments" },
+                  { src: actionImage3, alt: "Free Fire Max Victory", caption: "Victory celebration" },
+                  { src: tournamentImage1, alt: "Tournament Scene", caption: "Competitive tournament action" },
+                  { src: tournamentImage2, alt: "Championship Trophy", caption: "Championship glory" },
+                  { src: esportsImage1, alt: "Weapon Showcase", caption: "Weapon mastery showcase" },
                 ]}
               />
             </motion.div>
@@ -1336,10 +1432,10 @@ export default function FreeFireSquad() {
         <CTABand
           title="Ready to Dominate with Your Squad?"
           description="Join the most competitive Free Fire Max squad tournament. Register now and compete for guaranteed prizes!"
-          primaryButtonText="Register Squad Now"
-          primaryButtonHref="#registration"
-          secondaryButtonText="View Tournament Rules"
-          secondaryButtonHref="#rules"
+          buttons={[
+            { label: "Register Squad Now", href: "#registration", variant: "default" },
+            { label: "View Tournament Rules", href: "#rules", variant: "outline" },
+          ]}
         />
       </main>
 

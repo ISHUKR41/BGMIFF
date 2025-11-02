@@ -1735,14 +1735,14 @@ export default function Solo() {
 
             <motion.div variants={staggerItem}>
               <MediaLightbox
-                images={[
-                  { url: tournamentImage1, caption: "Intense solo combat action" },
-                  { url: tournamentImage2, caption: "Champion moment - Chicken Dinner!" },
-                  { url: tournamentImage3, caption: "Final zone battle royale" },
-                  { url: esportsImage1, caption: "Tournament players competing" },
-                  { url: esportsImage2, caption: "Precision sniper gameplay" },
-                  { url: gamingImage1, caption: "Airdrop action scene" },
-                  { url: gamingImage2, caption: "Championship trophy celebration" },
+                items={[
+                  { src: tournamentImage1, alt: "Intense solo combat action", caption: "Intense solo combat action" },
+                  { src: tournamentImage2, alt: "Champion moment - Chicken Dinner!", caption: "Champion moment - Chicken Dinner!" },
+                  { src: tournamentImage3, alt: "Final zone battle royale", caption: "Final zone battle royale" },
+                  { src: esportsImage1, alt: "Tournament players competing", caption: "Tournament players competing" },
+                  { src: esportsImage2, alt: "Precision sniper gameplay", caption: "Precision sniper gameplay" },
+                  { src: gamingImage1, alt: "Airdrop action scene", caption: "Airdrop action scene" },
+                  { src: gamingImage2, alt: "Championship trophy celebration", caption: "Championship trophy celebration" },
                 ]}
               />
             </motion.div>
@@ -1754,10 +1754,10 @@ export default function Solo() {
           <CTABand
             title="Ready to Compete?"
             description="Join India's most competitive BGMI solo tournaments. Register now and prove you're the ultimate solo warrior."
-            primaryButtonText="Register for Tournament"
-            primaryButtonHref="#registration"
-            secondaryButtonText="View All Tournaments"
-            secondaryButtonHref="/#tournaments"
+            buttons={[
+              { label: "Register for Tournament", href: "#registration", variant: "default" },
+              { label: "View All Tournaments", href: "/#tournaments", variant: "outline" },
+            ]}
           />
         </SectionWrapper>
       </main>
